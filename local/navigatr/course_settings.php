@@ -56,6 +56,31 @@ if (optional_param('action', '', PARAM_ALPHA) === 'getbadges') {
     exit;
 }
 
+// Check for existing mapping
+$existing_mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
+$existing_provider = null;
+$existing_badge = null;
+
+if ($existing_mapping) {
+    try {
+        // Fetch provider details
+        $client = new \local_navigatr\local\api_client();
+        $provider_response = $client->get("/provider/{$existing_mapping->provider_id}");
+        if ($provider_response->ok) {
+            $existing_provider = $provider_response->body;
+        }
+        
+        // Fetch badge details
+        $badge_response = $client->get("/badge/{$existing_mapping->badge_id}");
+        if ($badge_response->ok) {
+            $existing_badge = $badge_response->body;
+        }
+    } catch (Exception $e) {
+        // If API calls fail, we'll just show the form without existing info
+        $existing_mapping = null;
+    }
+}
+
 // Create form
 $form = new \local_navigatr\form\provider_selection_form(null, ['courseid' => $courseid]);
 
@@ -75,6 +100,22 @@ if ($data = $form->get_data()) {
 }
 
 echo $OUTPUT->header();
+
+// Display existing mapping if it exists
+if ($existing_mapping && $existing_provider && $existing_badge) {
+    echo '<div class="alert alert-info">';
+    echo '<h4>' . get_string('current_mapping', 'local_navigatr') . '</h4>';
+    echo '<p><strong>' . get_string('provider', 'local_navigatr') . ':</strong> ' . s($existing_provider['name']) . '</p>';
+    echo '<p><strong>' . get_string('badge', 'local_navigatr') . ':</strong> ' . s($existing_badge['name']) . '</p>';
+    if (!empty($existing_badge['description'])) {
+        echo '<p><strong>' . get_string('badgedesc', 'local_navigatr') . ':</strong> ' . s($existing_badge['description']) . '</p>';
+    }
+    echo '<p><a href="' . new \moodle_url('/local/navigatr/badge_selection.php', [
+        'id' => $courseid,
+        'provider_id' => $existing_mapping->provider_id
+    ]) . '" class="btn btn-primary">' . get_string('change_mapping', 'local_navigatr') . '</a></p>';
+    echo '</div>';
+}
 
 $form->display();
 

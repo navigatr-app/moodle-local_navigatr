@@ -78,3 +78,5 @@ $string['select_provider_continue'] = 'Continue to Select Badge';
 $string['select_badge_continue'] = 'Save Mapping';
 $string['selected_provider'] = 'Selected Provider';
 $string['navigatr_settings'] = 'Navigatr Settings';
+$string['current_mapping'] = 'Current Badge Mapping';
+$string['change_mapping'] = 'Change Mapping';
