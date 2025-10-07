@@ -102,18 +102,8 @@ class token_manager {
             return false;
         }
 
-        $env = get_config('local_navigatr', 'env') ?: 'prod';
-        $timeout = get_config('local_navigatr', 'timeout') ?: 10;
-
-        $baseurls = [
-            'prod' => 'https://api.navigatr.app/v1',
-            'staging' => 'https://stagapi.navigatr.app/v1',
-            'dev' => 'http://127.0.0.1:5000/v1',
-        ];
-        $baseurl = $baseurls[$env] ?? $baseurls['prod'];
-
         try {
-            $client = new api_client($baseurl, $timeout);
+            $client = new api_client();
             $response = $client->refresh_token($refreshtoken);
 
             if ($response->ok) {
@@ -136,21 +126,12 @@ class token_manager {
     private static function reauth() {
         $username = get_config('local_navigatr', 'username');
         $password = get_config('local_navigatr', 'password');
-        $env = get_config('local_navigatr', 'env') ?: 'prod';
-        $timeout = get_config('local_navigatr', 'timeout') ?: 10;
 
         if (empty($username) || empty($password)) {
             throw new \moodle_exception('auth_failed', 'local_navigatr');
         }
 
-        $baseurls = [
-            'prod' => 'https://api.navigatr.app/v1',
-            'staging' => 'https://stagapi.navigatr.app/v1',
-            'dev' => 'http://127.0.0.1:5000/v1',
-        ];
-        $baseurl = $baseurls[$env] ?? $baseurls['prod'];
-
-        $client = new api_client($baseurl, $timeout);
+        $client = new api_client();
         $response = $client->get_token($username, $password);
 
         if (!$response->ok) {

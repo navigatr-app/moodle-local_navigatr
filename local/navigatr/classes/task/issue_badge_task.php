@@ -77,20 +77,8 @@ class issue_badge_task extends \core\task\adhoc_task {
 
         try {
             // Get access token
-            $token = \local_navigatr\local\token_manager::get_access_token();
-            
             // Get API client
-            $env = get_config('local_navigatr', 'env') ?: 'prod';
-            $timeout = get_config('local_navigatr', 'timeout') ?: 10;
-            
-            $baseurls = [
-                'prod' => 'https://api.navigatr.app/v1',
-                'staging' => 'https://stagapi.navigatr.app/v1',
-                'dev' => 'http://127.0.0.1:5000/v1',
-            ];
-            $baseurl = $baseurls[$env] ?? $baseurls['prod'];
-            
-            $client = new \local_navigatr\local\api_client($baseurl, $timeout);
+            $client = new \local_navigatr\local\api_client();
 
             // Prepare badge issuance payload
             $payload = [
@@ -100,18 +88,13 @@ class issue_badge_task extends \core\task\adhoc_task {
             ];
 
             // Issue badge
-            $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload, [
-                'Authorization: Bearer ' . $token
-            ]);
+            $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
 
             // Handle 401 - try re-authentication once
             if ($response->code === 401) {
                 \local_navigatr\local\token_manager::reauth();
-                $token = \local_navigatr\local\token_manager::get_access_token();
                 
-                $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload, [
-                    'Authorization: Bearer ' . $token
-                ]);
+                $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
             }
 
             // Write audit record

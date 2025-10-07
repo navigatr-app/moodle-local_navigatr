@@ -42,14 +42,31 @@ class api_client {
     private $timeout;
 
     /**
+     * Get base URL based on environment configuration
+     *
+     * @return string Base URL for Navigatr API
+     */
+    public static function get_base_url() {
+        $env = get_config('local_navigatr', 'env') ?: 'prod';
+        
+        $baseurls = [
+            'prod' => 'https://api.navigatr.app/v1',
+            'staging' => 'https://stagapi.navigatr.app/v1',
+            'dev' => 'http://127.0.0.1:5000/v1',
+        ];
+        
+        return $baseurls[$env] ?? $baseurls['prod'];
+    }
+
+    /**
      * Constructor
      *
-     * @param string $baseurl Base URL for Navigatr API
+     * @param string|null $baseurl Base URL for Navigatr API (optional, will use config if null)
      * @param int $timeout Request timeout in seconds
      */
-    public function __construct($baseurl, $timeout = 30) {
-        $this->baseurl = rtrim($baseurl, '/');
-        $this->timeout = $timeout;
+    public function __construct($baseurl = null, $timeout = null) {
+        $this->baseurl = $baseurl ? rtrim($baseurl, '/') : self::get_base_url();
+        $this->timeout = $timeout ?? get_config('local_navigatr', 'timeout') ?: 30;
     }
 
     /**
@@ -282,18 +299,12 @@ class api_client {
      * @return object Response object
      */
     public static function test_connection($username, $password, $environment = 'production') {
-        // Get base URL based on environment
-        $baseurls = [
-            'development' => 'http://127.0.0.1:5000/v1',
-            'staging' => 'https://stagapi.navigatr.app/v1',
-            'production' => 'https://api.navigatr.app/v1',
-        ];
+        // Temporarily set environment for this test
+        $original_env = get_config('local_navigatr', 'env');
+        set_config('env', $environment === 'production' ? 'prod' : $environment, 'local_navigatr');
         
-        $baseurl = $baseurls[$environment] ?? $baseurls['production'];
-        $timeout = 30;
-        
-        // Create API client
-        $client = new self($baseurl, $timeout);
+        // Create API client (will use the environment we just set)
+        $client = new self();
         
         // Authenticate using form-encoded data
         $authresponse = $client->get_token($username, $password);
@@ -308,6 +319,11 @@ class api_client {
                 set_config('refresh_token', $authresponse->body['refresh_token'], 'local_navigatr');
                 set_config('refresh_expires_at', time() + 86400, 'local_navigatr'); // 1 day
             }
+        }
+
+        // Restore original environment
+        if ($original_env !== false) {
+            set_config('env', $original_env, 'local_navigatr');
         }
 
         return $authresponse;

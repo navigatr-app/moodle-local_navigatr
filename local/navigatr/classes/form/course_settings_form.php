@@ -112,22 +112,9 @@ class course_settings_form extends \moodleform {
             }
 
             // Fetch from API
-            $env = get_config('local_navigatr', 'env') ?: 'prod';
-            $timeout = get_config('local_navigatr', 'timeout') ?: 10;
+            $client = new \local_navigatr\local\api_client();
             
-            $baseurls = [
-                'prod' => 'https://api.navigatr.app/v1',
-                'staging' => 'https://stagapi.navigatr.app/v1',
-                'dev' => 'http://127.0.0.1:5000/v1',
-            ];
-            $baseurl = $baseurls[$env] ?? $baseurls['prod'];
-            
-            $client = new \local_navigatr\local\api_client($baseurl, $timeout);
-            $token = \local_navigatr\local\token_manager::get_access_token();
-            
-            $response = $client->get("/user_detail/{$userid}/providers", [
-                'Authorization: Bearer ' . $token
-            ]);
+            $response = $client->get("/user_detail/{$userid}/providers");
 
             if ($response->ok && is_array($response->body)) {
                 \local_navigatr\local\cache::set_providers($userid, $response->body);
@@ -157,22 +144,9 @@ class course_settings_form extends \moodleform {
             }
 
             // Fetch from API
-            $env = get_config('local_navigatr', 'env') ?: 'prod';
-            $timeout = get_config('local_navigatr', 'timeout') ?: 10;
+            $client = new \local_navigatr\local\api_client();
             
-            $baseurls = [
-                'prod' => 'https://api.navigatr.app/v1',
-                'staging' => 'https://stagapi.navigatr.app/v1',
-                'dev' => 'http://127.0.0.1:5000/v1',
-            ];
-            $baseurl = $baseurls[$env] ?? $baseurls['prod'];
-            
-            $client = new \local_navigatr\local\api_client($baseurl, $timeout);
-            $token = \local_navigatr\local\token_manager::get_access_token();
-            
-            $response = $client->get("/badge?provider_id={$providerid}&page=1&size=50", [
-                'Authorization: Bearer ' . $token
-            ]);
+            $response = $client->get("/badge?provider_id={$providerid}&page=1&size=50");
 
             if ($response->ok && isset($response->body['items']) && is_array($response->body['items'])) {
                 $badges = $response->body['items'];
