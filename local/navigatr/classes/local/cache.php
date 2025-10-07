@@ -87,9 +87,11 @@ class cache {
     public static function clear_all() {
         $providerscache = \cache::make('local_navigatr', 'providers');
         $badgescache = \cache::make('local_navigatr', 'badges');
+        $userdetailcache = \cache::make('local_navigatr', 'user_detail');
         
         $providerscache->purge();
         $badgescache->purge();
+        $userdetailcache->purge();
     }
 
     /**
@@ -117,5 +119,33 @@ class cache {
                 $cache->delete($key);
             }
         }
+    }
+
+    /**
+     * Get user detail from cache.
+     *
+     * @return array|null User detail array or null if not cached
+     */
+    public static function get_user_detail() {
+        $cache = \cache::make('local_navigatr', 'user_detail');
+        return $cache->get('current_user');
+    }
+
+    /**
+     * Set user detail in cache.
+     *
+     * @param array $userdetail User detail array
+     */
+    public static function set_user_detail($userdetail) {
+        $cache = \cache::make('local_navigatr', 'user_detail');
+        $cache->set('current_user', $userdetail);
+    }
+
+    /**
+     * Clear user detail cache.
+     */
+    public static function clear_user_detail() {
+        $cache = \cache::make('local_navigatr', 'user_detail');
+        $cache->delete('current_user');
     }
 }

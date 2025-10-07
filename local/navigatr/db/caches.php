@@ -41,6 +41,14 @@ $definitions = [
         'staticaccelerationsize' => 10,
         'ttl' => 600, // 10 minutes
     ],
+    'user_detail' => [
+        'mode' => cache_store::MODE_REQUEST,
+        'simplekeys' => true,
+        'simpledata' => true,
+        'staticacceleration' => true,
+        'staticaccelerationsize' => 1,
+        'ttl' => 600, // 10 minutes
+    ],
     'locks' => [
         'mode' => cache_store::MODE_REQUEST,
         'simplekeys' => true,

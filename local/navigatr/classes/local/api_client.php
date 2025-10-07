@@ -101,10 +101,14 @@ class api_client {
 
         // Add Bearer token if authentication is required
         if ($require_auth) {
+            debugging("NAVIGATR DEBUG: Authentication required for " . $method . " " . $path, DEBUG_NORMAL);
             try {
                 $token = token_manager::get_access_token();
+                debugging("NAVIGATR DEBUG: Retrieved token: " . substr($token, 0, 20) . "...", DEBUG_NORMAL);
                 $http_headers[] = 'Authorization: Bearer ' . $token;
+                debugging("NAVIGATR DEBUG: Added Bearer token to headers", DEBUG_NORMAL);
             } catch (\moodle_exception $e) {
+                debugging("NAVIGATR DEBUG: Token retrieval failed: " . $e->getMessage(), DEBUG_NORMAL);
                 // If token retrieval fails, return error response
                 return (object) [
                     'ok' => false,
@@ -113,6 +117,8 @@ class api_client {
                     'error' => 'Authentication failed',
                 ];
             }
+        } else {
+            debugging("NAVIGATR DEBUG: No authentication required for " . $method . " " . $path, DEBUG_NORMAL);
         }
 
         // Add any custom headers
@@ -360,7 +366,7 @@ class api_client {
      * @param array $headers Additional headers
      * @return object Response object
      */
-    public function get($path, $headers = []) {
-        return $this->make_request('GET', $path, null, $headers);
+    public function get($path, $headers = [], $require_auth = true) {
+        return $this->make_request('GET', $path, null, $headers, $require_auth);
     }
 }

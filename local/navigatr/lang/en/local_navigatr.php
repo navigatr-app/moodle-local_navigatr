@@ -74,3 +74,6 @@ $string['privacy:metadata:navigatr:recipient_email'] = 'Recipient email address'
 $string['privacy:metadata:navigatr:recipient_firstname'] = 'Recipient first name';
 $string['privacy:metadata:navigatr:recipient_lastname'] = 'Recipient last name';
 $string['privacy:metadata:navigatr:purpose'] = 'Issue a digital badge upon course completion';
+$string['select_provider_continue'] = 'Continue to Select Badge';
+$string['select_badge_continue'] = 'Save Mapping';
+$string['selected_provider'] = 'Selected Provider';

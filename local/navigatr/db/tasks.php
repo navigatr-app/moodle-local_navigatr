@@ -28,11 +28,6 @@ $tasks = [
     [
         'classname' => '\local_navigatr\task\issue_badge_task',
         'blocking' => 0,
-        'minute' => '*',
-        'hour' => '*',
-        'day' => '*',
-        'dayofweek' => '*',
-        'month' => '*',
         'disabled' => 1
     ]
 ];

@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Course settings page for Navigatr Badges plugin.
+ * Provider selection page for Navigatr Badges plugin.
  *
  * @package    local_navigatr
  * @copyright  2025 Navigatr
@@ -24,6 +24,7 @@
 
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
+require_once($CFG->dirroot . '/local/navigatr/classes/form/provider_selection_form.php');
 
 $courseid = required_param('id', PARAM_INT);
 $course = get_course($courseid);
@@ -34,8 +35,8 @@ require_capability('local/navigatr:configurecourse', $context);
 
 $PAGE->set_url('/local/navigatr/course_settings.php', ['id' => $courseid]);
 $PAGE->set_context($context);
-$PAGE->set_title(get_string('pluginname', 'local_navigatr'));
-$PAGE->set_heading($course->fullname . ' - ' . get_string('pluginname', 'local_navigatr'));
+$PAGE->set_title(get_string('select_provider', 'local_navigatr'));
+$PAGE->set_heading($course->fullname . ' - ' . get_string('select_provider', 'local_navigatr'));
 
 // Handle AJAX requests
 if (optional_param('action', '', PARAM_ALPHA) === 'getbadges') {
@@ -49,35 +50,21 @@ if (optional_param('action', '', PARAM_ALPHA) === 'getbadges') {
 }
 
 // Create form
-$form = new \local_navigatr\form\course_settings_form(null, ['courseid' => $courseid]);
+$form = new \local_navigatr\form\provider_selection_form(null, ['courseid' => $courseid]);
 
 if ($form->is_cancelled()) {
     redirect(new moodle_url('/course/view.php', ['id' => $courseid]));
 }
 
 if ($data = $form->get_data()) {
-    // Save mapping
-    global $DB;
-    
-    $mapping = (object) [
-        'courseid' => $courseid,
-        'provider_id' => $data->provider_id,
-        'badge_id' => $data->badge_id,
-        'badge_name' => $data->badge_name ?? '',
-        'badge_image_url' => $data->badge_image_url ?? '',
-        'timemodified' => time(),
-    ];
-    
-    $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
-    if ($existing) {
-        $mapping->id = $existing->id;
-        $DB->update_record('local_navigatr_map', $mapping);
-    } else {
-        $DB->insert_record('local_navigatr_map', $mapping);
+    // Check if provider was selected
+    if (isset($data->select_provider) && !empty($data->provider_id)) {
+        // Redirect to badge selection page
+        redirect(new \moodle_url('/local/navigatr/badge_selection.php', [
+            'id' => $courseid,
+            'provider_id' => $data->provider_id
+        ]));
     }
-    
-    \core\notification::success(get_string('mapping_saved', 'local_navigatr'));
-    redirect(new moodle_url('/course/view.php', ['id' => $courseid]));
 }
 
 echo $OUTPUT->header();
