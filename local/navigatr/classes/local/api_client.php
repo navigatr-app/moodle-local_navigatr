@@ -59,9 +59,10 @@ class api_client {
      * @param string $path API path
      * @param mixed $data JSON data to send
      * @param array $headers Additional headers
+     * @param bool $require_auth Whether to include Bearer token (default: true)
      * @return object Response object with ok, code, body properties
      */
-    private function make_request($method, $path, $data = null, $headers = []) {
+    private function make_request($method, $path, $data = null, $headers = [], $require_auth = true) {
         $url = $this->baseurl . '/' . ltrim($path, '/');
         
         
@@ -74,6 +75,34 @@ class api_client {
             $json_data = json_encode($data);
         }
 
+        // Build headers
+        $http_headers = [
+            'Accept: application/json',
+            'Content-Type: application/json',
+            'User-Agent: Moodle-Navigatr-Plugin/1.0',
+        ];
+
+        // Add Bearer token if authentication is required
+        if ($require_auth) {
+            try {
+                $token = token_manager::get_access_token();
+                $http_headers[] = 'Authorization: Bearer ' . $token;
+            } catch (\moodle_exception $e) {
+                // If token retrieval fails, return error response
+                return (object) [
+                    'ok' => false,
+                    'code' => 401,
+                    'body' => ['error' => 'Authentication failed: ' . $e->getMessage()],
+                    'error' => 'Authentication failed',
+                ];
+            }
+        }
+
+        // Add any custom headers
+        foreach ($headers as $header) {
+            $http_headers[] = $header;
+        }
+
         // Set cURL options
         $curloptions = [
             'CURLOPT_TIMEOUT' => $this->timeout,
@@ -81,27 +110,19 @@ class api_client {
             'CURLOPT_FOLLOWLOCATION' => true,
             'CURLOPT_SSL_VERIFYPEER' => true,
             'CURLOPT_SSL_VERIFYHOST' => 2,
-            'CURLOPT_HTTPHEADER' => [
-                'Accept: application/json',
-                'Content-Type: application/x-www-form-urlencoded', // Changed from application/json
-                'User-Agent: Moodle-Navigatr-Plugin/1.0',
-            ],
+            'CURLOPT_HTTPHEADER' => $http_headers,
         ];
 
         $response = false;
-        if ($method === 'POST' && $data !== null) {
-            // Convert array to form-encoded string
-            $form_data = http_build_query($data);
-            $response = $curl->post($url, $form_data, $curloptions);
-        } elseif ($method === 'POST') {
-            $response = $curl->post($url, $data, $curloptions);
+        if ($method === 'POST') {
+            $response = $curl->post($url, $json_data, $curloptions);
         } elseif ($method === 'PUT') {
-            $response = $curl->put($url, $data, $curloptions);
+            $response = $curl->put($url, $json_data, $curloptions);
         } elseif ($method === 'GET') {
             $response = $curl->get($url, null, $curloptions);
         } else {
-            $curloptions['CURLOPT_CUSTOMREQUEST'] = strtoupper($method);
-            $response = $curl->post($url, $data, $curloptions);
+            # Raise an error
+            throw new \moodle_exception('Invalid method: ' . $method);
         }
         
         // Get response info
@@ -113,6 +134,127 @@ class api_client {
             $httpcode = $httpcode['http_code'];
         }
         
+
+        // Parse response
+        $body = null;
+        if ($response !== false) {
+            $body = json_decode($response, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $body = $response; // Return raw response if JSON decode fails
+            }
+        }
+
+        return (object) [
+            'ok' => $error === 0 && $httpcode >= 200 && $httpcode < 300,
+            'code' => $httpcode,
+            'body' => $body,
+            'error' => $error !== 0 ? $curl->error : null,
+        ];
+    }
+
+    /**
+     * Get authentication token using form-encoded data
+     *
+     * @param string $username Navigatr username
+     * @param string $password Navigatr password
+     * @return object Response object
+     */
+    public function get_token($username, $password) {
+        $url = $this->baseurl . '/token';
+        
+        $curl = new \curl();
+        
+        // Set cURL options for form-encoded data
+        $curloptions = [
+            'CURLOPT_TIMEOUT' => $this->timeout,
+            'CURLOPT_RETURNTRANSFER' => true,
+            'CURLOPT_FOLLOWLOCATION' => true,
+            'CURLOPT_SSL_VERIFYPEER' => true,
+            'CURLOPT_SSL_VERIFYHOST' => 2,
+            'CURLOPT_HTTPHEADER' => [
+                'Accept: application/json',
+                'Content-Type: application/x-www-form-urlencoded',
+                'User-Agent: Moodle-Navigatr-Plugin/1.0',
+            ],
+        ];
+
+        // Prepare form-encoded data
+        $form_data = http_build_query([
+            'username' => $username,
+            'password' => $password,
+        ]);
+
+        // Make POST request with form data (no auth required for token endpoint)
+        $response = $curl->post($url, $form_data, $curloptions);
+        
+        // Get response info
+        $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
+        $error = $curl->get_errno();
+        
+        // Handle array response from get_info
+        if (is_array($httpcode) && isset($httpcode['http_code'])) {
+            $httpcode = $httpcode['http_code'];
+        }
+
+        // Parse response
+        $body = null;
+        if ($response !== false) {
+            $body = json_decode($response, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                $body = $response; // Return raw response if JSON decode fails
+            }
+        }
+
+        return (object) [
+            'ok' => $error === 0 && $httpcode >= 200 && $httpcode < 300,
+            'code' => $httpcode,
+            'body' => $body,
+            'error' => $error !== 0 ? $curl->error : null,
+        ];
+    }
+
+    /**
+     * Refresh authentication token using refresh token
+     *
+     * @param string $refresh_token Navigatr refresh token
+     * @return object Response object
+     */
+    public function refresh_token($refresh_token) {
+        $url = $this->baseurl . '/token';
+        
+        $curl = new \curl();
+        
+        // Set cURL options for form-encoded data
+        $curloptions = [
+            'CURLOPT_TIMEOUT' => $this->timeout,
+            'CURLOPT_RETURNTRANSFER' => true,
+            'CURLOPT_FOLLOWLOCATION' => true,
+            'CURLOPT_SSL_VERIFYPEER' => true,
+            'CURLOPT_SSL_VERIFYHOST' => 2,
+            'CURLOPT_HTTPHEADER' => [
+                'Accept: application/json',
+                'Content-Type: application/x-www-form-urlencoded',
+                'User-Agent: Moodle-Navigatr-Plugin/1.0',
+            ],
+        ];
+
+        // Prepare form-encoded data for refresh
+        $form_data = http_build_query([
+            'grant_type' => 'refresh_token',
+            'refresh_token' => $refresh_token,
+        ]);
+
+        // Make POST request with form data
+        $response = $curl->post($url, $form_data, $curloptions);
+        
+        // Get response info
+        $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
+        $error = $curl->get_errno();
+        
+        // Handle array response from get_info
+        if (is_array($httpcode) && isset($httpcode['http_code'])) {
+            $httpcode = $httpcode['http_code'];
+        }
 
         // Parse response
         $body = null;
@@ -150,15 +292,23 @@ class api_client {
         $baseurl = $baseurls[$environment] ?? $baseurls['production'];
         $timeout = 30;
         
-        
         // Create API client
         $client = new self($baseurl, $timeout);
         
-        // Authenticate
-        $authresponse = $client->post('/token', [
-            'username' => $username,
-            'password' => $password,
-        ]);
+        // Authenticate using form-encoded data
+        $authresponse = $client->get_token($username, $password);
+
+        // If authentication successful, store tokens for future use
+        if ($authresponse->ok && isset($authresponse->body['access_token'])) {
+            // Store tokens temporarily for this test
+            set_config('access_token', $authresponse->body['access_token'], 'local_navigatr');
+            set_config('access_expires_at', time() + 300, 'local_navigatr'); // 5 minutes
+            
+            if (isset($authresponse->body['refresh_token'])) {
+                set_config('refresh_token', $authresponse->body['refresh_token'], 'local_navigatr');
+                set_config('refresh_expires_at', time() + 86400, 'local_navigatr'); // 1 day
+            }
+        }
 
         return $authresponse;
     }

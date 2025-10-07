@@ -114,10 +114,7 @@ class token_manager {
 
         try {
             $client = new api_client($baseurl, $timeout);
-            $response = $client->post('/token', [
-                'grant_type' => 'refresh_token',
-                'refresh_token' => $refreshtoken,
-            ]);
+            $response = $client->refresh_token($refreshtoken);
 
             if ($response->ok) {
                 self::store_tokens($response->body);
@@ -154,10 +151,7 @@ class token_manager {
         $baseurl = $baseurls[$env] ?? $baseurls['prod'];
 
         $client = new api_client($baseurl, $timeout);
-        $response = $client->post('/v1/token', [
-            'username' => $username,
-            'password' => $password,
-        ]);
+        $response = $client->get_token($username, $password);
 
         if (!$response->ok) {
             throw new \moodle_exception('auth_failed', 'local_navigatr');
