@@ -26,7 +26,14 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 require_once($CFG->dirroot . '/local/navigatr/classes/form/provider_selection_form.php');
 
-$courseid = required_param('id', PARAM_INT);
+// Get course ID from URL parameter or form data
+$courseid = optional_param('id', 0, PARAM_INT);
+
+// Validate course ID
+if (empty($courseid)) {
+    throw new \moodle_exception('missingparam', 'error', '', 'id');
+}
+
 $course = get_course($courseid);
 $context = context_course::instance($courseid);
 

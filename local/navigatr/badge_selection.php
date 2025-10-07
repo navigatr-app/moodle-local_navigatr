@@ -25,8 +25,16 @@
 require_once('../../config.php');
 require_once($CFG->dirroot . '/local/navigatr/classes/form/badge_selection_form.php');
 
-// Get course ID
-$courseid = required_param('id', PARAM_INT);
+// Get course ID from URL parameter or form data
+$courseid = optional_param('id', 0, PARAM_INT);
+if (empty($courseid)) {
+    // Try to get from form data
+    $courseid = optional_param('courseid', 0, PARAM_INT);
+}
+if (empty($courseid)) {
+    throw new \moodle_exception('missingparam', 'error', '', 'id');
+}
+
 $provider_id = required_param('provider_id', PARAM_INT);
 
 // Get course
@@ -88,7 +96,6 @@ if ($form->is_cancelled()) {
         $DB->insert_record('local_navigatr_map', $mapping);
     }
     
-    \core\notification::success(get_string('mapping_saved', 'local_navigatr'));
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
 }
 
@@ -96,12 +103,10 @@ if ($form->is_cancelled()) {
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('select_badge', 'local_navigatr'));
 
-// Show breadcrumb
-echo $OUTPUT->breadcrumb([
-    ['name' => $course->shortname, 'link' => new \moodle_url('/course/view.php', ['id' => $courseid])],
-    ['name' => get_string('navigatr_settings', 'local_navigatr'), 'link' => new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid])],
-    ['name' => get_string('select_badge', 'local_navigatr'), 'link' => null]
-]);
+// Show navigation breadcrumb
+$PAGE->navbar->add($course->shortname, new \moodle_url('/course/view.php', ['id' => $courseid]));
+$PAGE->navbar->add(get_string('navigatr_settings', 'local_navigatr'), new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
+$PAGE->navbar->add(get_string('select_badge', 'local_navigatr'));
 
 $form->display();
 

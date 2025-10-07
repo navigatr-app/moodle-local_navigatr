@@ -61,8 +61,13 @@ class badge_selection_form extends \moodleform {
         $badges = $this->get_badges($provider_id);
         $badgeoptions = ['' => get_string('select_badge', 'local_navigatr')];
         
-        foreach ($badges as $badge) {
-            $badgeoptions[$badge['id']] = $badge['name'];
+        // Ensure badges is an array before iterating
+        if (is_array($badges)) {
+            foreach ($badges as $badge) {
+                if (isset($badge['id']) && isset($badge['name'])) {
+                    $badgeoptions[$badge['id']] = $badge['name'];
+                }
+            }
         }
 
         $mform->addElement('select', 'badge_id', get_string('badge', 'local_navigatr'), $badgeoptions);
@@ -83,63 +88,29 @@ class badge_selection_form extends \moodleform {
      * @return array Badges array
      */
     private function get_badges($providerid) {
-        debugging("NAVIGATR DEBUG: get_badges() called with providerid: " . $providerid, DEBUG_NORMAL);
-        
         try {
             // Check cache first
-            debugging("NAVIGATR DEBUG: Checking cache for providerid: " . $providerid, DEBUG_NORMAL);
             $cached = \local_navigatr\local\cache::get_badges($providerid, 1, 50);
-            if ($cached !== null) {
-                debugging("NAVIGATR DEBUG: Found cached badges: " . (is_array($cached) ? count($cached) : 'not array') . " items", DEBUG_NORMAL);
+            if ($cached !== null && $cached !== false && is_array($cached)) {
                 return $cached;
             }
-            debugging("NAVIGATR DEBUG: No cached badges found, fetching from API", DEBUG_NORMAL);
 
             // Fetch from API
-            debugging("NAVIGATR DEBUG: Creating API client", DEBUG_NORMAL);
             $client = new \local_navigatr\local\api_client();
-            
             $api_path = "/badge?provider_id={$providerid}&status=Published&source=Internal&page=1&size=50";
-            debugging("NAVIGATR DEBUG: Making API call to: " . $api_path, DEBUG_NORMAL);
-            
             $response = $client->get($api_path);
-            
-            debugging("NAVIGATR DEBUG: API response received", DEBUG_NORMAL);
-            debugging("NAVIGATR DEBUG: Response OK: " . ($response->ok ? 'YES' : 'NO'), DEBUG_NORMAL);
-            debugging("NAVIGATR DEBUG: Response code: " . $response->code, DEBUG_NORMAL);
-            debugging("NAVIGATR DEBUG: Response body type: " . gettype($response->body), DEBUG_NORMAL);
-            
-            if ($response->body !== null) {
-                debugging("NAVIGATR DEBUG: Response body keys: " . implode(', ', array_keys($response->body)), DEBUG_NORMAL);
-                if (isset($response->body['items'])) {
-                    debugging("NAVIGATR DEBUG: Found " . count($response->body['items']) . " badges in response", DEBUG_NORMAL);
-                } else {
-                    debugging("NAVIGATR DEBUG: No items key in response", DEBUG_NORMAL);
-                }
-                debugging("NAVIGATR DEBUG: Response body: " . json_encode($response->body), DEBUG_NORMAL);
-            } else {
-                debugging("NAVIGATR DEBUG: Response body is NULL", DEBUG_NORMAL);
-            }
 
             if ($response->ok && isset($response->body['items']) && is_array($response->body['items'])) {
-                debugging("NAVIGATR DEBUG: Response is OK and contains badges", DEBUG_NORMAL);
                 $badges = $response->body['items'];
                 \local_navigatr\local\cache::set_badges($providerid, 1, 50, $badges);
-                debugging("NAVIGATR DEBUG: Cached " . count($badges) . " badges", DEBUG_NORMAL);
                 return $badges;
-            } else {
-                debugging("NAVIGATR DEBUG: Response not OK or missing items", DEBUG_NORMAL);
-                if (!$response->ok) {
-                    debugging("NAVIGATR DEBUG: Response error: " . ($response->error ?? 'Unknown error'), DEBUG_NORMAL);
-                }
             }
 
-            debugging("NAVIGATR DEBUG: Returning empty array", DEBUG_NORMAL);
             return [];
 
         } catch (\Exception $e) {
-            debugging("NAVIGATR DEBUG: Exception in get_badges: " . $e->getMessage(), DEBUG_NORMAL);
-            debugging("NAVIGATR DEBUG: Exception trace: " . $e->getTraceAsString(), DEBUG_NORMAL);
+            // Log error but don't output to page
+            error_log("NAVIGATR: Exception in get_badges: " . $e->getMessage());
             return [];
         }
     }

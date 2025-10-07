@@ -24,10 +24,5 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$tasks = [
-    [
-        'classname' => '\local_navigatr\task\issue_badge_task',
-        'blocking' => 0,
-        'disabled' => 1
-    ]
-];
+// No scheduled tasks defined - this plugin uses adhoc tasks only
+$tasks = [];

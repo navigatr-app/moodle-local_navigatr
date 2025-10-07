@@ -77,3 +77,4 @@ $string['privacy:metadata:navigatr:purpose'] = 'Issue a digital badge upon cours
 $string['select_provider_continue'] = 'Continue to Select Badge';
 $string['select_badge_continue'] = 'Save Mapping';
 $string['selected_provider'] = 'Selected Provider';
+$string['navigatr_settings'] = 'Navigatr Settings';

@@ -38,32 +38,22 @@ class token_manager {
      * @throws \moodle_exception If authentication fails
      */
     public static function get_access_token() {
-        debugging("NAVIGATR DEBUG: get_access_token() called", DEBUG_NORMAL);
-        
         $accesstoken = get_config('local_navigatr', 'access_token');
         $expiresat = get_config('local_navigatr', 'access_expires_at');
-        
-        debugging("NAVIGATR DEBUG: Current token: " . ($accesstoken ? substr($accesstoken, 0, 20) . "..." : 'EMPTY'), DEBUG_NORMAL);
-        debugging("NAVIGATR DEBUG: Token expires at: " . ($expiresat ?: 'EMPTY'), DEBUG_NORMAL);
-        debugging("NAVIGATR DEBUG: Current time: " . time(), DEBUG_NORMAL);
 
         // Check if token is still valid (with 60 second buffer)
         if (!empty($accesstoken) && !empty($expiresat) && time() < ($expiresat - 60)) {
-            debugging("NAVIGATR DEBUG: Token is still valid, returning cached token", DEBUG_NORMAL);
             return $accesstoken;
         }
 
-        debugging("NAVIGATR DEBUG: Token expired or missing, need to refresh/re-authenticate", DEBUG_NORMAL);
         // Token expired or missing, need to refresh/re-authenticate
         self::refresh_or_reauth_with_lock();
         
         $accesstoken = get_config('local_navigatr', 'access_token');
         if (empty($accesstoken)) {
-            debugging("NAVIGATR DEBUG: Failed to get access token after refresh/reauth", DEBUG_NORMAL);
             throw new \moodle_exception('auth_failed', 'local_navigatr');
         }
 
-        debugging("NAVIGATR DEBUG: Successfully retrieved new token: " . substr($accesstoken, 0, 20) . "...", DEBUG_NORMAL);
         return $accesstoken;
     }
 
@@ -134,34 +124,19 @@ class token_manager {
      * @throws \moodle_exception If authentication fails
      */
     private static function reauth() {
-        debugging("NAVIGATR DEBUG: reauth() called", DEBUG_NORMAL);
-        
         $username = get_config('local_navigatr', 'username');
         $password = get_config('local_navigatr', 'password');
-        
-        debugging("NAVIGATR DEBUG: Retrieved username: " . ($username ?: 'EMPTY'), DEBUG_NORMAL);
-        debugging("NAVIGATR DEBUG: Retrieved password: " . ($password ? 'SET' : 'EMPTY'), DEBUG_NORMAL);
 
         if (empty($username) || empty($password)) {
-            debugging("NAVIGATR DEBUG: Username or password is empty, throwing auth_failed", DEBUG_NORMAL);
             throw new \moodle_exception('auth_failed', 'local_navigatr');
         }
 
-        debugging("NAVIGATR DEBUG: Creating API client for reauth", DEBUG_NORMAL);
         $client = new api_client();
-        
-        debugging("NAVIGATR DEBUG: Calling get_token with credentials", DEBUG_NORMAL);
         $response = $client->get_token($username, $password);
-        
-        debugging("NAVIGATR DEBUG: get_token response OK: " . ($response->ok ? 'YES' : 'NO'), DEBUG_NORMAL);
-        debugging("NAVIGATR DEBUG: get_token response code: " . $response->code, DEBUG_NORMAL);
 
         if (!$response->ok) {
-            debugging("NAVIGATR DEBUG: get_token failed, throwing auth_failed", DEBUG_NORMAL);
             throw new \moodle_exception('auth_failed', 'local_navigatr');
         }
-        
-        debugging("NAVIGATR DEBUG: get_token successful, storing tokens", DEBUG_NORMAL);
 
         // Decode JWT to get user ID
         $idtoken = $response->body['id_token'] ?? '';
