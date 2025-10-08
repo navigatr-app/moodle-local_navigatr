@@ -217,6 +217,59 @@ moodle-plugin-ci phpunit
 - All API communications use HTTPS
 - User PII is only sent to Navigatr for badge issuance
 
+## Versioning
+
+This plugin follows semantic versioning principles. Each version release creates a new branch in the repository:
+
+- **Main branch**: Contains the latest stable release
+- **Version branches**: Each version (e.g., `v1.0.0`, `v1.1.0`) has its own branch
+- **Development**: New features and fixes are developed in the `develop` branch
+- **Release process**: New versions are tagged and branched from the main branch
+
+## Contributing
+
+We welcome contributions to improve this plugin! Here's how you can help:
+
+### Reporting Issues
+
+If you encounter any problems with this plugin:
+
+1. **Create a GitHub Issue**: Please create a detailed issue on our GitHub repository
+2. **Include Information**:
+   - Moodle version
+   - Plugin version
+   - Error messages from logs
+   - Steps to reproduce the issue
+3. **Check Existing Issues**: Search existing issues before creating a new one
+
+### Contributing Code
+
+If you'd like to contribute code improvements:
+
+1. **Fork the Repository**: Create your own fork of the repository
+2. **Create a Pull Request**: Submit your changes via a pull request
+3. **Code Review**: All pull requests will be reviewed by the Navigatr team
+4. **Merge Process**: Approved contributions will be merged by the Navigatr team
+
+### Development Guidelines
+
+- Follow Moodle coding standards
+- Include appropriate tests for new features
+- Update documentation for any changes
+- Ensure backwards compatibility where possible
+
+## Need help with using Navigatr?
+
+For general Navigatr platform questions, badge creation, account management, and other Navigatr-related topics, please visit the [Navigatr Help Centre](https://help.navigatr.app/).
+
+The Help Centre contains comprehensive guides on:
+
+- Creating and managing badges
+- Setting up your Navigatr account
+- Badge design and customisation
+- Sharing badges on LinkedIn and other platforms
+- Account settings and profile management
+
 ## Support
 
 For issues related to:
