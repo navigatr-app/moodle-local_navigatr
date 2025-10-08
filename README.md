@@ -38,9 +38,8 @@ Navigate to **Site Administration → Plugins → Local plugins → Navigatr** t
 - **Save Changes**: After saving your changes you are ready to configure your course mappings.
 
 ![Admin Settings Page](images/plugin-settings.png)
-*Configure Navigatr credentials and connection settings*
 
-You can remove connection by clicking the "Remove Connection" button (red button with trash icon) that appears when credentials are configured. But be careful before removing the connection, because this will clear your stored username, password, and authentication tokens, and it will disable your existing course mappings.
+You can remove connection by clicking the "Remove Connection" button (red button with trash icon) that appears when credentials are configured. But be careful before removing the connection, because this will clear your stored username, password, and authentication tokens, and it will disable existing badge mappings on your courses.
 
 ### Course Badge Mapping
 
@@ -48,21 +47,22 @@ For each course where you want to issue badges on completion:
 
 1. Go to the course
 2. Navigate to **Course settings → Navigatr Badge**
-3. Select a provider from the dropdown
-4. Choose a badge from the provider's available badges
-5. Save the mapping
 
 ![Course Settings Menu](images/course-settings-menu.png)
-*Navigate to "Navigatr Badge" in the course settings menu*
+
+3. Select a provider from the dropdown
 
 ![Provider Selection](images/provider-selection.png)
-*Select a your Navigatr provider that you would like to issue the badge from*
+
+4. Choose a badge from the provider's available badges
 
 ![Badge Selection](images/badge-selection.png)
-*Choose a specific badge from the provider's badge collection*
+
+5. Save the badge mapping. Removing the badge mapping stops future issuances but preserves existing badges.*
 
 ![Current Badge Mapping](images/current-mapping.png)
-*View current badge mapping with badge image and management options. Removing the badge stops future issuances but preserves existing badges.*
+
+
 
 ## API Endpoints
 
