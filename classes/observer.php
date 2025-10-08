@@ -39,9 +39,8 @@ class observer {
     public static function course_completed(\core\event\course_completed $event) {
         global $DB;
 
-        // Debug: Log that observer was called
-        error_log("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->relateduserid}");
-        file_put_contents('/tmp/navigatr_observer_debug.txt', "Observer called for course {$event->courseid}, user {$event->relateduserid} at " . date('Y-m-d H:i:s') . "\n", FILE_APPEND);
+        // Debug: Log that observer was called using Moodle's debugging system
+        debugging("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->relateduserid}", DEBUG_DEVELOPER);
 
         $courseid = $event->courseid;
         $userid = $event->relateduserid;

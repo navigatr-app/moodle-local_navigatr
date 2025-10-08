@@ -59,9 +59,9 @@ if ($data && confirm_sesskey()) {
             // Build detailed error message
             $errormsg = 'Connection failed';
             if (!empty($result->error)) {
-                $errormsg .= ': ' . $result->error;
+                $errormsg .= ': ' . s($result->error);
             } elseif (!empty($result->body) && is_array($result->body) && isset($result->body['error'])) {
-                $errormsg .= ': ' . $result->body['error'];
+                $errormsg .= ': ' . s($result->body['error']);
             } elseif ($result->code > 0) {
                 $errormsg .= ' (HTTP ' . $result->code . ')';
             } else {
