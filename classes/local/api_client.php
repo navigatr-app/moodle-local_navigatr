@@ -52,7 +52,6 @@ class api_client {
         $baseurls = [
             'prod' => 'https://api.navigatr.app/v1',
             'staging' => 'https://stagapi.navigatr.app/v1',
-            'dev' => 'http://127.0.0.1:5000/v1',
         ];
         
         return $baseurls[$env] ?? $baseurls['prod'];
@@ -295,7 +294,7 @@ class api_client {
      *
      * @param string $username Navigatr username
      * @param string $password Navigatr password
-     * @param string $environment Environment (development, staging, production)
+     * @param string $environment Environment (staging, production)
      * @return object Response object
      */
     public static function test_connection($username, $password, $environment = 'production') {

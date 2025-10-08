@@ -8,7 +8,7 @@ This plugin integrates Moodle with the Navigatr badge platform, providing:
 
 - **Automatic Badge Issuance**: Issues badges automatically when learners complete courses
 - **Course-to-Badge Mapping**: One-to-one mapping between courses and badges
-- **Multi-Environment Support**: Production, staging, and development environments
+- **Multi-Environment Support**: Production and staging environments
 - **GDPR Compliance**: Full privacy API implementation
 - **Audit Trail**: Complete logging of badge issuance attempts
 
@@ -30,7 +30,7 @@ This plugin integrates Moodle with the Navigatr badge platform, providing:
 
 Navigate to **Site Administration → Plugins → Local plugins → Navigatr** to configure:
 
-- **Environment**: Choose between Production, Staging, or Development
+- **Environment**: Choose between Production or Staging
 - **Credentials**: Enter your Navigatr username and password
 - **Advanced Settings**: HTTP timeout and logging level
 
@@ -70,7 +70,6 @@ The plugin integrates with the following Navigatr API endpoints:
 |-------------|----------|
 | Production | [https://api.navigatr.app/v1/](https://api.navigatr.app/v1/) |
 | Staging | [https://stagapi.navigatr.app/v1/](https://stagapi.navigatr.app/v1/) |
-| Development | [http://127.0.0.1:5000/v1/](http://127.0.0.1:5000/v1/) |
 
 ## Database Schema
 
@@ -175,7 +174,7 @@ moodle-plugin-ci phpunit
 
 - Passwords are stored encrypted in Moodle's config
 - Access tokens are never logged
-- All API communications use HTTPS (except development)
+- All API communications use HTTPS
 - User PII is only sent to Navigatr for badge issuance
 
 ## Support

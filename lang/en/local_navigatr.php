@@ -29,7 +29,6 @@ $string['environment'] = 'Environment';
 $string['environment_help'] = 'Select the Navigatr environment to use for API calls';
 $string['environment_prod'] = 'Production';
 $string['environment_staging'] = 'Staging';
-$string['environment_dev'] = 'Development';
 $string['username'] = 'Navigatr Username';
 $string['password'] = 'Navigatr Password';
 $string['timeout'] = 'HTTP Timeout (seconds)';

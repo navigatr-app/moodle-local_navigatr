@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Automatic badge issuance on course completion
 - Site-level Navigatr API configuration
 - Course-level provider and badge mapping
-- Multi-environment support (production, staging, development)
+- Multi-environment support (production, staging)
 - Token management with automatic refresh
 - Caching for providers and badges
 - Complete audit trail for badge issuance

@@ -43,7 +43,6 @@ class admin_settings_form extends \moodleform {
         $mform->addElement('select', 'env', get_string('environment', 'local_navigatr'), [
             'prod' => get_string('environment_prod', 'local_navigatr'),
             'staging' => get_string('environment_staging', 'local_navigatr'),
-            'dev' => get_string('environment_dev', 'local_navigatr'),
         ]);
         $mform->setType('env', PARAM_ALPHA);
         $mform->setDefault('env', get_config('local_navigatr', 'env') ?: 'prod');
