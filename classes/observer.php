@@ -40,13 +40,13 @@ class observer {
         global $DB;
 
         // Debug: Log that observer was called using Moodle's debugging system
-        debugging("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->relateduserid}", DEBUG_DEVELOPER);
+        debugging("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->userid}", DEBUG_DEVELOPER);
         
         // Also log to a file for easier debugging
-        error_log("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->relateduserid}");
+        error_log("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->userid}");
 
         $courseid = $event->courseid;
-        $userid = $event->relateduserid;
+        $userid = $event->userid;
 
         // Check if there's a mapping for this course
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
