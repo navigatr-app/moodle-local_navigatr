@@ -47,14 +47,14 @@ class api_client {
      * @return string Base URL for Navigatr API
      */
     public static function get_base_url() {
-        $env = get_config('local_navigatr', 'env') ?: 'prod';
+        $env = get_config('local_navigatr', 'env') ?: 'production';
         
         $baseurls = [
-            'prod' => 'https://api.navigatr.app/v1',
+            'production' => 'https://api.navigatr.app/v1',
             'staging' => 'https://stagapi.navigatr.app/v1',
         ];
         
-        return $baseurls[$env] ?? $baseurls['prod'];
+        return $baseurls[$env] ?? $baseurls['production'];
     }
 
     /**
@@ -144,27 +144,34 @@ class api_client {
         // Get response info
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
+        $curlerror = $curl->error;
         
-        // Handle array response from get_info
+        // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
+        } elseif ($httpcode === false || $httpcode === null) {
+            $httpcode = 0; // Network error
         }
         
-
+        // Check for cURL errors
+        $haserror = $error !== 0 || !empty($curlerror);
+        
         // Parse response
         $body = null;
-        if ($response !== false) {
+        if ($response !== false && !$haserror) {
             $body = json_decode($response, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $body = $response; // Return raw response if JSON decode fails
             }
+        } elseif ($haserror) {
+            $body = ['error' => $curlerror ?: 'Network error'];
         }
 
         return (object) [
-            'ok' => $error === 0 && $httpcode >= 200 && $httpcode < 300,
+            'ok' => !$haserror && $httpcode >= 200 && $httpcode < 300,
             'code' => $httpcode,
             'body' => $body,
-            'error' => $error !== 0 ? $curl->error : null,
+            'error' => $haserror ? ($curlerror ?: 'Network error') : null,
         ];
     }
 
@@ -206,26 +213,34 @@ class api_client {
         // Get response info
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
+        $curlerror = $curl->error;
         
-        // Handle array response from get_info
+        // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
+        } elseif ($httpcode === false || $httpcode === null) {
+            $httpcode = 0; // Network error
         }
-
+        
+        // Check for cURL errors
+        $haserror = $error !== 0 || !empty($curlerror);
+        
         // Parse response
         $body = null;
-        if ($response !== false) {
+        if ($response !== false && !$haserror) {
             $body = json_decode($response, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $body = $response; // Return raw response if JSON decode fails
             }
+        } elseif ($haserror) {
+            $body = ['error' => $curlerror ?: 'Network error'];
         }
 
         return (object) [
-            'ok' => $error === 0 && $httpcode >= 200 && $httpcode < 300,
+            'ok' => !$haserror && $httpcode >= 200 && $httpcode < 300,
             'code' => $httpcode,
             'body' => $body,
-            'error' => $error !== 0 ? $curl->error : null,
+            'error' => $haserror ? ($curlerror ?: 'Network error') : null,
         ];
     }
 
@@ -266,26 +281,34 @@ class api_client {
         // Get response info
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
+        $curlerror = $curl->error;
         
-        // Handle array response from get_info
+        // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
+        } elseif ($httpcode === false || $httpcode === null) {
+            $httpcode = 0; // Network error
         }
-
+        
+        // Check for cURL errors
+        $haserror = $error !== 0 || !empty($curlerror);
+        
         // Parse response
         $body = null;
-        if ($response !== false) {
+        if ($response !== false && !$haserror) {
             $body = json_decode($response, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $body = $response; // Return raw response if JSON decode fails
             }
+        } elseif ($haserror) {
+            $body = ['error' => $curlerror ?: 'Network error'];
         }
 
         return (object) [
-            'ok' => $error === 0 && $httpcode >= 200 && $httpcode < 300,
+            'ok' => !$haserror && $httpcode >= 200 && $httpcode < 300,
             'code' => $httpcode,
             'body' => $body,
-            'error' => $error !== 0 ? $curl->error : null,
+            'error' => $haserror ? ($curlerror ?: 'Network error') : null,
         ];
     }
 
@@ -298,15 +321,28 @@ class api_client {
      * @return object Response object
      */
     public static function test_connection($username, $password, $environment = 'production') {
+        // Enable debug logging for connection test
+        $debuglevel = get_config('local_navigatr', 'loglevel') ?: 'error';
+        $debugenabled = in_array($debuglevel, ['info', 'debug']);
+        
+        if ($debugenabled) {
+            debugging("Testing connection to {$environment} environment", DEBUG_DEVELOPER);
+        }
         // Temporarily set environment for this test
         $original_env = get_config('local_navigatr', 'env');
-        set_config('env', $environment === 'production' ? 'prod' : $environment, 'local_navigatr');
+        set_config('env', $environment, 'local_navigatr');
         
         // Create API client (will use the environment we just set)
         $client = new self();
         
         // Authenticate using form-encoded data
         $authresponse = $client->get_token($username, $password);
+        
+        if ($debugenabled) {
+            debugging("Auth response - OK: " . ($authresponse->ok ? 'true' : 'false') . 
+                     ", Code: " . $authresponse->code . 
+                     ", Error: " . ($authresponse->error ?? 'none'), DEBUG_DEVELOPER);
+        }
 
         // If authentication successful, store tokens for future use
         if ($authresponse->ok && isset($authresponse->body['access_token'])) {
@@ -317,6 +353,10 @@ class api_client {
             if (isset($authresponse->body['refresh_token'])) {
                 set_config('refresh_token', $authresponse->body['refresh_token'], 'local_navigatr');
                 set_config('refresh_expires_at', time() + 86400, 'local_navigatr'); // 1 day
+            }
+            
+            if ($debugenabled) {
+                debugging("Tokens stored successfully", DEBUG_DEVELOPER);
             }
         }
 

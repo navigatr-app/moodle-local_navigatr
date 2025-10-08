@@ -39,30 +39,29 @@ class admin_settings_form extends \moodleform {
     public function definition() {
         $mform = $this->_form;
 
-        // Environment selection
-        $mform->addElement('select', 'env', get_string('environment', 'local_navigatr'), [
-            'prod' => get_string('environment_prod', 'local_navigatr'),
-            'staging' => get_string('environment_staging', 'local_navigatr'),
-        ]);
-        $mform->setType('env', PARAM_ALPHA);
-        $mform->setDefault('env', get_config('local_navigatr', 'env') ?: 'prod');
-
         // Credentials
         $mform->addElement('text', 'username', get_string('username', 'local_navigatr'));
         $mform->setType('username', PARAM_TEXT);
-        $mform->setDefault('username', get_config('local_navigatr', 'username'));
+        $stored_username = get_config('local_navigatr', 'username');
+        if (!empty($stored_username)) {
+            $mform->setDefault('username', $stored_username);
+        }
         $mform->addRule('username', get_string('required'), 'required', null, 'client');
 
         $mform->addElement('passwordunmask', 'password', get_string('password', 'local_navigatr'));
         $mform->setType('password', PARAM_TEXT);
         $mform->addRule('password', get_string('required'), 'required', null, 'client');
 
+        // Test connection button - moved outside advanced settings for better visibility
+        $mform->addElement('submit', 'testconnection', get_string('test_connection', 'local_navigatr'));
+
         // Advanced settings
         $mform->addElement('header', 'advanced', get_string('advanced_settings', 'local_navigatr'));
 
         $mform->addElement('text', 'timeout', get_string('timeout', 'local_navigatr'));
         $mform->setType('timeout', PARAM_INT);
-        $mform->setDefault('timeout', get_config('local_navigatr', 'timeout') ?: 10);
+        $stored_timeout = get_config('local_navigatr', 'timeout');
+        $mform->setDefault('timeout', $stored_timeout ?: 30);
         $mform->addRule('timeout', get_string('required'), 'required', null, 'client');
 
         $mform->addElement('select', 'loglevel', get_string('loglevel', 'local_navigatr'), [
@@ -73,8 +72,14 @@ class admin_settings_form extends \moodleform {
         $mform->setType('loglevel', PARAM_ALPHA);
         $mform->setDefault('loglevel', get_config('local_navigatr', 'loglevel') ?: 'info');
 
-        // Test connection button
-        $mform->addElement('submit', 'testconnection', get_string('test_connection', 'local_navigatr'));
+        // Environment selection
+        $mform->addElement('select', 'env', get_string('environment', 'local_navigatr'), [
+            'production' => get_string('environment_production', 'local_navigatr'),
+            'staging' => get_string('environment_staging', 'local_navigatr'),
+        ]);
+        $mform->setType('env', PARAM_ALPHA);
+        $stored_env = get_config('local_navigatr', 'env');
+        $mform->setDefault('env', $stored_env ?: 'production');
 
         // Save button
         $this->add_action_buttons(true, get_string('savechanges'));

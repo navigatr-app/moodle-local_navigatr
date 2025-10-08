@@ -39,11 +39,15 @@ class observer {
     public static function course_completed(\core\event\course_completed $event) {
         global $DB;
 
+        // Debug: Log that observer was called
+        error_log("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->relateduserid}");
+        file_put_contents('/tmp/navigatr_observer_debug.txt', "Observer called for course {$event->courseid}, user {$event->relateduserid} at " . date('Y-m-d H:i:s') . "\n", FILE_APPEND);
+
         $courseid = $event->courseid;
         $userid = $event->relateduserid;
 
         // Check if there's a mapping for this course
-        $mapping = $DB->get_record('local_navi_map', ['courseid' => $courseid]);
+        $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
         if (!$mapping) {
             return; // No badge mapping for this course
         }

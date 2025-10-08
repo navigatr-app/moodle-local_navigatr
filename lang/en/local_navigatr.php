@@ -23,11 +23,12 @@
  */
 
 $string['pluginname'] = 'Navigatr';
+$string['menu_name'] = 'Navigatr Badge';
 
 // Admin settings
 $string['environment'] = 'Environment';
 $string['environment_help'] = 'Select the Navigatr environment to use for API calls';
-$string['environment_prod'] = 'Production';
+$string['environment_production'] = 'Production';
 $string['environment_staging'] = 'Staging';
 $string['username'] = 'Navigatr Username';
 $string['password'] = 'Navigatr Password';
@@ -78,4 +79,13 @@ $string['select_badge_continue'] = 'Save Mapping';
 $string['selected_provider'] = 'Selected Provider';
 $string['navigatr_settings'] = 'Navigatr Settings';
 $string['current_mapping'] = 'Current Badge Mapping';
-$string['change_mapping'] = 'Change Mapping';
+$string['change_mapping'] = 'Change Badge';
+$string['view_badge'] = 'View Badge';
+$string['remove_mapping'] = 'Remove Badge';
+$string['remove_mapping_confirm'] = 'Are you sure you want to remove the badge mapping for this course? Removing the badge stops future issuances but preserves existing badges.';
+$string['mapping_removed'] = 'Badge mapping removed successfully';
+$string['provider_admin_notice'] = 'Please ensure that the configured Navigatr user is a provider admin on Navigatr to access and manage badge mappings.';
+$string['provider_config_notice'] = 'Please make sure a site administrator has added your Navigatr username and password in <a href="{$a}">Site Administration → Plugins → Navigatr</a>';
+$string['remove_connection'] = 'Remove Connection';
+$string['remove_connection_confirm'] = 'Are you sure you want to remove the current Navigatr connection? This will clear your stored username and password. All existing badge mappings will be disabled.';
+$string['connection_removed'] = 'Navigatr connection has been removed successfully.';

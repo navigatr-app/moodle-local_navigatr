@@ -80,12 +80,26 @@ class issue_badge_task extends \core\task\adhoc_task {
             // Get API client
             $client = new \local_navigatr\local\api_client();
 
+            // Get course name for evidence text
+            $course = $DB->get_record('course', ['id' => $courseid], 'fullname');
+            $course_name = $course ? $course->fullname : 'Unknown Course';
+
+            // Get course completion score if available
+            $score = $this->get_course_score($userid, $courseid);
+
             // Prepare badge issuance payload
             $payload = [
+                'evidence_text' => "Recipient completed course {$course_name}",
+                'provider_id' => $mapping->provider_id,
                 'recipient_email' => $user->email,
                 'recipient_firstname' => $user->firstname,
-                'recipient_lastname' => $user->lastname,
+                'recipient_lastname' => $user->lastname
             ];
+
+            // Add score to payload only if available
+            if ($score !== null) {
+                $payload['score'] = $score;
+            }
 
             // Issue badge
             $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
@@ -117,6 +131,53 @@ class issue_badge_task extends \core\task\adhoc_task {
     }
 
     /**
+     * Get course score for a user.
+     *
+     * @param int $userid User ID
+     * @param int $courseid Course ID
+     * @return int|null Course score (0-100) or null if not available
+     */
+    private function get_course_score($userid, $courseid) {
+        global $DB;
+
+        // Try to get final grade from gradebook
+        $grade = $DB->get_record_sql(
+            "SELECT gg.finalgrade, gi.grademax 
+             FROM {grade_grades} gg 
+             JOIN {grade_items} gi ON gg.itemid = gi.id 
+             WHERE gg.userid = ? AND gi.courseid = ? AND gi.itemtype = 'course'",
+            [$userid, $courseid]
+        );
+
+        if ($grade && $grade->finalgrade !== null && $grade->grademax > 0) {
+            // Convert to percentage (0-100)
+            $percentage = ($grade->finalgrade / $grade->grademax) * 100;
+            return round($percentage);
+        }
+
+        // Try to get completion percentage if gradebook doesn't have final grade
+        if (class_exists('\core_completion\progress')) {
+            $progress = \core_completion\progress::get_course_progress_percentage($courseid, $userid);
+            if ($progress !== null) {
+                return round($progress);
+            }
+        }
+
+        // Try course completion criteria
+        $completion = $DB->get_record('course_completions', [
+            'userid' => $userid,
+            'course' => $courseid
+        ]);
+
+        if ($completion && $completion->timecompleted) {
+            // If course is completed but no specific score, return 100
+            return 100;
+        }
+
+        return null;
+    }
+
+    /**
      * Write audit record.
      *
      * @param int $userid User ID
@@ -145,6 +206,12 @@ class issue_badge_task extends \core\task\adhoc_task {
         ];
 
         // Use insert_or_update to handle duplicate dedupe_key
-        $DB->insert_or_update_record('local_navigatr_audit', $record, ['dedupe_key' => $dedupekey]);
+        $existing = $DB->get_record('local_navigatr_audit', ['dedupe_key' => $dedupekey]);
+        if ($existing) {
+            $record->id = $existing->id;
+            $DB->update_record('local_navigatr_audit', $record);
+        } else {
+            $DB->insert_record('local_navigatr_audit', $record);
+        }
     }
 }

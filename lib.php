@@ -35,7 +35,7 @@ function local_navigatr_extend_navigation_course($navigation, $course, $context)
     if (has_capability('local/navigatr:configurecourse', $context)) {
         $url = new moodle_url('/local/navigatr/course_settings.php', ['id' => $course->id]);
         $navigation->add(
-            get_string('pluginname', 'local_navigatr'),
+            get_string('menu_name', 'local_navigatr'),
             $url,
             navigation_node::TYPE_SETTING,
             null,
@@ -56,7 +56,7 @@ function local_navigatr_extend_navigation_course_settings($navigation, $course, 
     if (has_capability('local/navigatr:configurecourse', $context)) {
         $url = new moodle_url('/local/navigatr/course_settings.php', ['id' => $course->id]);
         $navigation->add(
-            get_string('pluginname', 'local_navigatr'),
+            get_string('menu_name', 'local_navigatr'),
             $url,
             navigation_node::TYPE_SETTING,
             null,

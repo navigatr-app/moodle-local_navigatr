@@ -55,7 +55,7 @@ class provider_selection_form extends \moodleform {
         $providers = $this->get_providers();
         $provideroptions = ['' => get_string('select_provider', 'local_navigatr')];
         foreach ($providers as $provider) {
-            $provideroptions[$provider['id']] = $provider['name'] . ' (' . $provider['short_name'] . ')';
+            $provideroptions[$provider['id']] = $provider['name'];
         }
 
         $mform->addElement('select', 'provider_id', get_string('provider', 'local_navigatr'), $provideroptions);
@@ -123,7 +123,7 @@ class provider_selection_form extends \moodleform {
 
         } catch (\Exception $e) {
             // Log error but don't output to page
-            error_log("NAVIGATR: Exception in get_providers: " . $e->getMessage());
+            error_log("Exception in get_providers: " . $e->getMessage());
             return [];
         }
     }
@@ -157,7 +157,7 @@ class provider_selection_form extends \moodleform {
 
         } catch (\Exception $e) {
             // Log error but don't output to page
-            error_log("NAVIGATR: Exception in get_badges: " . $e->getMessage());
+            error_log("Exception in get_badges: " . $e->getMessage());
             return [];
         }
     }

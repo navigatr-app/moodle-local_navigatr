@@ -78,7 +78,7 @@ class provider implements
         $sql = "SELECT DISTINCT c.id
                 FROM {context} c
                 JOIN {course} co ON co.id = c.instanceid
-                JOIN {local_navi_audit} na ON na.courseid = co.id
+                JOIN {local_navigatr_audit} na ON na.courseid = co.id
                 WHERE c.contextlevel = :contextlevel
                 AND na.userid = :userid";
         

@@ -26,23 +26,43 @@ This plugin integrates Moodle with the Navigatr badge platform, providing:
 
 ## Configuration
 
-### Site-Level Settings
+### Plugin Settings
 
 Navigate to **Site Administration → Plugins → Local plugins → Navigatr** to configure:
 
-- **Environment**: Choose between Production or Staging
-- **Credentials**: Enter your Navigatr username and password
-- **Advanced Settings**: HTTP timeout and logging level
+- **Credentials**: Enter your Navigatr username and password. This user should be a provider admin on Navigatr.
+- **HTTP Timeout (Advanced)**: Configure request timeout (default: 30 seconds).
+- **Logging Level (Advanced)**: Set debug logging level (Error, Info, Debug).
+- **Environment (Advanced)**: If you would like to test with your account on the Navigatr Staging platform choose `Staging`.
+- **Test Connection**: Check your username and password are correct and a connection can be made.
+- **Save Changes**: After saving your changes you are ready to configure your course mappings.
 
-### Course-Level Mapping
+![Admin Settings Page](images/plugin-settings.png)
+*Configure Navigatr credentials and connection settings*
 
-For each course where you want to issue badges:
+You can remove connection by clicking the "Remove Connection" button (red button with trash icon) that appears when credentials are configured. But be careful before removing the connection, because this will clear your stored username, password, and authentication tokens, and it will disable your existing course mappings.
+
+### Course Badge Mapping
+
+For each course where you want to issue badges on completion:
 
 1. Go to the course
-2. Navigate to **Course settings → Navigatr Issuance**
+2. Navigate to **Course settings → Navigatr Badge**
 3. Select a provider from the dropdown
 4. Choose a badge from the provider's available badges
 5. Save the mapping
+
+![Course Settings Menu](images/course-settings-menu.png)
+*Navigate to "Navigatr Badge" in the course settings menu*
+
+![Provider Selection](images/provider-selection.png)
+*Select a your Navigatr provider that you would like to issue the badge from*
+
+![Badge Selection](images/badge-selection.png)
+*Choose a specific badge from the provider's badge collection*
+
+![Current Badge Mapping](images/current-mapping.png)
+*View current badge mapping with badge image and management options. Removing the badge stops future issuances but preserves existing badges.*
 
 ## API Endpoints
 
@@ -128,6 +148,19 @@ The plugin implements Moodle's privacy API:
    - Check audit records in database for error details
    - Verify user has required fields (email, firstname, lastname)
    - Check Navigatr API status
+
+4. **Observer Not Registered (Badge Issuance Not Triggered)**
+   - Run the observer registration CLI command:
+
+     ```bash
+     sudo -u www-data /usr/bin/php local/navigatr/cli/register_observer.php
+     ```
+
+   - Or run Moodle upgrade to force observer registration:
+
+     ```bash
+     sudo -u www-data /usr/bin/php admin/cli/upgrade.php --non-interactive
+     ```
 
 ### Debugging
 

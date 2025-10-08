@@ -56,6 +56,18 @@ if (optional_param('action', '', PARAM_ALPHA) === 'getbadges') {
     exit;
 }
 
+// Handle remove mapping action
+if (optional_param('action', '', PARAM_ALPHA) === 'removemapping') {
+    require_sesskey();
+    
+    $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
+    if ($mapping) {
+        $DB->delete_records('local_navigatr_map', ['courseid' => $courseid]);
+        redirect(new moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]), 
+                get_string('mapping_removed', 'local_navigatr'), null, \core\output\notification::NOTIFY_SUCCESS);
+    }
+}
+
 // Check for existing mapping
 $existing_mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
 $existing_provider = null;
@@ -101,19 +113,67 @@ if ($data = $form->get_data()) {
 
 echo $OUTPUT->header();
 
+// Check if providers are available
+$providers = [];
+try {
+    $client = new \local_navigatr\local\api_client();
+    $user_response = $client->get("/user_detail/0");
+    if ($user_response->ok && isset($user_response->body['providers'])) {
+        $providers = $user_response->body['providers'];
+    }
+} catch (Exception $e) {
+    // API call failed, providers will be empty
+}
+
+// Display provider configuration notice if no providers available
+if (empty($providers)) {
+    echo '<div class="alert alert-info">';
+    echo '<i class="fa fa-info-circle" aria-hidden="true"></i> ';
+    echo get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php'));
+    echo '</div>';
+}
+
 // Display existing mapping if it exists
 if ($existing_mapping && $existing_provider && $existing_badge) {
     echo '<div class="alert alert-info">';
     echo '<h4>' . get_string('current_mapping', 'local_navigatr') . '</h4>';
+    
+    // Add badge image if available
+    if (!empty($existing_badge['image_url'])) {
+        echo '<div class="badge-image-container" style="float: left; margin-right: 15px; margin-bottom: 10px;">';
+        echo '<img src="' . s($existing_badge['image_url']) . '" alt="' . s($existing_badge['name']) . '" style="max-width: 100px; max-height: 100px; border-radius: 8px;">';
+        echo '</div>';
+    }
+    
+    echo '<div class="mapping-details">';
     echo '<p><strong>' . get_string('provider', 'local_navigatr') . ':</strong> ' . s($existing_provider['name']) . '</p>';
-    echo '<p><strong>' . get_string('badge', 'local_navigatr') . ':</strong> ' . s($existing_badge['name']) . '</p>';
+    echo '<p><strong>' . get_string('badge', 'local_navigatr') . ':</strong> ' . s($existing_badge['name']);
+    // Add badge link if available
+    if (!empty($existing_badge['url'])) {
+        echo ' <a href="' . s($existing_badge['url']) . '" target="_blank" class="btn btn-sm btn-outline-primary">' . get_string('view_badge', 'local_navigatr') . '</a>';
+    }
+    echo '</p>';
     if (!empty($existing_badge['description'])) {
         echo '<p><strong>' . get_string('badgedesc', 'local_navigatr') . ':</strong> ' . s($existing_badge['description']) . '</p>';
     }
-    echo '<p><a href="' . new \moodle_url('/local/navigatr/badge_selection.php', [
+    echo '</div>';
+    
+    // Clear float
+    echo '<div style="clear: both;"></div>';
+    echo '<p>';
+    echo '<a href="' . new \moodle_url('/local/navigatr/badge_selection.php', [
         'id' => $courseid,
         'provider_id' => $existing_mapping->provider_id
-    ]) . '" class="btn btn-primary">' . get_string('change_mapping', 'local_navigatr') . '</a></p>';
+    ]) . '" class="btn btn-primary">' . get_string('change_mapping', 'local_navigatr') . '</a> ';
+    
+    // Add Remove Mapping button with confirmation
+    $remove_url = new \moodle_url('/local/navigatr/course_settings.php', [
+        'id' => $courseid,
+        'action' => 'removemapping',
+        'sesskey' => sesskey()
+    ]);
+    echo '<a href="' . $remove_url . '" class="btn btn-danger" onclick="return confirm(\'' . get_string('remove_mapping_confirm', 'local_navigatr') . '\')">' . get_string('remove_mapping', 'local_navigatr') . '</a>';
+    echo '</p>';
     echo '</div>';
 }
 

@@ -110,7 +110,7 @@ class badge_selection_form extends \moodleform {
 
         } catch (\Exception $e) {
             // Log error but don't output to page
-            error_log("NAVIGATR: Exception in get_badges: " . $e->getMessage());
+            error_log("Exception in get_badges: " . $e->getMessage());
             return [];
         }
     }
