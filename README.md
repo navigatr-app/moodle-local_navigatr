@@ -274,10 +274,6 @@ For issues related to:
 - **Navigatr API**: Contact Navigatr support
 - **Moodle integration**: Check plugin capabilities and permissions
 
-## Documentation
-
-- [Reset Course Completion](docs/reset-course-completion.md) - Instructions to reset course completion for testing
-
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
