@@ -150,17 +150,13 @@ The plugin implements Moodle's privacy API:
    - Check Navigatr API status
 
 4. **Observer Not Registered (Badge Issuance Not Triggered)**
-   - Run the observer registration CLI command:
-
-     ```bash
-     sudo -u www-data /usr/bin/php local/navigatr/cli/register_observer.php
-     ```
-
-   - Or run Moodle upgrade to force observer registration:
+   - Run Moodle upgrade to force observer registration:
 
      ```bash
      sudo -u www-data /usr/bin/php admin/cli/upgrade.php --non-interactive
      ```
+
+   - Or reinstall the plugin to ensure proper observer registration
 
 5. **API Outages and Retry Mechanism**
    - **Automatic Retries**: Failed badge issuance attempts are automatically retried by Moodle's task system

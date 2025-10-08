@@ -41,6 +41,9 @@ class observer {
 
         // Debug: Log that observer was called using Moodle's debugging system
         debugging("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->relateduserid}", DEBUG_DEVELOPER);
+        
+        // Also log to a file for easier debugging
+        error_log("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->relateduserid}");
 
         $courseid = $event->courseid;
         $userid = $event->relateduserid;
