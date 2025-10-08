@@ -25,41 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Post installation hook to ensure event observers are registered.
+ * Post installation hook.
  */
 function xmldb_local_navigatr_install() {
-    global $DB;
-    
-    // Force registration of event observers
-    $observers = [
-        [
-            'eventname'   => '\core\event\course_completed',
-            'callback'    => '\local_navigatr\observer::course_completed',
-            'priority'    => 9999,
-            'internal'    => false,
-        ],
-    ];
-    
-    // Check if observer is already registered
-    $existing = $DB->get_record('events_handlers', [
-        'component' => 'local_navigatr',
-        'eventname' => '\core\event\course_completed'
-    ]);
-    
-    if (!$existing) {
-        // Register the observer
-        foreach ($observers as $observer) {
-            $DB->insert_record('events_handlers', (object) [
-                'eventname' => $observer['eventname'],
-                'component' => 'local_navigatr',
-                'handlerfile' => '/local/navigatr/classes/observer.php',
-                'handlerfunction' => $observer['callback'],
-                'schedule' => null,
-                'status' => 1,
-                'internal' => $observer['internal'] ? 1 : 0
-            ]);
-        }
-    }
-    
     return true;
 }
