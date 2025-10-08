@@ -162,6 +162,13 @@ The plugin implements Moodle's privacy API:
      sudo -u www-data /usr/bin/php admin/cli/upgrade.php --non-interactive
      ```
 
+5. **API Outages and Retry Mechanism**
+   - **Automatic Retries**: Failed badge issuance attempts are automatically retried by Moodle's task system
+   - **Retry Schedule**: Tasks retry at increasing intervals (1min, 5min, 15min, 1hr, 6hr, 24hr)
+   - **No Data Loss**: All course completions during API outages are queued and will be processed when API is restored
+   - **Audit Trail**: Check `local_navigatr_audit` table to see retry attempts and final outcomes
+   - **Manual Retry**: If needed, failed tasks can be manually retried via Moodle's task manager
+
 ### Debugging
 
 Enable debug logging in plugin settings to see detailed API interactions. Logs are stored in Moodle's debug log.
