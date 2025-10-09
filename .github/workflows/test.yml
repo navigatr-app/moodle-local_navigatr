@@ -101,8 +101,18 @@ jobs:
       run: |
         echo "🗄️ Setting up test database..."
         sudo systemctl start mysql
-        mysql -u root -e "CREATE DATABASE IF NOT EXISTS moodle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        mysql -u root -e "CREATE DATABASE IF NOT EXISTS moodle_behat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        
+        # Wait for MySQL to be ready
+        sleep 5
+        
+        # Configure MySQL authentication for GitHub Actions
+        sudo mysql -e "CREATE USER IF NOT EXISTS 'moodle'@'localhost' IDENTIFIED BY 'moodle';"
+        sudo mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'moodle'@'localhost';"
+        sudo mysql -e "FLUSH PRIVILEGES;"
+        
+        # Create test databases
+        mysql -u moodle -pmoodle -e "CREATE DATABASE IF NOT EXISTS moodle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        mysql -u moodle -pmoodle -e "CREATE DATABASE IF NOT EXISTS moodle_behat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
         
     - name: Configure Moodle
       if: matrix.php-version == '8.2'
@@ -113,8 +123,8 @@ jobs:
         sed -i "s/\\$CFG->dbtype.*/\\$CFG->dbtype = 'mysqli';/" config.php
         sed -i "s/\\$CFG->dbhost.*/\\$CFG->dbhost = 'localhost';/" config.php
         sed -i "s/\\$CFG->dbname.*/\\$CFG->dbname = 'moodle_test';/" config.php
-        sed -i "s/\\$CFG->dbuser.*/\\$CFG->dbuser = 'root';/" config.php
-        sed -i "s/\\$CFG->dbpass.*/\\$CFG->dbpass = '';/" config.php
+        sed -i "s/\\$CFG->dbuser.*/\\$CFG->dbuser = 'moodle';/" config.php
+        sed -i "s/\\$CFG->dbpass.*/\\$CFG->dbpass = 'moodle';/" config.php
         sed -i "s/\\$CFG->dataroot.*/\\$CFG->dataroot = '..\/moodledata';/" config.php
         sed -i "s/\\$CFG->wwwroot.*/\\$CFG->wwwroot = 'http:\/\/localhost:8000';/" config.php
         
