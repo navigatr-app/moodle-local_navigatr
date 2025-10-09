@@ -198,9 +198,25 @@ Enable debug logging in plugin settings to see detailed API interactions. Logs a
 
 ### Automated Testing
 
-The plugin includes support for moodle-plugin-ci:
+The plugin includes testing support:
+
+**Local Testing (Quick Validation):**
 
 ```bash
+# Run local tests
+./scripts/test.sh
+
+# This validates:
+# - PHP syntax
+# - Plugin structure  
+# - Security issues
+# - Code quality
+```
+
+**Full Testing Suite:**
+
+```bash
+# Using moodle-plugin-ci
 moodle-plugin-ci phplint
 moodle-plugin-ci codechecker
 moodle-plugin-ci phpunit

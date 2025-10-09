@@ -4,8 +4,9 @@ This directory contains comprehensive unit and integration tests for the Navigat
 
 ## Test Structure
 
-```
+```text
 tests/
+├── test-local.sh                        # Local testing script
 ├── classes/
 │   ├── local/
 │   │   ├── api_client_test.php          # API client unit tests
@@ -25,6 +26,17 @@ tests/
 ```
 
 ## Running Tests
+
+### Local Testing (Quick Validation)
+
+```bash
+# Run smart testing script (adapts to environment)
+./scripts/test.sh
+
+# This script automatically detects your environment:
+# - Outside Moodle: Quick validation (syntax, structure, security)
+# - Inside Moodle: Full testing suite (PHPUnit, Behat, code quality)
+```
 
 ### Unit Tests (PHPUnit)
 
@@ -80,6 +92,7 @@ moodle-plugin-ci behat
 ## Test Data
 
 The `fixtures/navigatr_test_data.xml` file contains:
+
 - Test users (admin, teachers, students)
 - Test courses with enrolments
 - Mock Navigatr providers and badges
@@ -132,6 +145,7 @@ jobs:
 ## Test Coverage
 
 Aim for:
+
 - **Unit Tests**: 80%+ code coverage
 - **Integration Tests**: All critical user workflows
 - **API Tests**: All HTTP endpoints and error scenarios
