@@ -1,0 +1,98 @@
+name: Navigatr Plugin Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        php-version: ['8.2', '8.3']
+        moodle-version: ['4.1', '5.0']
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, xml, curl, json, intl, zip
+        coverage: xdebug
+        
+    - name: Setup Moodle
+      run: |
+        # Download Moodle
+        wget https://download.moodle.org/download.php/direct/stable${{ matrix.moodle-version }}/moodle-latest-${{ matrix.moodle-version }}.tgz
+        tar -xzf moodle-latest-${{ matrix.moodle-version }}.tgz
+        mv moodle moodle-${{ matrix.moodle-version }}
+        
+        # Create data directory
+        mkdir -p moodledata
+        
+        # Copy plugin to Moodle
+        cp -r . moodle-${{ matrix.moodle-version }}/local/navigatr/
+        
+    - name: Install dependencies
+      run: |
+        cd moodle-${{ matrix.moodle-version }}
+        composer install --no-dev --optimize-autoloader
+        
+    - name: Setup test database
+      run: |
+        # Create test database
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS moodle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS moodle_behat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        
+    - name: Configure Moodle
+      run: |
+        cd moodle-${{ matrix.moodle-version }}
+        cp config-dist.php config.php
+        # Update config.php with test database settings
+        sed -i "s/\\$CFG->dbtype.*/\\$CFG->dbtype = 'mysqli';/" config.php
+        sed -i "s/\\$CFG->dbhost.*/\\$CFG->dbhost = 'localhost';/" config.php
+        sed -i "s/\\$CFG->dbname.*/\\$CFG->dbname = 'moodle_test';/" config.php
+        sed -i "s/\\$CFG->dbuser.*/\\$CFG->dbuser = 'root';/" config.php
+        sed -i "s/\\$CFG->dbpass.*/\\$CFG->dbpass = '';/" config.php
+        sed -i "s/\\$CFG->dataroot.*/\\$CFG->dataroot = '..\/moodledata';/" config.php
+        sed -i "s/\\$CFG->wwwroot.*/\\$CFG->wwwroot = 'http:\/\/localhost:8000';/" config.php
+        
+    - name: Install Moodle
+      run: |
+        cd moodle-${{ matrix.moodle-version }}
+        php admin/cli/install.php --non-interactive --agree-license \
+          --fullname="Test Site" \
+          --shortname="test" \
+          --adminuser="admin" \
+          --adminpass="admin" \
+          --adminemail="admin@example.com"
+          
+    - name: Run PHPUnit tests
+      run: |
+        cd moodle-${{ matrix.moodle-version }}
+        vendor/bin/phpunit local/navigatr/tests/ --testdox
+        
+    - name: Run Behat tests
+      run: |
+        cd moodle-${{ matrix.moodle-version }}
+        vendor/bin/behat local/navigatr/tests/behat/features/ --format=pretty
+        
+    - name: Generate test report
+      if: always()
+      run: |
+        echo "Test execution completed for PHP ${{ matrix.php-version }} and Moodle ${{ matrix.moodle-version }}"
+        
+    - name: Upload test results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-results-php${{ matrix.php-version }}-moodle${{ matrix.moodle-version }}
+        path: |
+          moodle-${{ matrix.moodle-version }}/testresults/
+          moodle-${{ matrix.moodle-version }}/coverage/

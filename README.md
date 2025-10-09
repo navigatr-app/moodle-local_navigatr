@@ -58,7 +58,7 @@ For each course where you want to issue badges on completion:
 
 ![Badge Selection](images/badge-selection.png)
 
-5. Save the badge mapping. Removing the badge mapping stops future issuances but preserves existing badges.
+5. Save the badge mapping. Removing the badge mapping stops future issuances but preserves existing badges.*
 
 ![Current Badge Mapping](images/current-mapping.png)
 

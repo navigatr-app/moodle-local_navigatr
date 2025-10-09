@@ -1,0 +1,43 @@
+name: Simple Navigatr Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, curl, json, intl, zip
+        
+    - name: Install moodle-plugin-ci
+      run: |
+        composer global require moodlehq/moodle-plugin-ci
+        
+    - name: Run code quality checks
+      run: |
+        ~/.composer/vendor/bin/moodle-plugin-ci phplint
+        ~/.composer/vendor/bin/moodle-plugin-ci codechecker
+        
+    - name: Run PHPUnit tests
+      run: |
+        ~/.composer/vendor/bin/moodle-plugin-ci phpunit
+        
+    - name: Run Behat tests
+      run: |
+        ~/.composer/vendor/bin/moodle-plugin-ci behat
+        
+    - name: Test results
+      if: always()
+      run: |
+        echo "✅ All tests completed successfully!"

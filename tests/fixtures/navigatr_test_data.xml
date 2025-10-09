@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fixtures>
+    <users>
+        <user id="1" username="admin" firstname="Admin" lastname="User" email="admin@example.com" />
+        <user id="2" username="teacher1" firstname="Teacher" lastname="One" email="teacher1@example.com" />
+        <user id="3" username="student1" firstname="John" lastname="Doe" email="john.doe@example.com" />
+        <user id="4" username="student2" firstname="Jane" lastname="Smith" email="jane.smith@example.com" />
+    </users>
+    
+    <courses>
+        <course id="1" fullname="Test Course 1" shortname="TC1" />
+        <course id="2" fullname="Test Course 2" shortname="TC2" />
+        <course id="3" fullname="Advanced Course" shortname="AC" />
+    </courses>
+    
+    <course_enrolments>
+        <enrolment userid="3" courseid="1" role="student" />
+        <enrolment userid="4" courseid="1" role="student" />
+        <enrolment userid="3" courseid="2" role="student" />
+        <enrolment userid="2" courseid="1" role="teacher" />
+        <enrolment userid="2" courseid="2" role="teacher" />
+    </course_enrolments>
+    
+    <navigatr_providers>
+        <provider id="provider1" name="Test Provider 1" description="Test provider for unit testing" />
+        <provider id="provider2" name="Test Provider 2" description="Another test provider" />
+    </navigatr_providers>
+    
+    <navigatr_badges>
+        <badge id="badge1" provider_id="provider1" name="Test Badge 1" description="First test badge" image_url="https://example.com/badge1.png" />
+        <badge id="badge2" provider_id="provider1" name="Test Badge 2" description="Second test badge" image_url="https://example.com/badge2.png" />
+        <badge id="badge3" provider_id="provider2" name="Advanced Badge" description="Advanced test badge" image_url="https://example.com/badge3.png" />
+    </navigatr_badges>
+    
+    <navigatr_mappings>
+        <mapping courseid="1" provider_id="provider1" badge_id="badge1" badge_name="Test Badge 1" badge_image_url="https://example.com/badge1.png" />
+        <mapping courseid="2" provider_id="provider1" badge_id="badge2" badge_name="Test Badge 2" badge_image_url="https://example.com/badge2.png" />
+    </navigatr_mappings>
+    
+    <navigatr_audit>
+        <audit userid="3" courseid="1" provider_id="provider1" badge_id="badge1" status="success" http_code="200" dedupe_key="3:1:badge1" />
+        <audit userid="4" courseid="1" provider_id="provider1" badge_id="badge1" status="success" http_code="200" dedupe_key="4:1:badge1" />
+    </navigatr_audit>
+</fixtures>
