@@ -6,7 +6,6 @@ This directory contains comprehensive unit and integration tests for the Navigat
 
 ```text
 tests/
-├── test-local.sh                        # Local testing script
 ├── classes/
 │   ├── local/
 │   │   ├── api_client_test.php          # API client unit tests
