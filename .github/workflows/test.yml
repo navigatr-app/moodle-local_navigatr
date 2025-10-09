@@ -103,16 +103,32 @@ jobs:
         sudo systemctl start mysql
         
         # Wait for MySQL to be ready
-        sleep 5
+        sleep 10
         
-        # Configure MySQL authentication for GitHub Actions
-        sudo mysql -e "CREATE USER IF NOT EXISTS 'moodle'@'localhost' IDENTIFIED BY 'moodle';"
-        sudo mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'moodle'@'localhost';"
-        sudo mysql -e "FLUSH PRIVILEGES;"
+        # Try different authentication methods
+        echo "Attempting to configure MySQL..."
         
-        # Create test databases
-        mysql -u moodle -pmoodle -e "CREATE DATABASE IF NOT EXISTS moodle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
-        mysql -u moodle -pmoodle -e "CREATE DATABASE IF NOT EXISTS moodle_behat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        # Method 1: Try to reset root password
+        sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';" 2>/dev/null || true
+        sudo mysql -e "FLUSH PRIVILEGES;" 2>/dev/null || true
+        
+        # Method 2: Create databases with root (no password)
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS moodle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" 2>/dev/null || {
+          echo "Root access failed, trying alternative approach..."
+          
+          # Method 3: Use sudo mysql without password
+          sudo mysql -e "CREATE DATABASE IF NOT EXISTS moodle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          sudo mysql -e "CREATE DATABASE IF NOT EXISTS moodle_behat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          
+          # Create a dedicated user
+          sudo mysql -e "CREATE USER IF NOT EXISTS 'moodle'@'localhost' IDENTIFIED BY 'moodle';"
+          sudo mysql -e "GRANT ALL PRIVILEGES ON *.* TO 'moodle'@'localhost';"
+          sudo mysql -e "FLUSH PRIVILEGES;"
+        }
+        
+        # Verify databases exist
+        echo "Verifying database creation..."
+        mysql -u root -e "SHOW DATABASES;" 2>/dev/null || sudo mysql -e "SHOW DATABASES;"
         
     - name: Configure Moodle
       if: matrix.php-version == '8.2'
@@ -120,13 +136,32 @@ jobs:
         echo "⚙️ Configuring Moodle..."
         cd moodle-401
         cp config-dist.php config.php
+        
+        # Try to determine which database user works
+        if mysql -u root -e "SHOW DATABASES;" >/dev/null 2>&1; then
+          echo "Using root user (no password)"
+          DB_USER="root"
+          DB_PASS=""
+        elif mysql -u moodle -pmoodle -e "SHOW DATABASES;" >/dev/null 2>&1; then
+          echo "Using moodle user"
+          DB_USER="moodle"
+          DB_PASS="moodle"
+        else
+          echo "Database connection failed, using root as fallback"
+          DB_USER="root"
+          DB_PASS=""
+        fi
+        
+        # Configure Moodle with determined credentials
         sed -i "s/\\$CFG->dbtype.*/\\$CFG->dbtype = 'mysqli';/" config.php
         sed -i "s/\\$CFG->dbhost.*/\\$CFG->dbhost = 'localhost';/" config.php
         sed -i "s/\\$CFG->dbname.*/\\$CFG->dbname = 'moodle_test';/" config.php
-        sed -i "s/\\$CFG->dbuser.*/\\$CFG->dbuser = 'moodle';/" config.php
-        sed -i "s/\\$CFG->dbpass.*/\\$CFG->dbpass = 'moodle';/" config.php
+        sed -i "s/\\$CFG->dbuser.*/\\$CFG->dbuser = '$DB_USER';/" config.php
+        sed -i "s/\\$CFG->dbpass.*/\\$CFG->dbpass = '$DB_PASS';/" config.php
         sed -i "s/\\$CFG->dataroot.*/\\$CFG->dataroot = '..\/moodledata';/" config.php
         sed -i "s/\\$CFG->wwwroot.*/\\$CFG->wwwroot = 'http:\/\/localhost:8000';/" config.php
+        
+        echo "Moodle configured with user: $DB_USER"
         
     - name: Install Moodle
       if: matrix.php-version == '8.2'
