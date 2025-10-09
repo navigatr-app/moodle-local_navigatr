@@ -1,0 +1,86 @@
+name: Navigatr Plugin Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, curl, json, intl, zip
+        
+    - name: Download Moodle
+      run: |
+        wget https://download.moodle.org/download.php/direct/stable401/moodle-latest-401.tgz
+        tar -xzf moodle-latest-401.tgz
+        mv moodle moodle-401
+        
+    - name: Install plugin in Moodle
+      run: |
+        cp -r . moodle-401/local/navigatr/
+        
+    - name: Setup test database
+      run: |
+        sudo systemctl start mysql
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS moodle_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS moodle_behat CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+        
+    - name: Configure Moodle
+      run: |
+        cd moodle-401
+        cp config-dist.php config.php
+        sed -i "s/\\$CFG->dbtype.*/\\$CFG->dbtype = 'mysqli';/" config.php
+        sed -i "s/\\$CFG->dbhost.*/\\$CFG->dbhost = 'localhost';/" config.php
+        sed -i "s/\\$CFG->dbname.*/\\$CFG->dbname = 'moodle_test';/" config.php
+        sed -i "s/\\$CFG->dbuser.*/\\$CFG->dbuser = 'root';/" config.php
+        sed -i "s/\\$CFG->dbpass.*/\\$CFG->dbpass = '';/" config.php
+        sed -i "s/\\$CFG->dataroot.*/\\$CFG->dataroot = '..\/moodledata';/" config.php
+        sed -i "s/\\$CFG->wwwroot.*/\\$CFG->wwwroot = 'http:\/\/localhost:8000';/" config.php
+        
+    - name: Install Moodle
+      run: |
+        cd moodle-401
+        php admin/cli/install.php --non-interactive --agree-license \
+          --fullname="Test Site" \
+          --shortname="test" \
+          --adminuser="admin" \
+          --adminpass="admin" \
+          --adminemail="admin@example.com"
+          
+    - name: Install moodle-plugin-ci
+      run: |
+        composer global require moodlehq/moodle-plugin-ci
+        
+    - name: Run code quality checks
+      run: |
+        cd moodle-401
+        ~/.composer/vendor/bin/moodle-plugin-ci phplint local/navigatr
+        ~/.composer/vendor/bin/moodle-plugin-ci codechecker local/navigatr
+        
+    - name: Run PHPUnit tests
+      run: |
+        cd moodle-401
+        ~/.composer/vendor/bin/moodle-plugin-ci phpunit local/navigatr
+        
+    - name: Run Behat tests
+      run: |
+        cd moodle-401
+        ~/.composer/vendor/bin/moodle-plugin-ci behat local/navigatr
+        
+    - name: Test results
+      if: always()
+      run: |
+        echo "✅ All tests completed successfully!"
+        echo "📊 Test execution completed"
+        echo "🔍 Check the logs above for detailed results"

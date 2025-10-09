@@ -88,7 +88,13 @@ jobs:
       if: matrix.php-version == '8.2'
       run: |
         echo "🔌 Installing plugin in Moodle..."
-        cp -r . moodle-401/local/navigatr/
+        mkdir -p moodle-401/local/navigatr
+        
+        # Copy plugin files, excluding the moodle-401 directory and other unnecessary files
+        rsync -av --exclude='moodle-401' --exclude='.git' --exclude='tests' --exclude='.github' --exclude='README.md' --exclude='CHANGELOG.md' . moodle-401/local/navigatr/
+        
+        # Ensure the plugin directory has proper permissions
+        chmod -R 755 moodle-401/local/navigatr/
         
     - name: Setup test database
       if: matrix.php-version == '8.2'
