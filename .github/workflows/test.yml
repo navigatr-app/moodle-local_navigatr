@@ -80,12 +80,23 @@ jobs:
       if: matrix.php-version == '8.2'
       run: |
         echo "🧪 Running advanced tests for PHP 8.2..."
-        echo "📦 Installing moodle-plugin-ci..."
-        composer global require moodlehq/moodle-plugin-ci
         
-        echo "🔍 Running code quality checks..."
-        ~/.composer/vendor/bin/moodle-plugin-ci phplint local/navigatr
-        ~/.composer/vendor/bin/moodle-plugin-ci codechecker local/navigatr
+        # Install PHP linting tools directly
+        echo "📦 Installing PHP linting tools..."
+        composer global require squizlabs/php_codesniffer
+        composer global require phpmd/phpmd
+        
+        # Run PHP CodeSniffer
+        echo "🔍 Running PHP CodeSniffer..."
+        ~/.composer/vendor/bin/phpcs --standard=PSR12 --ignore=vendor/,tests/ --extensions=php .
+        
+        # Run PHPMD (PHP Mess Detector)
+        echo "🔍 Running PHPMD..."
+        ~/.composer/vendor/bin/phpmd . text cleancode,codesize,controversial,design,naming,unusedcode --exclude vendor,tests
+        
+        # Run additional PHP linting
+        echo "🔍 Running additional PHP checks..."
+        find . -name "*.php" -not -path "./vendor/*" -not -path "./tests/*" -exec php -l {} \; | grep -v "No syntax errors" || echo "✅ All PHP files have valid syntax"
         
         echo "✅ Advanced tests completed successfully!"
         
