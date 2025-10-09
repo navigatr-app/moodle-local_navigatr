@@ -1,54 +1,80 @@
-# Scripts Directory
+# Navigatr Plugin Scripts
 
-This directory contains utility scripts for the Navigatr Moodle plugin.
+This directory contains automation scripts for the Navigatr Moodle plugin.
 
-## Available Scripts
+## Release Script
 
-### `test.sh`
+### `release.sh`
 
-Smart testing script that adapts to your environment:
+Automates the entire release process for the Navigatr plugin.
 
-**When run outside Moodle (default):**
-
-- PHP syntax validation
-- Plugin structure validation
-- Security checks
-- Code quality checks
-- Documentation checks
-
-**When run inside Moodle installation:**
-
-- Full moodle-plugin-ci testing
-- PHP linting
-- Code checking
-- PHPUnit tests
-- Behat integration tests
-
-**Usage:**
+#### Usage
 
 ```bash
-./scripts/test.sh
+./scripts/release.sh <version> [release_type]
 ```
 
-## Requirements
+#### Examples
 
-- **Bash**: Available on all Unix-like systems
-- **PHP** (optional): For syntax checking and advanced validation
-- **Git**: For version control integration
+```bash
+# Create a major release (1.0.0)
+./scripts/release.sh 1.0.0 major
 
-## Benefits
+# Create a minor release (1.1.0)
+./scripts/release.sh 1.1.0 minor
 
-- ✅ **No commits required** - Test before pushing
-- ✅ **Fast feedback** - Immediate results
-- ✅ **Same as CI** - Identical to GitHub Actions
-- ✅ **Debug easily** - See exactly what's wrong
-- ✅ **Iterate quickly** - Fix issues before committing
+# Create a patch release (1.1.1)
+./scripts/release.sh 1.1.1 patch
+```
 
-## Integration
+#### What the script does
 
-These scripts are designed to work with:
+1. **Validates inputs** - Checks version format and current branch
+2. **Updates version.php** - Sets the new version number
+3. **Updates CHANGELOG.md** - Adds new version entry with date
+4. **Creates release branch** - `release/<version>`
+5. **Commits changes** - With descriptive commit message
+6. **Pushes to origin** - Makes the release branch available remotely
+7. **Updates develop** - Bumps develop branch to next dev version
 
-- **GitHub Actions** - Same validation as CI
-- **Local development** - Test before committing
-- **Code review** - Validate changes before PR
-- **Deployment** - Ensure code quality before release
+#### Prerequisites
+
+- Must be on the `develop` branch
+- Working directory must be clean (no uncommitted changes)
+- Must have push access to the remote repository
+
+#### Safety Features
+
+- **Confirmation prompt** - Asks before proceeding
+- **Branch validation** - Ensures you're on the correct branch
+- **Clean working directory check** - Prevents accidental commits
+- **Version format validation** - Ensures semantic versioning
+- **Error handling** - Stops on any error with clear messages
+
+#### After running the script
+
+1. **Create GitHub release** - Go to GitHub and create a release from the new branch
+2. **Test with clients** - Use the release branch for testing
+3. **Merge to main** - When ready, merge the release branch to your main branch
+
+#### Example workflow
+
+```bash
+# 1. Make sure you're on develop and everything is committed
+git checkout develop
+git status
+
+# 2. Run the release script
+./scripts/release.sh 1.0.0 major
+
+# 3. Go to GitHub and create a release from release/1.0.0 branch
+# 4. Test the release
+# 5. When satisfied, merge release/1.0.0 to your main branch
+```
+
+#### Troubleshooting
+
+- **"You must be on the 'develop' branch"** - Run `git checkout develop`
+- **"Working directory is not clean"** - Commit or stash your changes first
+- **"Invalid version format"** - Use semantic versioning (e.g., 1.0.0, 1.1.0)
+- **Permission denied** - Make sure the script is executable: `chmod +x scripts/release.sh`
