@@ -5,11 +5,11 @@ All notable changes to the Navigatr plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2025-01-07
+## [0.9.0] - 2025-01-07
 
 ### Added
 
-- Initial release of Navigatr plugin
+- Initial beta release of Navigatr plugin
 - Automatic badge issuance on course completion
 - Site-level Navigatr API configuration
 - Course-level provider and badge mapping
