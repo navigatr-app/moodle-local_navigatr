@@ -20,7 +20,14 @@ This plugin integrates Moodle with the Navigatr badge platform, providing:
 
 ## Installation
 
-1. Copy the plugin files to `local/navigatr/` in your Moodle installation
+1. Copy the plugin files to `local/navigatr/` in your Moodle installation. The following files and folders are optional and can be omitted:
+   - `/scripts` (development automation)
+   - `/tests` (test files)
+   - `/images` (documentation screenshots)
+   - `/.github` (CI/CD configuration)
+   - `/.gitignore` (Git configuration)
+   - `/CHANGELOG.md` (development documentation)
+   - `/README.md` (development documentation)
 2. Visit the Moodle admin notifications page to install the plugin
 3. Configure Navigatr credentials in Site Administration → Plugins → Local plugins → Navigatr
 
