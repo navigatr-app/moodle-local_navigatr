@@ -1,4 +1,4 @@
-# Changelog
+# Changes
 
 All notable changes to the Navigatr plugin will be documented in this file.
 

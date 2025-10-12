@@ -121,7 +121,7 @@ echo
 print_warning "About to create release $NEW_VERSION"
 echo "This will:"
 echo "  1. Update version.php to $NEW_VERSION"
-echo "  2. Update CHANGELOG.md with new version entry"
+echo "  2. Update CHANGES.md with new version entry"
 echo "  3. Create release branch: release/$NEW_VERSION"
 echo "  4. Create Git tag: $NEW_VERSION"
 echo "  5. Create GitHub release with changes summary"
@@ -145,8 +145,8 @@ sed -i.bak "s/\$plugin->release   = '.*';/\$plugin->release   = '$NEW_VERSION';/
 rm version.php.bak
 print_success "Updated version.php to $NEW_VERSION"
 
-# Step 2: Update CHANGELOG.md
-print_status "Updating CHANGELOG.md..."
+# Step 2: Update CHANGES.md
+print_status "Updating CHANGES.md..."
 TODAY=$(date +%Y-%m-%d)
 
 # Create new changelog entry with changes summary
@@ -162,23 +162,23 @@ ${CHANGES_SUMMARY}
 EOF
 
 # Insert new entry after the header
-if [ -f CHANGELOG.md ]; then
+if [ -f CHANGES.md ]; then
     # Find the line number after the header (after the second ##)
-    INSERT_LINE=$(awk '/^## \[/ {if(++count==1) print NR; exit}' CHANGELOG.md)
+    INSERT_LINE=$(awk '/^## \[/ {if(++count==1) print NR; exit}' CHANGES.md)
     if [ -n "$INSERT_LINE" ]; then
         # Insert the new entry
-        head -n $((INSERT_LINE-1)) CHANGELOG.md > CHANGELOG.md.tmp
-        cat changelog_entry.tmp >> CHANGELOG.md.tmp
-        tail -n +$INSERT_LINE CHANGELOG.md >> CHANGELOG.md.tmp
-        mv CHANGELOG.md.tmp CHANGELOG.md
+        head -n $((INSERT_LINE-1)) CHANGES.md > CHANGES.md.tmp
+        cat changelog_entry.tmp >> CHANGES.md.tmp
+        tail -n +$INSERT_LINE CHANGES.md >> CHANGES.md.tmp
+        mv CHANGES.md.tmp CHANGES.md
     else
         # If no existing entries, append to end
-        cat changelog_entry.tmp >> CHANGELOG.md
+        cat changelog_entry.tmp >> CHANGES.md
     fi
     rm changelog_entry.tmp
-    print_success "Updated CHANGELOG.md"
+    print_success "Updated CHANGES.md"
 else
-    print_warning "CHANGELOG.md not found, skipping changelog update"
+    print_warning "CHANGES.md not found, skipping changelog update"
 fi
 
 # Step 3: Create release branch
@@ -188,11 +188,11 @@ print_success "Created and switched to release/$NEW_VERSION branch"
 
 # Step 4: Commit changes
 print_status "Committing changes..."
-git add version.php CHANGELOG.md
+git add version.php CHANGES.md
 git commit -m "Release $NEW_VERSION
 
 - Updated version to $NEW_VERSION
-- Updated changelog with release notes
+- Updated changes with release notes
 - Created release branch for $NEW_VERSION"
 print_success "Committed changes"
 
@@ -249,7 +249,7 @@ print_success "Release $NEW_VERSION created successfully!"
 echo
 echo "What was done:"
 echo "  ✅ Updated version.php to $NEW_VERSION"
-echo "  ✅ Updated CHANGELOG.md with release notes"
+echo "  ✅ Updated CHANGES.md with release notes"
 echo "  ✅ Created release branch: release/$NEW_VERSION"
 echo "  ✅ Created Git tag: $NEW_VERSION"
 echo "  ✅ Created GitHub release with changes summary"

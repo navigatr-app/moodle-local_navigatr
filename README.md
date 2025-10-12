@@ -26,7 +26,7 @@ This plugin integrates Moodle with the Navigatr badge platform, providing:
    - `/images` (documentation screenshots)
    - `/.github` (CI/CD configuration)
    - `/.gitignore` (Git configuration)
-   - `/CHANGELOG.md` (development documentation)
+   - `/CHANGES.md` (development documentation)
    - `/README.md` (development documentation)
 2. Visit the Moodle admin notifications page to install the plugin
 3. Configure Navigatr credentials in Site Administration → Plugins → Local plugins → Navigatr
@@ -71,8 +71,6 @@ For each course where you want to issue badges on completion:
    - **Remove Badge**: Click the "Remove Badge" button to remove the mapping
 
 ![Current Badge Mapping](images/current-mapping.png)
-
-
 
 ## API Endpoints
 
@@ -305,4 +303,4 @@ For issues related to:
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for version history.
+See [CHANGES.md](CHANGES.md) for version history.

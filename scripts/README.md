@@ -31,7 +31,7 @@ Automates the entire release process for the Navigatr plugin.
 
 1. **Validates inputs** - Checks version format and current branch
 2. **Updates version.php** - Sets the new version number
-3. **Updates CHANGELOG.md** - Adds new version entry with date
+3. **Updates CHANGES.md** - Adds new version entry with date
 4. **Creates release branch** - `release/<version>`
 5. **Commits changes** - With descriptive commit message
 6. **Pushes to origin** - Makes the release branch available remotely
