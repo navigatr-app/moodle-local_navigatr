@@ -63,7 +63,7 @@ class provider_selection_form extends \moodleform {
         $mform->addRule('provider_id', get_string('required'), 'required', null, 'client');
 
         // Add submit button for provider selection
-        $mform->addElement('submit', 'select_provider', get_string('select_provider_continue', 'local_navigatr'));
+        $mform->addElement('submit', 'select_provider', get_string('select_provider_continue', 'local_navigatr'), ['class' => 'btn-primary mb-3']);
 
         // Badge preview
         if ($mapping && $mapping->badge_image_url) {

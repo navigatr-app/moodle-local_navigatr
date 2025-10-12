@@ -41,12 +41,12 @@ Navigate to **Site Administration → Plugins → Local plugins → Navigatr** t
 - **HTTP Timeout (Advanced)**: Configure request timeout (default: 30 seconds).
 - **Logging Level (Advanced)**: Set debug logging level (Error, Info, Debug).
 - **Environment (Advanced)**: If you would like to test with your account on the Navigatr Staging platform choose `Staging`.
-- **Test Connection**: Check your username and password are correct and a connection can be made.
-- **Save Changes**: After saving your changes you are ready to configure your course mappings.
+- **Test Connection**: Check your username and password are correct and a connection can be made (appears as a secondary button).
+- **Save Changes**: After saving your changes you are ready to configure your course mappings (appears as a primary button).
 
 ![Admin Settings Page](images/plugin-settings.png)
 
-You can remove connection by clicking the "Remove Connection" button (red button with trash icon) that appears when credentials are configured. But be careful before removing the connection, because this will clear your stored username, password, and authentication tokens, and it will disable existing badge mappings on your courses.
+You can remove connection by clicking the "Remove Connection" button that appears when credentials are configured. But be careful before removing the connection, because this will clear your stored username, password, and authentication tokens, and it will disable existing badge mappings on your courses.
 
 ### Course Badge Mapping
 
@@ -57,15 +57,18 @@ For each course where you want to issue badges on completion:
 
 ![Course Settings Menu](images/course-settings-menu.png)
 
-3. Select a provider from the dropdown
+3. Select a provider from the dropdown and click "Continue to Select Badge"
 
 ![Provider Selection](images/provider-selection.png)
 
-4. Choose a badge from the provider's available badges
+4. Choose a badge from the provider's available badges and click "Save Mapping"
 
 ![Badge Selection](images/badge-selection.png)
 
-5. Save the badge mapping. Removing the badge mapping stops future issuances but preserves existing badges.
+5. The badge mapping is now configured. You can:
+   - **View Badge**: Click the "View Badge" link (appears inline with the badge name) to open the badge in Navigatr
+   - **Change Badge**: Click the "Change Badge" button to select a different badge
+   - **Remove Badge**: Click the "Remove Badge" button to remove the mapping
 
 ![Current Badge Mapping](images/current-mapping.png)
 
@@ -190,13 +193,16 @@ Enable debug logging in plugin settings to see detailed API interactions. Logs a
 
 1. **Configuration Test**
    - Configure Navigatr credentials
-   - Run "Test Connection" to verify authentication
+   - Click "Test Connection" button to verify authentication
+   - Click "Save Changes" to save settings
    - Verify providers are loaded
 
 2. **Course Mapping Test**
    - Create a test course
-   - Map a provider and badge
-   - Verify mapping is saved
+   - Navigate to Course settings → Navigatr Badge
+   - Select a provider using the "Continue to Select Badge" button
+   - Choose a badge and click "Save Mapping"
+   - Verify mapping is saved and buttons appear correctly
 
 3. **Badge Issuance Test**
    - Enrol a test user in the course

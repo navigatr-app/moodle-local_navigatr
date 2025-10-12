@@ -104,14 +104,16 @@ $current_password = get_config('local_navigatr', 'password');
 
 // Display Remove Connection button if credentials are configured
 if (!empty($current_username) && !empty($current_password)) {
-    echo '<div class="mb-3">';
-    echo '<form method="post" action="" style="display: inline;">';
-    echo '<input type="hidden" name="sesskey" value="' . sesskey() . '">';
-    echo '<button type="submit" name="removeconnection" class="btn btn-danger" ';
-    echo 'onclick="return confirm(\'' . get_string('remove_connection_confirm', 'local_navigatr') . '\')">';
-    echo '<i class="fa fa-trash" aria-hidden="true"></i> ' . get_string('remove_connection', 'local_navigatr');
-    echo '</button>';
-    echo '</form>';
+    echo '<div class="mb-4">';
+    $remove_url = new \moodle_url('/local/navigatr/settings_page.php', [
+        'removeconnection' => 1,
+        'sesskey' => sesskey()
+    ]);
+    $remove_button = $OUTPUT->single_button($remove_url, get_string('remove_connection', 'local_navigatr'), 'post', [
+        'class' => 'btn-danger',
+        'onclick' => 'return confirm(\'' . get_string('remove_connection_confirm', 'local_navigatr') . '\')'
+    ]);
+    echo $remove_button;
     echo '</div>';
 }
 

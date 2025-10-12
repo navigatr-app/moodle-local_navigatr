@@ -146,34 +146,43 @@ if ($existing_mapping && $existing_provider && $existing_badge) {
     }
     
     echo '<div class="mapping-details">';
-    echo '<p><strong>' . get_string('provider', 'local_navigatr') . ':</strong> ' . s($existing_provider['name']) . '</p>';
-    echo '<p><strong>' . get_string('badge', 'local_navigatr') . ':</strong> ' . s($existing_badge['name']);
+    echo '<p>' . get_string('provider', 'local_navigatr') . ': ' . s($existing_provider['name']) . '</p>';
+    echo '<p>' . get_string('badge', 'local_navigatr') . ': ' . s($existing_badge['name']);
     // Add badge link if available
     if (!empty($existing_badge['url'])) {
-        echo ' <a href="' . s($existing_badge['url']) . '" target="_blank" class="btn btn-sm btn-outline-primary">' . get_string('view_badge', 'local_navigatr') . '</a>';
+        echo ' <a href="' . s($existing_badge['url']) . '" target="_blank" class="btn btn-sm btn-link">' . get_string('view_badge', 'local_navigatr') . '</a>';
     }
     echo '</p>';
     if (!empty($existing_badge['description'])) {
-        echo '<p><strong>' . get_string('badgedesc', 'local_navigatr') . ':</strong> ' . s($existing_badge['description']) . '</p>';
+        echo '<p>' . get_string('badgedesc', 'local_navigatr') . ': ' . s($existing_badge['description']) . '</p>';
     }
     echo '</div>';
     
     // Clear float
     echo '<div style="clear: both;"></div>';
-    echo '<p>';
-    echo '<a href="' . new \moodle_url('/local/navigatr/badge_selection.php', [
+    echo '<div class="mt-3 d-flex gap-2">';
+    
+    // Change mapping button
+    $change_url = new \moodle_url('/local/navigatr/badge_selection.php', [
         'id' => $courseid,
         'provider_id' => $existing_mapping->provider_id
-    ]) . '" class="btn btn-primary">' . get_string('change_mapping', 'local_navigatr') . '</a> ';
+    ]);
+    $change_button = $OUTPUT->single_button($change_url, get_string('change_mapping', 'local_navigatr'), 'get', ['class' => 'btn-link']);
+    echo $change_button;
     
-    // Add Remove Mapping button with confirmation
+    // Remove mapping button with confirmation
     $remove_url = new \moodle_url('/local/navigatr/course_settings.php', [
         'id' => $courseid,
         'action' => 'removemapping',
         'sesskey' => sesskey()
     ]);
-    echo '<a href="' . $remove_url . '" class="btn btn-danger" onclick="return confirm(\'' . get_string('remove_mapping_confirm', 'local_navigatr') . '\')">' . get_string('remove_mapping', 'local_navigatr') . '</a>';
-    echo '</p>';
+    $remove_button = $OUTPUT->single_button($remove_url, get_string('remove_mapping', 'local_navigatr'), 'get', [
+        'class' => 'btn-danger',
+        'onclick' => 'return confirm(\'' . get_string('remove_mapping_confirm', 'local_navigatr') . '\')'
+    ]);
+    echo $remove_button;
+    
+    echo '</div>';
     echo '</div>';
 }
 
