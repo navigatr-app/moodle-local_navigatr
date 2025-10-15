@@ -54,10 +54,10 @@ if ($data && confirm_sesskey()) {
         
         $result = \local_navigatr\local\api_client::test_connection($username, $password, $environment);
         if ($result->ok) {
-            \core\notification::success('Connection successful!');
+            \core\notification::success(get_string('connection_success_simple', 'local_navigatr'));
         } else {
             // Build detailed error message
-            $errormsg = 'Connection failed';
+            $errormsg = get_string('connection_failed', 'local_navigatr');
             if (!empty($result->error)) {
                 $errormsg .= ': ' . s($result->error);
             } elseif (!empty($result->body) && is_array($result->body) && isset($result->body['error'])) {
@@ -65,7 +65,7 @@ if ($data && confirm_sesskey()) {
             } elseif ($result->code > 0) {
                 $errormsg .= ' (HTTP ' . $result->code . ')';
             } else {
-                $errormsg .= ': Network error or timeout';
+                $errormsg .= ': ' . get_string('network_error_or_timeout', 'local_navigatr');
             }
             \core\notification::error($errormsg);
         }
@@ -93,10 +93,16 @@ if ($data && confirm_sesskey()) {
 echo $OUTPUT->header();
 
 // Display admin notice
-echo '<div class="alert alert-warning">';
-echo '<i class="fa fa-info-circle" aria-hidden="true"></i> ';
-echo get_string('provider_admin_notice', 'local_navigatr');
-echo '</div>';
+echo \core\notification::info(get_string('provider_admin_notice', 'local_navigatr'));
+
+// Display help documentation link
+$help_url = get_string('help_center_url', 'local_navigatr');
+$help_link = \html_writer::link($help_url, get_string('help_center_link', 'local_navigatr'), [
+    'target' => '_blank',
+    'class' => 'btn btn-outline-info btn-sm'
+]);
+$help_text = get_string('help_setup_guide', 'local_navigatr', $help_link);
+echo \core\notification::info($help_text);
 
 // Check if credentials are configured
 $current_username = get_config('local_navigatr', 'username');
@@ -104,7 +110,7 @@ $current_password = get_config('local_navigatr', 'password');
 
 // Display Remove Connection button if credentials are configured
 if (!empty($current_username) && !empty($current_password)) {
-    echo '<div class="mb-4">';
+    echo \html_writer::start_div('mb-4');
     $remove_url = new \moodle_url('/local/navigatr/settings_page.php', [
         'removeconnection' => 1,
         'sesskey' => sesskey()
@@ -114,7 +120,7 @@ if (!empty($current_username) && !empty($current_password)) {
         'onclick' => 'return confirm(\'' . get_string('remove_connection_confirm', 'local_navigatr') . '\')'
     ]);
     echo $remove_button;
-    echo '</div>';
+    echo \html_writer::end_div();
 }
 
 // Create form

@@ -89,3 +89,44 @@ $string['provider_config_notice'] = 'Please make sure a site administrator has a
 $string['remove_connection'] = 'Remove Connection';
 $string['remove_connection_confirm'] = 'Are you sure you want to remove the current Navigatr connection? This will clear your stored username and password. All existing badge mappings will be disabled.';
 $string['connection_removed'] = 'Navigatr connection has been removed successfully.';
+
+// Connection test messages
+$string['connection_success_simple'] = 'Connection successful!';
+$string['connection_failed'] = 'Connection failed';
+$string['network_error_or_timeout'] = 'Network error or timeout';
+$string['connection_failed_details'] = 'Connection failed: {$a}';
+
+// Badge preview
+$string['badge_preview'] = 'Badge Preview';
+
+// Help text for form fields
+$string['username_help'] = 'Enter your Navigatr username. This should be a provider admin account that has access to manage badges.';
+$string['password_help'] = 'Enter your Navigatr password. This will be stored encrypted in the database for security.';
+$string['timeout_help'] = 'HTTP request timeout in seconds. Increase this if you experience timeout errors when communicating with the Navigatr API.';
+$string['loglevel_help'] = 'Set the logging level for debugging. Error: Only log errors. Info: Log important events. Debug: Log detailed information for troubleshooting.';
+$string['environment_help'] = 'Select the Navigatr environment to use for API calls. Production: Live environment for real badge issuance. Staging: Test environment for development and testing.';
+$string['provider_help'] = 'Select the Navigatr provider that owns the badges you want to issue. You must be a provider admin to access and manage badges.';
+$string['badge_help'] = 'Select the badge to issue when learners complete this course. The badge will be automatically issued to students upon course completion.';
+
+// Enhanced error messages
+$string['error_auth_failed'] = 'Authentication failed. Please check your username and password.';
+$string['error_network'] = 'Network error: Unable to reach Navigatr API. Check your server\'s internet connection.';
+$string['error_timeout'] = 'Request timed out after {$a} seconds. Try increasing the timeout setting.';
+$string['error_invalid_credentials'] = 'Invalid credentials (HTTP 401). Verify your username and password.';
+$string['error_server'] = 'Navigatr API server error (HTTP {$a}). Please try again later.';
+$string['error_not_found'] = 'Resource not found (HTTP 404). The badge or provider may have been deleted.';
+$string['error_no_providers'] = 'No providers found. Ensure your account has provider admin access.';
+
+// Help documentation links
+$string['help_center_url'] = 'https://help.navigatr.app/';
+$string['help_center_link'] = 'Visit Navigatr Help Centre';
+$string['help_setup_guide'] = 'Need help setting up? Visit our {$a}.';
+$string['help_badge_config'] = 'Learn more about badge configuration';
+
+// Security and password warnings
+$string['password_unmask_warning'] = 'Password will be visible when editing. It is stored encrypted in the database.';
+$string['security_note'] = 'All credentials are stored encrypted using Moodle\'s secure configuration storage.';
+
+// Menu descriptions
+$string['menu_description'] = 'Configure automatic badge issuance for course completion';
+$string['settings_description'] = 'Map this course to a Navigatr badge that will be automatically issued when learners complete the course.';

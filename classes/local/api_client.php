@@ -108,8 +108,8 @@ class api_client {
                 return (object) [
                     'ok' => false,
                     'code' => 401,
-                    'body' => ['error' => 'Authentication failed: ' . $e->getMessage()],
-                    'error' => 'Authentication failed',
+                    'body' => ['error' => get_string('error_auth_failed', 'local_navigatr') . ': ' . $e->getMessage()],
+                    'error' => get_string('error_auth_failed', 'local_navigatr'),
                 ];
             }
         }
@@ -150,7 +150,7 @@ class api_client {
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } elseif ($httpcode === false || $httpcode === null) {
-            $httpcode = 0; // Network error
+            $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
         
         // Check for cURL errors
@@ -164,14 +164,14 @@ class api_client {
                 $body = $response; // Return raw response if JSON decode fails
             }
         } elseif ($haserror) {
-            $body = ['error' => $curlerror ?: 'Network error'];
+            $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
         }
 
         return (object) [
             'ok' => !$haserror && $httpcode >= 200 && $httpcode < 300,
             'code' => $httpcode,
             'body' => $body,
-            'error' => $haserror ? ($curlerror ?: 'Network error') : null,
+            'error' => $haserror ? ($curlerror ?: get_string('error_network', 'local_navigatr')) : null,
         ];
     }
 
@@ -219,7 +219,7 @@ class api_client {
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } elseif ($httpcode === false || $httpcode === null) {
-            $httpcode = 0; // Network error
+            $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
         
         // Check for cURL errors
@@ -233,14 +233,14 @@ class api_client {
                 $body = $response; // Return raw response if JSON decode fails
             }
         } elseif ($haserror) {
-            $body = ['error' => $curlerror ?: 'Network error'];
+            $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
         }
 
         return (object) [
             'ok' => !$haserror && $httpcode >= 200 && $httpcode < 300,
             'code' => $httpcode,
             'body' => $body,
-            'error' => $haserror ? ($curlerror ?: 'Network error') : null,
+            'error' => $haserror ? ($curlerror ?: get_string('error_network', 'local_navigatr')) : null,
         ];
     }
 
@@ -287,7 +287,7 @@ class api_client {
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } elseif ($httpcode === false || $httpcode === null) {
-            $httpcode = 0; // Network error
+            $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
         
         // Check for cURL errors
@@ -301,14 +301,14 @@ class api_client {
                 $body = $response; // Return raw response if JSON decode fails
             }
         } elseif ($haserror) {
-            $body = ['error' => $curlerror ?: 'Network error'];
+            $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
         }
 
         return (object) [
             'ok' => !$haserror && $httpcode >= 200 && $httpcode < 300,
             'code' => $httpcode,
             'body' => $body,
-            'error' => $haserror ? ($curlerror ?: 'Network error') : null,
+            'error' => $haserror ? ($curlerror ?: get_string('error_network', 'local_navigatr')) : null,
         ];
     }
 

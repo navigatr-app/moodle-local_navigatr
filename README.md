@@ -2,15 +2,53 @@
 
 A Moodle local plugin that automatically issues Navigatr digital badges when learners complete courses.
 
+## Why Choose Navigatr?
+
+**Professional Digital Credentials**: Navigatr creates industry-standard digital badges that learners can proudly display on LinkedIn, resumes, and professional portfolios. [Navigatr Badge Framework](https://www.navigatr.org/navigatr-badge-framework) and [AI Badge Assistant](https://www.navigatr.org/badge-assistant) streamlines creating high quality badges in under a minute.
+
+**Instant Verification**: Every badge is verified and include a QR code, allowing employers and institutions to instantly verify authenticity and view detailed evidence of achievement.
+
+**Rich Evidence**: Badges showcase not just completion, but the specific skills, competencies, and evidence that led to the credential.
+
+**Portable & Shareable**: Learners receive a permanent, shareable digital credential that travels with them throughout their career.
+
+![Issued Badge](images/issued-badge.png)
+
+**Professional Certificates**: All badges can be exported as high-quality PDF certificates ready for printing and framing.
+
+![Certificate](images/certificate.png)
+
+**Ready to get started?** You'll need a Navigatr provider account to use this plugin. [Register for a free trial](https://stag.navigatr.app/register/plan/launch) to create and manage your digital badges.
+
 ## Overview
 
-This plugin integrates Moodle with the Navigatr badge platform, providing:
+This plugin integrates Moodle with the Navigatr badging platform, providing automatic badge issuance when learners complete courses.
+
+## Key Features
+
+### Core Functionality
 
 - **Automatic Badge Issuance**: Issues badges automatically when learners complete courses
 - **Course-to-Badge Mapping**: One-to-one mapping between courses and badges
 - **Multi-Environment Support**: Production and staging environments
 - **GDPR Compliance**: Full privacy API implementation
 - **Audit Trail**: Complete logging of badge issuance attempts
+
+### Enhanced User Experience
+
+- **Comprehensive Help System**: Help buttons on all form fields with detailed guidance
+- **Contextual Documentation**: Direct links to Navigatr Help Centre for additional support
+- **Improved Error Messages**: Specific, actionable error messages with troubleshooting steps
+- **Form Validation**: Enhanced form field validation with helpful error messages
+- **Security Warnings**: Clear information about credential storage and password visibility
+
+### Technical Features
+
+- **Token Management**: Automatic token refresh with lock-based concurrency control
+- **Caching**: Provider and badge caching (10-minute TTL) for improved performance
+- **Background Processing**: Adhoc task system with retry logic and exponential backoff
+- **API Integration**: Robust Navigatr API integration with comprehensive error handling
+- **Database Schema**: Optimized database tables for mappings and audit records
 
 ## Requirements
 
@@ -39,11 +77,12 @@ This plugin integrates Moodle with the Navigatr badge platform, providing:
 Navigate to **Site Administration → Plugins → Local plugins → Navigatr** to configure:
 
 - **Credentials**: Enter your Navigatr username and password. This user should be a provider admin on Navigatr.
-- **HTTP Timeout (Advanced)**: Configure request timeout (default: 30 seconds).
-- **Logging Level (Advanced)**: Set debug logging level (Error, Info, Debug).
+- **HTTP Timeout (Advanced)**: Configure request timeout (default: 30 seconds). Increase if you experience timeout errors.
+- **Logging Level (Advanced)**: Set debug logging level (Error, Info, Debug). Default is Error for production use.
 - **Environment (Advanced)**: If you would like to test with your account on the Navigatr Staging platform choose `Staging`.
 - **Test Connection**: Check your username and password are correct and a connection can be made (appears as a secondary button).
 - **Save Changes**: After saving your changes you are ready to configure your course mappings (appears as a primary button).
+- **Help Documentation**: Links to Navigatr Help Centre are provided for additional support.
 
 ![Admin Settings Page](images/plugin-settings.png)
 
@@ -148,17 +187,25 @@ The plugin implements Moodle's privacy API:
    - Verify Navigatr credentials are correct
    - Check environment setting matches your Navigatr account
    - Ensure Navigatr API is accessible from your Moodle server
+   - Check the detailed error message for specific guidance
 
 2. **No Providers Available**
    - Run "Test Connection" in admin settings
    - Verify your Navigatr account has access to providers
+   - Ensure your Navigatr user is a provider admin
 
 3. **Badge Issuance Fails**
    - Check audit records in database for error details
    - Verify user has required fields (email, firstname, lastname)
    - Check Navigatr API status
+   - Review error messages for specific troubleshooting steps
 
-4. **Observer Not Registered (Badge Issuance Not Triggered)**
+4. **Help and Support**
+   - Use the help documentation links provided in the plugin interface
+   - Visit the Navigatr Help Centre for detailed guides
+   - Check form field help buttons for contextual guidance
+
+5. **Observer Not Registered (Badge Issuance Not Triggered)**
    - Run Moodle upgrade to force observer registration:
 
      ```bash
@@ -236,10 +283,13 @@ moodle-plugin-ci phpunit
 
 ## Security Notes
 
-- Passwords are stored encrypted in Moodle's config
-- Access tokens are never logged
-- All API communications use HTTPS
-- User PII is only sent to Navigatr for badge issuance
+- **Credential Storage**: Passwords are stored encrypted using Moodle's secure configuration storage (`set_config()`)
+- **Token Management**: Access tokens are never logged and are automatically refreshed when expired
+- **HTTPS Communication**: All API communications use HTTPS with SSL verification enabled
+- **Data Privacy**: User PII (email, firstname, lastname) is only sent to Navigatr for badge issuance
+- **Password Visibility**: The password field uses `passwordunmask` for better UX - passwords are visible when editing but stored encrypted
+- **Access Control**: Badge issuance is restricted to users with appropriate course completion permissions
+- **Audit Trail**: All badge issuance attempts are logged for security and debugging purposes
 
 ## Versioning
 

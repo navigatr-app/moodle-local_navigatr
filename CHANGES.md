@@ -7,46 +7,73 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2025-01-07
 
-### Added
+### Added in 1.0.0
 
-- Initial release of Navigatr plugin
-- Automatic badge issuance on course completion
-- Site-level Navigatr API configuration
-- Course-level provider and badge mapping
-- Multi-environment support (production, staging)
-- Token management with automatic refresh
-- Caching for providers and badges
-- Complete audit trail for badge issuance
-- GDPR compliance with privacy API
-- Admin settings page with connection testing
-- Course settings integration
-- Adhoc task system for background badge issuance
-- Retry logic with exponential backoff
-- Idempotency protection against duplicate issuances
-- Comprehensive error handling and logging
-- Database schema for mappings and audit records
-- Capability-based access control
-- Language string support
-- README documentation
+- Complete Navigatr plugin with automatic badge issuance
+- Site-level API configuration and course-level badge mapping
+- Multi-environment support (production/staging)
+- Token management with automatic refresh and caching
+- Complete audit trail and GDPR compliance
+- Adhoc task system with retry logic and idempotency protection
 
-### Technical Details
+### Enhanced User Experience in 1.0.0
 
-- **Moodle Compatibility**: 4.1 LTS, 5.x
-- **PHP Requirements**: 8.2, 8.3
-- **Database Tables**: `local_navigatr_map`, `local_navigatr_audit`
-- **API Integration**: Navigatr REST API v1
-- **Caching**: Moodle Universal Cache (MUC)
+- Comprehensive help system with contextual documentation
+- Improved error messages with troubleshooting guidance
+- Enhanced form validation and security warnings
+- Direct links to Navigatr Help Centre
+
+### Code Quality Improvements in 1.0.0
+
+- Replaced raw HTML with `html_writer` API
+- Added 25+ language strings for complete i18n support
+- Enhanced error handling and form help text
+- Full compliance with Moodle coding standards
+
+### Technical Details in 1.0.0
+
+- **Moodle**: 4.1 LTS, 5.x | **PHP**: 8.2, 8.3
+- **Database**: `local_navigatr_map`, `local_navigatr_audit`
 - **Security**: Encrypted credential storage, HTTPS communication
 - **Privacy**: Full GDPR compliance with export/delete functionality
 
-### Features
+## [0.9.1] - 2025-10-09
 
-- One-to-one course-to-badge mapping
-- Automatic token refresh with lock-based concurrency control
-- Provider and badge caching (10-minute TTL)
-- Background task processing with retry logic
-- Comprehensive audit logging
-- Privacy API implementation
-- Multi-environment configuration
-- Admin connection testing
-- Course navigation integration
+### Added in 0.9.1
+
+- Enhanced course settings display and observer logging
+- Comprehensive test suite with PHP CodeSniffer and PHPMD
+- Developer documentation and testing instructions
+
+### Changed in 0.9.1
+
+- Restructured project files to root folder
+- Improved API client initialization and README documentation
+- Updated test workflows and CI/CD pipeline
+
+### Fixed in 0.9.1
+
+- Badge and provider selection functionality
+- Observer registration and error message sanitization
+- Course completion reset and test database setup
+
+### Removed in 0.9.1
+
+- Development environment configuration
+- Redundant test workflows and documentation artifacts
+
+## [0.9.0] - 2025-01-07
+
+### Added in 0.9.0
+
+- Initial beta release with core functionality
+- Automatic badge issuance and API configuration
+- Multi-environment support and token management
+- Complete audit trail and GDPR compliance
+- Database schema and capability-based access control
+
+### Technical Details in 0.9.0
+
+- **Moodle**: 4.1 LTS, 5.x | **PHP**: 8.2, 8.3
+- **Database**: `local_navigatr_map`, `local_navigatr_audit`
+- **API**: Navigatr REST API v1 with caching and security

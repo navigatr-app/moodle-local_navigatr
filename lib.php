@@ -38,7 +38,7 @@ function local_navigatr_extend_navigation_course($navigation, $course, $context)
             get_string('menu_name', 'local_navigatr'),
             $url,
             navigation_node::TYPE_SETTING,
-            null,
+            get_string('menu_description', 'local_navigatr'),
             'navigatr',
             new pix_icon('i/badge', '')
         );
@@ -59,7 +59,7 @@ function local_navigatr_extend_navigation_course_settings($navigation, $course, 
             get_string('menu_name', 'local_navigatr'),
             $url,
             navigation_node::TYPE_SETTING,
-            null,
+            get_string('menu_description', 'local_navigatr'),
             'navigatr',
             new pix_icon('i/badge', '')
         );

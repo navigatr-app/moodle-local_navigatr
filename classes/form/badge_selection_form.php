@@ -53,9 +53,11 @@ class badge_selection_form extends \moodleform {
         $mform->setType('provider_id', PARAM_INT);
 
         // Show selected provider
-        $mform->addElement('html', '<div class="alert alert-info">');
-        $mform->addElement('html', get_string('selected_provider', 'local_navigatr') . ': ' . s($provider_name));
-        $mform->addElement('html', '</div>');
+        $provider_info = \html_writer::div(
+            get_string('selected_provider', 'local_navigatr') . ': ' . s($provider_name),
+            'alert alert-info'
+        );
+        $mform->addElement('html', $provider_info);
 
         // Get badges for the selected provider
         $badges = $this->get_badges($provider_id);
@@ -72,6 +74,7 @@ class badge_selection_form extends \moodleform {
 
         $mform->addElement('select', 'badge_id', get_string('badge', 'local_navigatr'), $badgeoptions);
         $mform->setType('badge_id', PARAM_INT);
+        $mform->addHelpButton('badge_id', 'badge', 'local_navigatr');
         $mform->addRule('badge_id', get_string('required'), 'required', null, 'client');
 
         // Add submit button

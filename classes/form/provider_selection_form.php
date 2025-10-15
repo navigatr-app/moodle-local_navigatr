@@ -60,6 +60,7 @@ class provider_selection_form extends \moodleform {
 
         $mform->addElement('select', 'provider_id', get_string('provider', 'local_navigatr'), $provideroptions);
         $mform->setType('provider_id', PARAM_INT);
+        $mform->addHelpButton('provider_id', 'provider', 'local_navigatr');
         $mform->addRule('provider_id', get_string('required'), 'required', null, 'client');
 
         // Add submit button for provider selection
@@ -67,9 +68,11 @@ class provider_selection_form extends \moodleform {
 
         // Badge preview
         if ($mapping && $mapping->badge_image_url) {
-            $mform->addElement('html', '<div class="badge-preview">');
-            $mform->addElement('html', '<img src="' . s($mapping->badge_image_url) . '" alt="Badge preview" style="max-width: 100px; max-height: 100px;">');
-            $mform->addElement('html', '</div>');
+            $badge_img = \html_writer::img($mapping->badge_image_url, get_string('badge_preview', 'local_navigatr'), [
+                'style' => 'max-width: 100px; max-height: 100px;'
+            ]);
+            $badge_preview = \html_writer::div($badge_img, 'badge-preview');
+            $mform->addElement('html', $badge_preview);
         }
 
         // Hidden fields for badge details

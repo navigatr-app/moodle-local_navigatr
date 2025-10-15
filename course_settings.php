@@ -113,6 +113,15 @@ if ($data = $form->get_data()) {
 
 echo $OUTPUT->header();
 
+// Display help documentation link
+$help_url = get_string('help_center_url', 'local_navigatr');
+$help_link = \html_writer::link($help_url, get_string('help_center_link', 'local_navigatr'), [
+    'target' => '_blank',
+    'class' => 'btn btn-outline-info btn-sm'
+]);
+$help_text = get_string('help_badge_config', 'local_navigatr') . ' ' . $help_link;
+echo \core\notification::info($help_text);
+
 // Check if providers are available
 $providers = [];
 try {
@@ -127,40 +136,45 @@ try {
 
 // Display provider configuration notice if no providers available
 if (empty($providers)) {
-    echo '<div class="alert alert-info">';
-    echo '<i class="fa fa-info-circle" aria-hidden="true"></i> ';
-    echo get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php'));
-    echo '</div>';
+    echo \core\notification::info(get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php')));
 }
 
 // Display existing mapping if it exists
 if ($existing_mapping && $existing_provider && $existing_badge) {
-    echo '<div class="alert alert-info">';
-    echo '<h4>' . get_string('current_mapping', 'local_navigatr') . '</h4>';
+    echo \html_writer::start_div('alert alert-info');
+    echo \html_writer::tag('h4', get_string('current_mapping', 'local_navigatr'));
     
     // Add badge image if available
     if (!empty($existing_badge['image_url'])) {
-        echo '<div class="badge-image-container" style="float: left; margin-right: 15px; margin-bottom: 10px;">';
-        echo '<img src="' . s($existing_badge['image_url']) . '" alt="' . s($existing_badge['name']) . '" style="max-width: 100px; max-height: 100px; border-radius: 8px;">';
-        echo '</div>';
+        $badge_img = \html_writer::img($existing_badge['image_url'], $existing_badge['name'], [
+            'style' => 'max-width: 100px; max-height: 100px; border-radius: 8px;'
+        ]);
+        echo \html_writer::div($badge_img, 'badge-image-container', [
+            'style' => 'float: left; margin-right: 15px; margin-bottom: 10px;'
+        ]);
     }
     
-    echo '<div class="mapping-details">';
-    echo '<p>' . get_string('provider', 'local_navigatr') . ': ' . s($existing_provider['name']) . '</p>';
-    echo '<p>' . get_string('badge', 'local_navigatr') . ': ' . s($existing_badge['name']);
-    // Add badge link if available
+    echo \html_writer::start_div('mapping-details');
+    echo \html_writer::tag('p', get_string('provider', 'local_navigatr') . ': ' . s($existing_provider['name']));
+    
+    $badge_text = get_string('badge', 'local_navigatr') . ': ' . s($existing_badge['name']);
     if (!empty($existing_badge['url'])) {
-        echo ' <a href="' . s($existing_badge['url']) . '" target="_blank" class="btn btn-sm btn-link">' . get_string('view_badge', 'local_navigatr') . '</a>';
+        $badge_link = \html_writer::link($existing_badge['url'], get_string('view_badge', 'local_navigatr'), [
+            'target' => '_blank',
+            'class' => 'btn btn-sm btn-link'
+        ]);
+        $badge_text .= ' ' . $badge_link;
     }
-    echo '</p>';
+    echo \html_writer::tag('p', $badge_text);
+    
     if (!empty($existing_badge['description'])) {
-        echo '<p>' . get_string('badgedesc', 'local_navigatr') . ': ' . s($existing_badge['description']) . '</p>';
+        echo \html_writer::tag('p', get_string('badgedesc', 'local_navigatr') . ': ' . s($existing_badge['description']));
     }
-    echo '</div>';
+    echo \html_writer::end_div();
     
     // Clear float
-    echo '<div style="clear: both;"></div>';
-    echo '<div class="mt-3 d-flex gap-2">';
+    echo \html_writer::div('', '', ['style' => 'clear: both;']);
+    echo \html_writer::start_div('mt-3 d-flex gap-2');
     
     // Change mapping button
     $change_url = new \moodle_url('/local/navigatr/badge_selection.php', [
@@ -182,8 +196,8 @@ if ($existing_mapping && $existing_provider && $existing_badge) {
     ]);
     echo $remove_button;
     
-    echo '</div>';
-    echo '</div>';
+    echo \html_writer::end_div();
+    echo \html_writer::end_div();
 }
 
 $form->display();
