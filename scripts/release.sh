@@ -85,50 +85,85 @@ if ! git diff-index --quiet HEAD --; then
     exit 1
 fi
 
-# Generate changes summary from commit history
-print_status "Generating changes summary from commit history..."
+# Generate release notes from CHANGES.md or commit history
+print_status "Generating release notes..."
 LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
-CHANGES_SUMMARY=""
 
-if [ -z "$LAST_TAG" ]; then
-    # First release - get all commits
-    COMMIT_COUNT=$(git rev-list --count HEAD)
-    COMMIT_RANGE="HEAD"
-    CHANGES_SUMMARY=$(git log --pretty=format:"- %s (%h)" --no-merges)
-    if [ -z "$CHANGES_SUMMARY" ]; then
-        CHANGES_SUMMARY="Initial release of Navigatr plugin"
-    fi
-else
-    # Get commits since last tag
-    COMMIT_COUNT=$(git rev-list --count ${LAST_TAG}..HEAD)
-    COMMIT_RANGE="${LAST_TAG}..HEAD"
-    CHANGES_SUMMARY=$(git log --pretty=format:"- %s (%h)" --no-merges ${LAST_TAG}..HEAD)
-    if [ -z "$CHANGES_SUMMARY" ]; then
-        CHANGES_SUMMARY="Release ${NEW_VERSION} (no new commits since ${LAST_TAG})"
-    fi
-fi
-
-# Create detailed release notes
-RELEASE_NOTES="## Changes in this release
+# Try to extract release notes from CHANGES.md first
+if [ -f "CHANGES.md" ]; then
+    # Look for the specific version entry in CHANGES.md
+    VERSION_ENTRY=$(awk "/^## \[$NEW_VERSION\]/ {flag=1; next} /^## \[/ && flag {exit} flag" CHANGES.md)
+    if [ -n "$VERSION_ENTRY" ]; then
+        print_status "Using release notes from CHANGES.md for version $NEW_VERSION"
+        RELEASE_NOTES="$VERSION_ENTRY"
+    else
+        print_warning "No entry found in CHANGES.md for version $NEW_VERSION, using commit history"
+        # Fallback to commit-based summary
+        if [ -z "$LAST_TAG" ]; then
+            COMMIT_COUNT=$(git rev-list --count HEAD)
+            COMMIT_RANGE="HEAD"
+            CHANGES_SUMMARY=$(git log --pretty=format:"- %s (%h)" --no-merges)
+            if [ -z "$CHANGES_SUMMARY" ]; then
+                CHANGES_SUMMARY="Initial release of Navigatr plugin"
+            fi
+        else
+            COMMIT_COUNT=$(git rev-list --count ${LAST_TAG}..HEAD)
+            COMMIT_RANGE="${LAST_TAG}..HEAD"
+            CHANGES_SUMMARY=$(git log --pretty=format:"- %s (%h)" --no-merges ${LAST_TAG}..HEAD)
+            if [ -z "$CHANGES_SUMMARY" ]; then
+                CHANGES_SUMMARY="Release ${NEW_VERSION} (no new commits since ${LAST_TAG})"
+            fi
+        fi
+        RELEASE_NOTES="## Changes in this release
 
 **Commit Count:** ${COMMIT_COUNT} commits
 **Commit Range:** ${COMMIT_RANGE}
 
 ${CHANGES_SUMMARY}"
+    fi
+else
+    print_warning "CHANGES.md not found, using commit history for release notes"
+    # Fallback to commit-based summary
+    if [ -z "$LAST_TAG" ]; then
+        COMMIT_COUNT=$(git rev-list --count HEAD)
+        COMMIT_RANGE="HEAD"
+        CHANGES_SUMMARY=$(git log --pretty=format:"- %s (%h)" --no-merges)
+        if [ -z "$CHANGES_SUMMARY" ]; then
+            CHANGES_SUMMARY="Initial release of Navigatr plugin"
+        fi
+    else
+        COMMIT_COUNT=$(git rev-list --count ${LAST_TAG}..HEAD)
+        COMMIT_RANGE="${LAST_TAG}..HEAD"
+        CHANGES_SUMMARY=$(git log --pretty=format:"- %s (%h)" --no-merges ${LAST_TAG}..HEAD)
+        if [ -z "$CHANGES_SUMMARY" ]; then
+            CHANGES_SUMMARY="Release ${NEW_VERSION} (no new commits since ${LAST_TAG})"
+        fi
+    fi
+    RELEASE_NOTES="## Changes in this release
+
+**Commit Count:** ${COMMIT_COUNT} commits
+**Commit Range:** ${COMMIT_RANGE}
+
+${CHANGES_SUMMARY}"
+fi
 
 # Confirm release
 echo
 print_warning "About to create release $NEW_VERSION"
 echo "This will:"
 echo "  1. Update version.php to $NEW_VERSION"
-echo "  2. Update CHANGES.md with new version entry"
+echo "  2. Update CHANGES.md (preserve existing content, add new entry if needed)"
 echo "  3. Create release branch: release/$NEW_VERSION"
 echo "  4. Create Git tag: $NEW_VERSION"
-echo "  5. Create GitHub release with changes summary"
+echo "  5. Create GitHub release with release notes from CHANGES.md"
 echo "  6. Update develop branch to next dev version"
 echo
-echo "Changes summary:"
-echo "$CHANGES_SUMMARY"
+echo "Release notes source:"
+if [ -f "CHANGES.md" ] && grep -q "^## \[$NEW_VERSION\]" CHANGES.md; then
+    echo "  ✅ Using existing CHANGES.md content for GitHub release"
+else
+    echo "  ⚠️  Using commit history for GitHub release (no CHANGES.md entry found)"
+fi
 echo
 read -p "Continue? (y/N): " -n 1 -r
 echo
@@ -145,38 +180,44 @@ sed -i.bak "s/\$plugin->release   = '.*';/\$plugin->release   = '$NEW_VERSION';/
 rm version.php.bak
 print_success "Updated version.php to $NEW_VERSION"
 
-# Step 2: Update CHANGES.md
-print_status "Updating CHANGES.md..."
-TODAY=$(date +%Y-%m-%d)
+# Step 2: Update CHANGES.md (only if version entry doesn't exist)
+print_status "Checking CHANGES.md for version $NEW_VERSION..."
 
-# Create new changelog entry with changes summary
-cat > changelog_entry.tmp << EOF
+if [ -f "CHANGES.md" ]; then
+    # Check if version entry already exists
+    if grep -q "^## \[$NEW_VERSION\]" CHANGES.md; then
+        print_status "Version $NEW_VERSION entry already exists in CHANGES.md, preserving existing content"
+    else
+        print_status "Adding new version entry to CHANGES.md..."
+        TODAY=$(date +%Y-%m-%d)
+        
+        # Create new changelog entry with changes summary
+        cat > changelog_entry.tmp << EOF
 ## [$NEW_VERSION] - $TODAY
 
 ### Changes in this release
-**Commit Count:** ${COMMIT_COUNT} commits
-**Commit Range:** ${COMMIT_RANGE}
+**Commit Count:** ${COMMIT_COUNT:-0} commits
+**Commit Range:** ${COMMIT_RANGE:-HEAD}
 
-${CHANGES_SUMMARY}
+${CHANGES_SUMMARY:-Release $NEW_VERSION}
 
 EOF
 
-# Insert new entry after the header
-if [ -f CHANGES.md ]; then
-    # Find the line number after the header (after the second ##)
-    INSERT_LINE=$(awk '/^## \[/ {if(++count==1) print NR; exit}' CHANGES.md)
-    if [ -n "$INSERT_LINE" ]; then
-        # Insert the new entry
-        head -n $((INSERT_LINE-1)) CHANGES.md > CHANGES.md.tmp
-        cat changelog_entry.tmp >> CHANGES.md.tmp
-        tail -n +$INSERT_LINE CHANGES.md >> CHANGES.md.tmp
-        mv CHANGES.md.tmp CHANGES.md
-    else
-        # If no existing entries, append to end
-        cat changelog_entry.tmp >> CHANGES.md
+        # Insert new entry after the header
+        INSERT_LINE=$(awk '/^## \[/ {if(++count==1) print NR; exit}' CHANGES.md)
+        if [ -n "$INSERT_LINE" ]; then
+            # Insert the new entry
+            head -n $((INSERT_LINE-1)) CHANGES.md > CHANGES.md.tmp
+            cat changelog_entry.tmp >> CHANGES.md.tmp
+            tail -n +$INSERT_LINE CHANGES.md >> CHANGES.md.tmp
+            mv CHANGES.md.tmp CHANGES.md
+        else
+            # If no existing entries, append to end
+            cat changelog_entry.tmp >> CHANGES.md
+        fi
+        rm changelog_entry.tmp
+        print_success "Added new version entry to CHANGES.md"
     fi
-    rm changelog_entry.tmp
-    print_success "Updated CHANGES.md"
 else
     print_warning "CHANGES.md not found, skipping changelog update"
 fi
