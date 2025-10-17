@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -51,7 +52,7 @@ if ($data && confirm_sesskey()) {
         $username = $data->username ?? '';
         $password = $data->password ?? '';
         $environment = $data->env ?? 'production';
-        
+
         $result = \local_navigatr\local\api_client::test_connection($username, $password, $environment);
         if ($result->ok) {
             \core\notification::success(get_string('connection_success_simple', 'local_navigatr'));
@@ -69,24 +70,6 @@ if ($data && confirm_sesskey()) {
             }
             \core\notification::error($errormsg);
         }
-    } else {
-        // Save settings
-        if (isset($data->env)) {
-            set_config('env', $data->env, 'local_navigatr');
-        }
-        if (isset($data->username)) {
-            set_config('username', $data->username, 'local_navigatr');
-        }
-        if (isset($data->password)) {
-            \local_navigatr\local\password_manager::store_password($data->password);
-        }
-        if (isset($data->timeout)) {
-            set_config('timeout', $data->timeout, 'local_navigatr');
-        }
-        if (isset($data->loglevel)) {
-            set_config('loglevel', $data->loglevel, 'local_navigatr');
-        }
-        \core\notification::success(get_string('settingssaved', 'local_navigatr'));
     }
 }
 

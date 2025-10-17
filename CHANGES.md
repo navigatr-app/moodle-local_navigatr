@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security Fixes in 1.0.1
 
 - Fixed password storage - password is now encrypted with AES-256-CBC before database storage. Replaced plain text password storage with secure encryption
+- Removed the else block in data_submitted() processing that was saving settings without validation.
 
 ### Technical Improvements in 1.0.1
 
