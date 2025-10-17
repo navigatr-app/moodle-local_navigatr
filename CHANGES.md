@@ -7,14 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.1] - 2025-11-17
 
-### Security Fixes in 1.0.1
+### Fixes in 1.0.1
 
 - Fixed password storage - password is now encrypted with AES-256-CBC before database storage. Replaced plain text password storage with secure encryption
 - Removed the else block in data_submitted() processing that was saving settings without validation.
-
-### Technical Improvements in 1.0.1
-
-- Fixed undefined property warnings for different Moodle versions
+- Updated settings_page.php to use 'local/navigatr:managecredentials' instead of 'moodle/site:config'. Added missing language strings for capabilities and cache definitions.
 
 ## [1.0.0] - 2025-11-15
 

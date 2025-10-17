@@ -27,7 +27,7 @@ require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
 require_login();
-require_capability('moodle/site:config', context_system::instance());
+require_capability('local/navigatr:managecredentials', context_system::instance());
 
 $PAGE->set_url('/local/navigatr/settings_page.php');
 $PAGE->set_context(context_system::instance());

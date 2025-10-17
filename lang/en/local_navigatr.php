@@ -134,3 +134,19 @@ $string['security_note'] = 'All credentials are encrypted using AES-256-CBC encr
 // Menu descriptions
 $string['menu_description'] = 'Configure automatic badge issuance for course completion';
 $string['settings_description'] = 'Map this course to a Navigatr badge that will be automatically issued when learners complete the course.';
+
+// Capability strings
+$string['navigatr:managecredentials'] = 'Manage Navigatr credentials';
+$string['navigatr:managecredentials_desc'] = 'Allows users to configure Navigatr API credentials and settings';
+$string['navigatr:configurecourse'] = 'Configure Navigatr badge mapping';
+$string['navigatr:configurecourse_desc'] = 'Allows users to map courses to Navigatr badges for automatic issuance';
+
+// Cache definition strings
+$string['cachedef_providers'] = 'Navigatr providers cache';
+$string['cachedef_providers_desc'] = 'Caches provider information from Navigatr API to improve performance';
+$string['cachedef_badges'] = 'Navigatr badges cache';
+$string['cachedef_badges_desc'] = 'Caches badge information from Navigatr API to improve performance';
+$string['cachedef_user_detail'] = 'Navigatr user detail cache';
+$string['cachedef_user_detail_desc'] = 'Caches user detail information from Navigatr API to improve performance';
+$string['cachedef_locks'] = 'Navigatr locks cache';
+$string['cachedef_locks_desc'] = 'Caches lock information for Navigatr operations to prevent conflicts';
