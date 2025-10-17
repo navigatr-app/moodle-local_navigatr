@@ -283,7 +283,7 @@ moodle-plugin-ci phpunit
 
 ## Security Notes
 
-- **Credential Storage**: Passwords are stored encrypted using Moodle's secure configuration storage (`set_config()`)
+- **Credential Storage**: Passwords are encrypted using AES-256-CBC encryption with site-specific keys before storage
 - **Token Management**: Access tokens are never logged and are automatically refreshed when expired
 - **HTTPS Communication**: All API communications use HTTPS with SSL verification enabled
 - **Data Privacy**: User PII (email, firstname, lastname) is only sent to Navigatr for badge issuance

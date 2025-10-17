@@ -125,7 +125,7 @@ class token_manager {
      */
     private static function reauth() {
         $username = get_config('local_navigatr', 'username');
-        $password = get_config('local_navigatr', 'password');
+        $password = \local_navigatr\local\password_manager::get_password();
 
         if (empty($username) || empty($password)) {
             throw new \moodle_exception('auth_failed', 'local_navigatr');

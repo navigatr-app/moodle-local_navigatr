@@ -39,7 +39,7 @@ if ($data && confirm_sesskey()) {
     if (isset($data->removeconnection)) {
         // Handle remove connection
         unset_config('username', 'local_navigatr');
-        unset_config('password', 'local_navigatr');
+        \local_navigatr\local\password_manager::clear_password();
         unset_config('access_token', 'local_navigatr');
         unset_config('access_expires_at', 'local_navigatr');
         unset_config('refresh_token', 'local_navigatr');
@@ -78,7 +78,7 @@ if ($data && confirm_sesskey()) {
             set_config('username', $data->username, 'local_navigatr');
         }
         if (isset($data->password)) {
-            set_config('password', $data->password, 'local_navigatr');
+            \local_navigatr\local\password_manager::store_password($data->password);
         }
         if (isset($data->timeout)) {
             set_config('timeout', $data->timeout, 'local_navigatr');
@@ -106,7 +106,7 @@ echo \core\notification::info($help_text);
 
 // Check if credentials are configured
 $current_username = get_config('local_navigatr', 'username');
-$current_password = get_config('local_navigatr', 'password');
+$current_password = \local_navigatr\local\password_manager::get_password();
 
 // Display Remove Connection button if credentials are configured
 if (!empty($current_username) && !empty($current_password)) {
@@ -134,7 +134,7 @@ if ($data = $form->get_data()) {
     // Form was submitted and validated
     set_config('env', $data->env, 'local_navigatr');
     set_config('username', $data->username, 'local_navigatr');
-    set_config('password', $data->password, 'local_navigatr');
+    \local_navigatr\local\password_manager::store_password($data->password);
     set_config('timeout', $data->timeout, 'local_navigatr');
     set_config('loglevel', $data->loglevel, 'local_navigatr');
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));

@@ -101,7 +101,7 @@ $string['badge_preview'] = 'Badge Preview';
 
 // Help text for form fields
 $string['username_help'] = 'Enter your Navigatr username. This should be a provider admin account that has access to manage badges.';
-$string['password_help'] = 'Enter your Navigatr password. This will be stored encrypted in the database for security.';
+$string['password_help'] = 'Enter your Navigatr password. This will be encrypted before storage.';
 $string['timeout_help'] = 'HTTP request timeout in seconds. Increase this if you experience timeout errors when communicating with the Navigatr API.';
 $string['loglevel_help'] = 'Set the logging level for debugging. Error: Only log errors. Info: Log important events. Debug: Log detailed information for troubleshooting.';
 $string['environment_help'] = 'Select the Navigatr environment to use for API calls. Production: Live environment for real badge issuance. Staging: Test environment for development and testing.';
@@ -117,6 +117,10 @@ $string['error_server'] = 'Navigatr API server error (HTTP {$a}). Please try aga
 $string['error_not_found'] = 'Resource not found (HTTP 404). The badge or provider may have been deleted.';
 $string['error_no_providers'] = 'No providers found. Ensure your account has provider admin access.';
 
+// Password encryption errors
+$string['encryption_failed'] = 'Password encryption failed. Please try again.';
+$string['decryption_failed'] = 'Password decryption failed. Please reconfigure your credentials.';
+
 // Help documentation links
 $string['help_center_url'] = 'https://help.navigatr.app/';
 $string['help_center_link'] = 'Visit Navigatr Help Centre';
@@ -124,8 +128,8 @@ $string['help_setup_guide'] = 'Need help setting up? Visit our {$a}.';
 $string['help_badge_config'] = 'Learn more about badge configuration';
 
 // Security and password warnings
-$string['password_unmask_warning'] = 'Password will be visible when editing. It is stored encrypted in the database.';
-$string['security_note'] = 'All credentials are stored encrypted using Moodle\'s secure configuration storage.';
+$string['password_unmask_warning'] = 'Password will be visible when editing. It is encrypted before storage.';
+$string['security_note'] = 'All credentials are encrypted using AES-256-CBC encryption with site-specific keys.';
 
 // Menu descriptions
 $string['menu_description'] = 'Configure automatic badge issuance for course completion';

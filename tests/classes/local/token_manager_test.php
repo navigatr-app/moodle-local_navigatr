@@ -133,7 +133,7 @@ class token_manager_test extends advanced_testcase {
         
         // Clear credentials
         unset_config('username', 'local_navigatr');
-        unset_config('password', 'local_navigatr');
+        \local_navigatr\local\password_manager::clear_password();
         
         // Test that method exists and handles missing credentials
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
@@ -147,7 +147,7 @@ class token_manager_test extends advanced_testcase {
         
         // Set credentials
         set_config('username', 'test_user', 'local_navigatr');
-        set_config('password', 'test_password', 'local_navigatr');
+        \local_navigatr\local\password_manager::store_password('test_password');
         
         // Test that method exists
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
