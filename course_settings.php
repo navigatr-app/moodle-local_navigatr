@@ -40,17 +40,6 @@ $PAGE->set_context($context);
 $PAGE->set_title(get_string('select_provider', 'local_navigatr'));
 $PAGE->set_heading($course->fullname . ' - ' . get_string('select_provider', 'local_navigatr'));
 
-// Handle AJAX requests
-if (optional_param('action', '', PARAM_ALPHA) === 'getbadges') {
-    $providerid = required_param('provider_id', PARAM_INT);
-    
-    $badges = \local_navigatr\local\api_client::get_badges_for_provider($providerid);
-    
-    header('Content-Type: application/json');
-    echo json_encode($badges);
-    exit;
-}
-
 // Handle remove mapping action
 if (optional_param('action', '', PARAM_ALPHA) === 'removemapping') {
     require_sesskey();
