@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed password storage - password is now encrypted with AES-256-CBC before database storage. Replaced plain text password storage with secure encryption
 - Removed the else block in data_submitted() processing that was saving settings without validation.
 - Updated settings_page.php to use 'local/navigatr:managecredentials' instead of 'moodle/site:config'. Added missing language strings for capabilities and cache definitions.
+- Access tokens now stored in cache with 4-minute TTL
 
 ## [1.0.0] - 2025-11-15
 

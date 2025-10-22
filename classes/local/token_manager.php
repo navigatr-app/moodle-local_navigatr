@@ -38,18 +38,17 @@ class token_manager {
      * @throws \moodle_exception If authentication fails
      */
     public static function get_access_token() {
-        $accesstoken = get_config('local_navigatr', 'access_token');
-        $expiresat = get_config('local_navigatr', 'access_expires_at');
+        $cache = \cache::make('local_navigatr', 'tokens');
+        $accesstoken = $cache->get('access_token');
 
-        // Check if token is still valid (with 60 second buffer)
-        if (!empty($accesstoken) && !empty($expiresat) && time() < ($expiresat - 60)) {
+        if (!empty($accesstoken)) {
             return $accesstoken;
         }
 
-        // Token expired or missing, need to refresh/re-authenticate
+        // Token missing or expired, need to refresh/re-authenticate
         self::refresh_or_reauth_with_lock();
         
-        $accesstoken = get_config('local_navigatr', 'access_token');
+        $accesstoken = $cache->get('access_token');
         if (empty($accesstoken)) {
             throw new \moodle_exception('auth_failed', 'local_navigatr');
         }
@@ -72,10 +71,10 @@ class token_manager {
 
         try {
             // Double-check after acquiring lock
-            $accesstoken = get_config('local_navigatr', 'access_token');
-            $expiresat = get_config('local_navigatr', 'access_expires_at');
+            $cache = \cache::make('local_navigatr', 'tokens');
+            $accesstoken = $cache->get('access_token');
 
-            if (!empty($accesstoken) && !empty($expiresat) && time() < ($expiresat - 60)) {
+            if (!empty($accesstoken)) {
                 return; // Another process already refreshed
             }
 
@@ -159,16 +158,15 @@ class token_manager {
         $refreshtoken = $tokens['refresh_token'] ?? '';
         $idtoken = $tokens['id_token'] ?? '';
 
-        // Access token expires in 5 minutes
-        $accessexpires = time() + 300;
+        // Store access token in cache (4-minute TTL)
+        if (!empty($accesstoken)) {
+            $cache = \cache::make('local_navigatr', 'tokens');
+            $cache->set('access_token', $accesstoken);
+        }
         
-        // Refresh token expires in 1 day (if provided)
-        $refreshexpires = !empty($refreshtoken) ? time() + 86400 : 0;
-
-        set_config('access_token', $accesstoken, 'local_navigatr');
-        set_config('access_expires_at', $accessexpires, 'local_navigatr');
-        
+        // Store refresh token encrypted in config table (1 day TTL)
         if (!empty($refreshtoken)) {
+            $refreshexpires = time() + 86400;
             set_config('refresh_token', $refreshtoken, 'local_navigatr');
             set_config('refresh_expires_at', $refreshexpires, 'local_navigatr');
         }
