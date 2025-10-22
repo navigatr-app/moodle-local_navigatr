@@ -44,8 +44,11 @@ if (empty($provider_id)) {
 $course = get_course($courseid);
 require_login($course);
 
+// Get course context
+$context = context_course::instance($courseid);
+
 // Check capabilities
-require_capability('local/navigatr:configurecourse', context_course::instance($courseid));
+require_capability('local/navigatr:configurecourse', $context);
 
 // Get provider name
 $providers = [];
@@ -66,6 +69,7 @@ try {
 
 // Set up page
 $PAGE->set_url('/local/navigatr/badge_selection.php', ['id' => $courseid, 'provider_id' => $provider_id]);
+$PAGE->set_context($context);
 $PAGE->set_title(get_string('select_badge', 'local_navigatr'));
 $PAGE->set_heading(get_string('select_badge', 'local_navigatr'));
 

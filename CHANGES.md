@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Access tokens now stored in cache with 4-minute TTL
 - Replaced optional_param with required_param and removed unnecessary empty checks
 - Privacy provider moved to correct location and implemented `delete_data_for_all_users_in_context`
+- Added proper context handling
 
 ## [1.0.0] - 2025-11-15
 
