@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Privacy provider moved to correct location and implemented `delete_data_for_all_users_in_context`
 - Added proper context handling
 - Removed unused AJAX handler
+- Replaced manual `require_login()` and `require_capability()` calls with `admin_externalpage_setup('local_navigatr_settings')`
 
 ## [1.0.0] - 2025-11-15
 
