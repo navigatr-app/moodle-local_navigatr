@@ -195,4 +195,22 @@ class provider implements
                 "courseid = :courseid AND userid $insql", $params);
         }
     }
+
+    /**
+     * Delete all user data for the specified context.
+     *
+     * @param \context $context The specific context to delete data for.
+     */
+    public static function delete_data_for_all_users_in_context(\context $context) {
+        global $DB;
+
+        if ($context->contextlevel != CONTEXT_COURSE) {
+            return;
+        }
+
+        $courseid = $context->instanceid;
+        
+        // Delete all audit records for this course
+        $DB->delete_records('local_navigatr_audit', ['courseid' => $courseid]);
+    }
 }

@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated settings_page.php to use 'local/navigatr:managecredentials' instead of 'moodle/site:config'. Added missing language strings for capabilities and cache definitions.
 - Access tokens now stored in cache with 4-minute TTL
 - Replaced optional_param with required_param and removed unnecessary empty checks
+- Privacy provider moved to correct location and implemented `delete_data_for_all_users_in_context`
 
 ## [1.0.0] - 2025-11-15
 
