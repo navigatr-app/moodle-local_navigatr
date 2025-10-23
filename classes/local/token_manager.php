@@ -122,7 +122,7 @@ class token_manager {
      *
      * @throws \moodle_exception If authentication fails
      */
-    private static function reauth() {
+    public static function reauth() {
         $username = get_config('local_navigatr', 'username');
         $password = \local_navigatr\local\password_manager::get_password();
 
