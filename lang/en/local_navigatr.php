@@ -27,7 +27,6 @@ $string['menu_name'] = 'Navigatr Badge';
 
 // Admin settings
 $string['environment'] = 'Environment';
-$string['environment_help'] = 'Select the Navigatr environment to use for API calls';
 $string['environment_production'] = 'Production';
 $string['environment_staging'] = 'Staging';
 $string['username'] = 'Navigatr Username';
@@ -41,10 +40,6 @@ $string['advanced_settings'] = 'Advanced Settings';
 $string['test_connection'] = 'Test Connection';
 $string['settingssaved'] = 'Settings saved successfully';
 
-// Connection test
-$string['connection_success'] = 'Authenticated as {$a->email}. Found {$a->count} providers.';
-$string['connection_error'] = 'Authentication failed: HTTP {$a->code} — {$a->message}';
-
 // Course mapping
 $string['provider'] = 'Provider';
 $string['badge'] = 'Badge';
@@ -53,13 +48,17 @@ $string['select_badge'] = 'Select a badge';
 $string['badgedesc'] = 'Badge Description';
 $string['save_mapping'] = 'Save Mapping';
 $string['mapping_saved'] = 'Badge mapping saved successfully';
+$string['unknown_provider'] = 'Unknown Provider';
+$string['unknown_course'] = 'Unknown Course';
+$string['no_mapping_found'] = 'No mapping found for course';
 
 // Errors
 $string['missing_mapping'] = 'No badge mapping found for this course';
 $string['missing_user_fields'] = 'User missing required fields (email, firstname, lastname)';
-$string['issue_failed'] = 'Badge issuance failed: HTTP {$a}';
 $string['auth_failed'] = 'Authentication failed';
 $string['timeout_invalid'] = 'Timeout must be between 1 and 300 seconds';
+$string['invalid_method'] = 'Invalid method: {$a}';
+$string['missing_user_field'] = 'Missing user field: {$a}';
 
 // Privacy
 $string['privacy:metadata:local_navigatr_audit'] = 'Badge issuance audit records';
@@ -94,7 +93,9 @@ $string['connection_removed'] = 'Navigatr connection has been removed successful
 $string['connection_success_simple'] = 'Connection successful!';
 $string['connection_failed'] = 'Connection failed';
 $string['network_error_or_timeout'] = 'Network error or timeout';
-$string['connection_failed_details'] = 'Connection failed: {$a}';
+$string['connection_successful'] = 'Connection successful!';
+$string['connection_failed_generic'] = 'Connection failed';
+$string['user_agent'] = 'Moodle-Navigatr-Plugin/1.0';
 
 // Badge preview
 $string['badge_preview'] = 'Badge Preview';
@@ -111,9 +112,7 @@ $string['badge_help'] = 'Select the badge to issue when learners complete this c
 // Enhanced error messages
 $string['error_auth_failed'] = 'Authentication failed. Please check your username and password.';
 $string['error_network'] = 'Network error: Unable to reach Navigatr API. Check your server\'s internet connection.';
-$string['error_timeout'] = 'Request timed out after {$a} seconds. Try increasing the timeout setting.';
 $string['error_invalid_credentials'] = 'Invalid credentials (HTTP 401). Verify your username and password.';
-$string['error_server'] = 'Navigatr API server error (HTTP {$a}). Please try again later.';
 $string['error_not_found'] = 'Resource not found (HTTP 404). The badge or provider may have been deleted.';
 $string['error_no_providers'] = 'No providers found. Ensure your account has provider admin access.';
 

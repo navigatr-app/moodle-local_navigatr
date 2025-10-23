@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced manual `require_login()` and `require_capability()` calls with `admin_externalpage_setup('local_navigatr_settings')`
 - Handle session timeout gracefully in plugin settings page
 - Replaced html_writer with Mustache templates and Output API
+- Moved hard-coded language strings to the language file
 
 ## [1.0.0] - 2025-11-15
 

@@ -95,7 +95,7 @@ class api_client {
         $http_headers = [
             'Accept: application/json',
             'Content-Type: application/json',
-            'User-Agent: Moodle-Navigatr-Plugin/1.0',
+            'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
         ];
 
         // Add Bearer token if authentication is required
@@ -138,7 +138,7 @@ class api_client {
             $response = $curl->get($url, null, $curloptions);
         } else {
             # Raise an error
-            throw new \moodle_exception('Invalid method: ' . $method);
+            throw new \moodle_exception(get_string('invalid_method', 'local_navigatr', $method));
         }
         
         // Get response info
@@ -197,7 +197,7 @@ class api_client {
             'CURLOPT_HTTPHEADER' => [
                 'Accept: application/json',
                 'Content-Type: application/x-www-form-urlencoded',
-                'User-Agent: Moodle-Navigatr-Plugin/1.0',
+                'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
             ],
         ];
 
@@ -265,7 +265,7 @@ class api_client {
             'CURLOPT_HTTPHEADER' => [
                 'Accept: application/json',
                 'Content-Type: application/x-www-form-urlencoded',
-                'User-Agent: Moodle-Navigatr-Plugin/1.0',
+                'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
             ],
         ];
 

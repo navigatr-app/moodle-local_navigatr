@@ -48,7 +48,7 @@ class issue_badge_task extends \core\task\adhoc_task {
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
         if (!$mapping) {
             $this->write_audit($userid, $courseid, 0, 0, 'error', 404, 
-                json_encode(['error' => 'No mapping found for course']));
+                json_encode(['error' => get_string('no_mapping_found', 'local_navigatr')]));
             return;
         }
 
@@ -60,7 +60,7 @@ class issue_badge_task extends \core\task\adhoc_task {
         foreach ($requiredfields as $field) {
             if (empty($user->$field)) {
                 $this->write_audit($userid, $courseid, $mapping->provider_id, $mapping->badge_id, 
-                    'error', 400, json_encode(['error' => "Missing user field: {$field}"]));
+                    'error', 400, json_encode(['error' => get_string('missing_user_field', 'local_navigatr', $field)]));
                 return;
             }
         }
@@ -82,7 +82,7 @@ class issue_badge_task extends \core\task\adhoc_task {
 
             // Get course name for evidence text
             $course = $DB->get_record('course', ['id' => $courseid], 'fullname');
-            $course_name = $course ? $course->fullname : 'Unknown Course';
+            $course_name = $course ? $course->fullname : get_string('unknown_course', 'local_navigatr');
 
             // Get course completion score if available
             $score = $this->get_course_score($userid, $courseid);
