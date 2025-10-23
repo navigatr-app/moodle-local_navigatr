@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced html_writer with Mustache templates and Output API
 - Moved hard-coded language strings to the language file
 - Changed reauth() method from private to public
+- Implemented Behat step definitions and simplified scenarios
+- Improved observer tests with real behaviour validation
 
 ## [1.0.0] - 2025-11-15
 

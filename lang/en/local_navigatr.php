@@ -149,3 +149,19 @@ $string['cachedef_user_detail'] = 'Navigatr user detail cache';
 $string['cachedef_user_detail_desc'] = 'Caches user detail information from Navigatr API to improve performance';
 $string['cachedef_locks'] = 'Navigatr locks cache';
 $string['cachedef_locks_desc'] = 'Caches lock information for Navigatr operations to prevent conflicts';
+
+// Test-related strings
+$string['connection_successful'] = 'Connection successful';
+$string['badge_mapping_saved'] = 'Badge mapping saved successfully';
+$string['badge_issued_successfully'] = 'Badge issued successfully';
+$string['badge_issuance_queued'] = 'Badge issuance queued for retry';
+$string['duplicate_badge_prevented'] = 'Duplicate badge issuance prevented';
+$string['navigatr_badge_records'] = 'Navigatr badge issuance records';
+$string['user_data_deleted'] = 'User data deleted successfully';
+$string['api_unavailable'] = 'API unavailable';
+$string['user_not_found'] = 'User not found';
+$string['course_not_found'] = 'Course not found';
+$string['test_connection'] = 'Test Connection';
+$string['save_changes'] = 'Save changes';
+$string['create_export_request'] = 'Create new data export request';
+$string['create_deletion_request'] = 'Create new data deletion request';

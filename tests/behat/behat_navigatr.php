@@ -24,11 +24,12 @@
 
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 
 /**
  * Navigatr plugin Behat context
  */
-class behat_navigatr implements Context {
+class behat_navigatr extends \behat_base implements Context {
 
     /**
      * Navigate to Navigatr admin settings
@@ -36,7 +37,12 @@ class behat_navigatr implements Context {
      * @Given I navigate to Navigatr admin settings
      */
     public function i_navigate_to_navigatr_admin_settings() {
-        // Implementation for navigating to admin settings
+        $this->execute('behat_navigation::i_navigate_to_node_in', [
+            'Site administration',
+            'Plugins',
+            'Local plugins',
+            'Navigatr'
+        ]);
     }
 
     /**
@@ -46,7 +52,23 @@ class behat_navigatr implements Context {
      * @param TableNode $table
      */
     public function i_configure_navigatr_credentials(TableNode $table) {
-        // Implementation for configuring credentials
+        $data = $table->getRowsHash();
+        
+        // Set username
+        if (isset($data['username'])) {
+            $this->execute('behat_forms::i_set_the_field_to', [
+                'Username',
+                $data['username']
+            ]);
+        }
+        
+        // Set password
+        if (isset($data['password'])) {
+            $this->execute('behat_forms::i_set_the_field_to', [
+                'Password',
+                $data['password']
+            ]);
+        }
     }
 
     /**
@@ -55,7 +77,10 @@ class behat_navigatr implements Context {
      * @When I test the Navigatr connection
      */
     public function i_test_the_navigatr_connection() {
-        // Implementation for testing connection
+        $this->execute('behat_general::i_click_on', [
+            'Test Connection',
+            'button'
+        ]);
     }
 
     /**
@@ -65,7 +90,23 @@ class behat_navigatr implements Context {
      * @param TableNode $table
      */
     public function i_map_course_to_navigatr_badge(TableNode $table) {
-        // Implementation for mapping course to badge
+        $data = $table->getRowsHash();
+        
+        // Set provider
+        if (isset($data['provider'])) {
+            $this->execute('behat_forms::i_set_the_field_to', [
+                'Provider',
+                $data['provider']
+            ]);
+        }
+        
+        // Set badge
+        if (isset($data['badge'])) {
+            $this->execute('behat_forms::i_set_the_field_to', [
+                'Badge',
+                $data['badge']
+            ]);
+        }
     }
 
     /**
@@ -74,7 +115,17 @@ class behat_navigatr implements Context {
      * @When I complete the course
      */
     public function i_complete_the_course() {
-        // Implementation for completing course
+        // Navigate to course completion
+        $this->execute('behat_navigation::i_navigate_to_node_in', [
+            'Course administration',
+            'Completion'
+        ]);
+        
+        // Mark course as complete
+        $this->execute('behat_general::i_click_on', [
+            'Mark as complete',
+            'button'
+        ]);
     }
 
     /**
@@ -83,7 +134,9 @@ class behat_navigatr implements Context {
      * @Then I should see badge issuance in audit log
      */
     public function i_should_see_badge_issuance_in_audit_log() {
-        // Implementation for checking audit log
+        $this->execute('behat_general::i_should_see', [
+            'Badge issued successfully'
+        ]);
     }
 
     /**
@@ -92,7 +145,8 @@ class behat_navigatr implements Context {
      * @Given the Navigatr API is unavailable
      */
     public function the_navigatr_api_is_unavailable() {
-        // Implementation for simulating API unavailability
+        // Set a configuration to simulate API unavailability
+        set_config('api_unavailable', 1, 'local_navigatr');
     }
 
     /**
@@ -101,7 +155,9 @@ class behat_navigatr implements Context {
      * @Then the badge issuance should be queued for retry
      */
     public function the_badge_issuance_should_be_queued_for_retry() {
-        // Implementation for checking queued badge issuance
+        $this->execute('behat_general::i_should_see', [
+            'Badge issuance queued for retry'
+        ]);
     }
 
     /**
@@ -110,7 +166,9 @@ class behat_navigatr implements Context {
      * @Then only one badge should be issued
      */
     public function only_one_badge_should_be_issued() {
-        // Implementation for checking duplicate prevention
+        $this->execute('behat_general::i_should_see', [
+            'Duplicate badge issuance prevented'
+        ]);
     }
 
     /**
@@ -120,7 +178,30 @@ class behat_navigatr implements Context {
      * @param string $username
      */
     public function i_create_a_data_export_request_for($username) {
-        // Implementation for creating data export request
+        // Navigate to privacy settings
+        $this->execute('behat_navigation::i_navigate_to_node_in', [
+            'Site administration',
+            'Privacy and policies',
+            'Data requests'
+        ]);
+        
+        // Create export request
+        $this->execute('behat_general::i_click_on', [
+            'Create new data export request',
+            'button'
+        ]);
+        
+        // Select user
+        $this->execute('behat_forms::i_set_the_field_to', [
+            'User',
+            $username
+        ]);
+        
+        // Submit request
+        $this->execute('behat_general::i_click_on', [
+            'Submit',
+            'button'
+        ]);
     }
 
     /**
@@ -130,7 +211,7 @@ class behat_navigatr implements Context {
      * @param string $text
      */
     public function i_should_see_in_the_export($text) {
-        // Implementation for checking data export
+        $this->execute('behat_general::i_should_see', [$text]);
     }
 
     /**
@@ -140,7 +221,30 @@ class behat_navigatr implements Context {
      * @param string $username
      */
     public function i_create_a_data_deletion_request_for($username) {
-        // Implementation for creating data deletion request
+        // Navigate to privacy settings
+        $this->execute('behat_navigation::i_navigate_to_node_in', [
+            'Site administration',
+            'Privacy and policies',
+            'Data requests'
+        ]);
+        
+        // Create deletion request
+        $this->execute('behat_general::i_click_on', [
+            'Create new data deletion request',
+            'button'
+        ]);
+        
+        // Select user
+        $this->execute('behat_forms::i_set_the_field_to', [
+            'User',
+            $username
+        ]);
+        
+        // Submit request
+        $this->execute('behat_general::i_click_on', [
+            'Submit',
+            'button'
+        ]);
     }
 
     /**
@@ -149,6 +253,9 @@ class behat_navigatr implements Context {
      * @Then the Navigatr audit records should be deleted
      */
     public function the_navigatr_audit_records_should_be_deleted() {
-        // Implementation for checking data deletion
+        $this->execute('behat_general::i_should_see', [
+            'User data deleted successfully'
+        ]);
     }
+
 }

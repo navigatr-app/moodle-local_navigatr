@@ -48,22 +48,50 @@ class issue_badge_task_test extends advanced_testcase {
     public function test_execute_with_valid_data() {
         $this->resetAfterTest();
         
+        // Create test user and course
+        $user = $this->getDataGenerator()->create_user();
+        $course = $this->getDataGenerator()->create_course();
+        
         // Create test data
         $task = new issue_badge_task();
-        $task->userid = 1;
-        $task->courseid = 1;
+        $task->userid = $user->id;
+        $task->courseid = $course->id;
         $task->provider_id = 'test_provider';
         $task->badge_id = 'test_badge';
         $task->badge_name = 'Test Badge';
         $task->badge_image_url = 'https://example.com/badge.png';
         
         // Test that task can be created and configured
-        $this->assertEquals(1, $task->userid);
-        $this->assertEquals(1, $task->courseid);
+        $this->assertEquals($user->id, $task->userid);
+        $this->assertEquals($course->id, $task->courseid);
         $this->assertEquals('test_provider', $task->provider_id);
         $this->assertEquals('test_badge', $task->badge_id);
         $this->assertEquals('Test Badge', $task->badge_name);
         $this->assertEquals('https://example.com/badge.png', $task->badge_image_url);
+        
+        // Test task execution (mock API calls)
+        $this->set_config('api_unavailable', 0, 'local_navigatr');
+        $this->set_config('username', 'test_user', 'local_navigatr');
+        $this->set_config('password', 'test_password', 'local_navigatr');
+        
+        // Execute task
+        $result = $task->execute();
+        
+        // Verify task executed successfully
+        $this->assertTrue($result);
+        
+        // Verify audit record was created
+        global $DB;
+        $audit_records = $DB->get_records('local_navigatr_audit', [
+            'userid' => $user->id,
+            'courseid' => $course->id
+        ]);
+        $this->assertCount(1, $audit_records);
+        
+        $audit_record = reset($audit_records);
+        $this->assertEquals($user->id, $audit_record->userid);
+        $this->assertEquals($course->id, $audit_record->courseid);
+        $this->assertEquals('test_badge', $audit_record->badge_id);
     }
 
     /**
@@ -95,12 +123,43 @@ class issue_badge_task_test extends advanced_testcase {
     public function test_audit_record_creation() {
         $this->resetAfterTest();
         
-        // Test that audit record creation method exists
-        $reflection = new \ReflectionClass(issue_badge_task::class);
-        $this->assertTrue($reflection->hasMethod('create_audit_record'));
+        // Create test user and course
+        $user = $this->getDataGenerator()->create_user();
+        $course = $this->getDataGenerator()->create_course();
         
-        $method = $reflection->getMethod('create_audit_record');
-        $this->assertTrue($method->isPrivate());
+        // Create task
+        $task = new issue_badge_task();
+        $task->userid = $user->id;
+        $task->courseid = $course->id;
+        $task->provider_id = 'test_provider';
+        $task->badge_id = 'test_badge';
+        $task->badge_name = 'Test Badge';
+        $task->badge_image_url = 'https://example.com/badge.png';
+        
+        // Execute task
+        $this->set_config('api_unavailable', 0, 'local_navigatr');
+        $this->set_config('username', 'test_user', 'local_navigatr');
+        $this->set_config('password', 'test_password', 'local_navigatr');
+        
+        $result = $task->execute();
+        $this->assertTrue($result);
+        
+        // Verify audit record was created with correct data
+        global $DB;
+        $audit_records = $DB->get_records('local_navigatr_audit', [
+            'userid' => $user->id,
+            'courseid' => $course->id
+        ]);
+        $this->assertCount(1, $audit_records);
+        
+        $audit_record = reset($audit_records);
+        $this->assertEquals($user->id, $audit_record->userid);
+        $this->assertEquals($course->id, $audit_record->courseid);
+        $this->assertEquals('test_provider', $audit_record->provider_id);
+        $this->assertEquals('test_badge', $audit_record->badge_id);
+        $this->assertEquals('Test Badge', $audit_record->badge_name);
+        $this->assertEquals('https://example.com/badge.png', $audit_record->badge_image_url);
+        $this->assertEquals('success', $audit_record->status);
     }
 
     /**
@@ -128,14 +187,39 @@ class issue_badge_task_test extends advanced_testcase {
     public function test_missing_user_handling() {
         $this->resetAfterTest();
         
+        // Create test course
+        $course = $this->getDataGenerator()->create_course();
+        
         $task = new issue_badge_task();
         $task->userid = 99999; // Non-existent user
-        $task->courseid = 1;
+        $task->courseid = $course->id;
         $task->provider_id = 'test_provider';
         $task->badge_id = 'test_badge';
+        $task->badge_name = 'Test Badge';
+        $task->badge_image_url = 'https://example.com/badge.png';
         
-        // Test that method exists and can handle missing users
-        $this->assertTrue(method_exists($task, 'execute'));
+        // Set up configuration
+        $this->set_config('api_unavailable', 0, 'local_navigatr');
+        $this->set_config('username', 'test_user', 'local_navigatr');
+        $this->set_config('password', 'test_password', 'local_navigatr');
+        
+        // Execute task - should handle missing user gracefully
+        $result = $task->execute();
+        
+        // Task should complete but with error status
+        $this->assertTrue($result);
+        
+        // Verify audit record was created with error status
+        global $DB;
+        $audit_records = $DB->get_records('local_navigatr_audit', [
+            'userid' => 99999,
+            'courseid' => $course->id
+        ]);
+        $this->assertCount(1, $audit_records);
+        
+        $audit_record = reset($audit_records);
+        $this->assertEquals('error', $audit_record->status);
+        $this->assertStringContainsString('User not found', $audit_record->error_message);
     }
 
     /**
@@ -209,8 +293,41 @@ class issue_badge_task_test extends advanced_testcase {
     public function test_http_error_handling() {
         $this->resetAfterTest();
         
-        // Test that method exists and can handle HTTP errors
-        $this->assertTrue(method_exists(issue_badge_task::class, 'execute'));
+        // Create test user and course
+        $user = $this->getDataGenerator()->create_user();
+        $course = $this->getDataGenerator()->create_course();
+        
+        // Create task
+        $task = new issue_badge_task();
+        $task->userid = $user->id;
+        $task->courseid = $course->id;
+        $task->provider_id = 'test_provider';
+        $task->badge_id = 'test_badge';
+        $task->badge_name = 'Test Badge';
+        $task->badge_image_url = 'https://example.com/badge.png';
+        
+        // Set up configuration to simulate API error
+        $this->set_config('api_unavailable', 1, 'local_navigatr');
+        $this->set_config('username', 'test_user', 'local_navigatr');
+        $this->set_config('password', 'test_password', 'local_navigatr');
+        
+        // Execute task
+        $result = $task->execute();
+        
+        // Task should complete but with error status
+        $this->assertTrue($result);
+        
+        // Verify audit record was created with error status
+        global $DB;
+        $audit_records = $DB->get_records('local_navigatr_audit', [
+            'userid' => $user->id,
+            'courseid' => $course->id
+        ]);
+        $this->assertCount(1, $audit_records);
+        
+        $audit_record = reset($audit_records);
+        $this->assertEquals('error', $audit_record->status);
+        $this->assertStringContainsString('API unavailable', $audit_record->error_message);
     }
 
     /**

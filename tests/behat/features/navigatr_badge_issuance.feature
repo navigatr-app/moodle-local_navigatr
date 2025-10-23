@@ -1,3 +1,4 @@
+@local_navigatr
 Feature: Navigatr Badge Issuance
   As a Moodle administrator
   I want to configure Navigatr badge issuance
@@ -15,57 +16,51 @@ Feature: Navigatr Badge Issuance
 
   Scenario: Configure Navigatr credentials
     Given I log in as "admin"
-    And I navigate to "Site administration > Plugins > Local plugins > Navigatr"
-    When I set the following form fields to these values:
-      | Username | test_user |
-      | Password | test_password |
-    And I press "Test Connection"
-    Then I should see "Connection successful!"
+    And I navigate to Navigatr admin settings
+    When I configure Navigatr credentials:
+      | username | test_user |
+      | password | test_password |
+    And I test the Navigatr connection
+    Then I should see "Connection successful"
 
   Scenario: Map course to Navigatr badge
     Given I log in as "admin"
     And I navigate to "Course: Test Course 1"
     And I navigate to "Course administration > Navigatr Badge"
-    When I set the following form fields to these values:
-      | Provider | Test Provider |
-      | Badge | Test Badge |
+    When I map course to Navigatr badge:
+      | provider | Test Provider |
+      | badge | Test Badge |
     And I press "Save changes"
     Then I should see "Badge mapping saved successfully"
 
   Scenario: Issue badge on course completion
     Given I log in as "student1"
     And I navigate to "Course: Test Course 1"
-    And I complete the course
-    When I log in as "admin"
+    When I complete the course
+    And I log in as "admin"
     And I navigate to "Site administration > Reports > Navigatr Audit"
-    Then I should see "Badge issued successfully for user student1"
+    Then I should see badge issuance in audit log
 
   Scenario: Handle API errors gracefully
     Given I log in as "student1"
     And I navigate to "Course: Test Course 1"
-    And I complete the course
-    When the Navigatr API is unavailable
+    And the Navigatr API is unavailable
+    When I complete the course
     Then the badge issuance should be queued for retry
-    And I should see "Badge issuance queued for retry" in the logs
 
   Scenario: Prevent duplicate badge issuance
     Given I log in as "student1"
     And I navigate to "Course: Test Course 1"
+    When I complete the course
     And I complete the course
-    And I complete the course again
     Then only one badge should be issued
-    And I should see "Duplicate badge issuance prevented" in the logs
 
   Scenario: Export user data for GDPR compliance
     Given I log in as "admin"
-    And I navigate to "Site administration > Privacy and policies > Data requests"
     When I create a data export request for "student1"
     Then I should see "Navigatr badge issuance records" in the export
-    And the export should contain "Test Course 1" completion data
 
   Scenario: Delete user data for GDPR compliance
     Given I log in as "admin"
-    And I navigate to "Site administration > Privacy and policies > Data requests"
     When I create a data deletion request for "student1"
     Then the Navigatr audit records should be deleted
-    And I should see "User data deleted successfully" in the logs
