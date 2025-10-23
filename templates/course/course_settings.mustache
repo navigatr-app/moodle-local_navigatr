@@ -1,0 +1,32 @@
+{{#existing_mapping}}
+<div class="alert alert-info current-mapping">
+    <h4>{{#str}}current_mapping, local_navigatr{{/str}}</h4>
+    
+    <div class="mapping-content">
+        {{#badge_image_url}}
+        <div class="badge-image-container">
+            <img src="{{badge_image_url}}" alt="{{badge_name}}" />
+        </div>
+        {{/badge_image_url}}
+        
+        <div class="mapping-details">
+            <p><strong>{{#str}}provider, local_navigatr{{/str}}:</strong> {{provider_name}}</p>
+            
+            <p><strong>{{#str}}badge, local_navigatr{{/str}}:</strong> {{badge_name}}
+                {{#badge_url}}
+                <a href="{{badge_url}}" target="_blank" class="btn btn-sm btn-link">{{#str}}view_badge, local_navigatr{{/str}}</a>
+                {{/badge_url}}
+            </p>
+            
+            {{#badge_description}}
+            <p><strong>{{#str}}badgedesc, local_navigatr{{/str}}:</strong> {{badge_description}}</p>
+            {{/badge_description}}
+        </div>
+    </div>
+    
+    <div class="mapping-actions">
+        <a href="{{change_url}}" class="btn btn-secondary">{{#str}}change_mapping, local_navigatr{{/str}}</a>
+        <a href="{{remove_url}}" class="btn btn-outline-danger" onclick="return confirm('{{#str}}remove_mapping_confirm, local_navigatr{{/str}}')">{{#str}}remove_mapping, local_navigatr{{/str}}</a>
+    </div>
+</div>
+{{/existing_mapping}}

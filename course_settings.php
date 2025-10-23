@@ -123,66 +123,13 @@ if (empty($providers)) {
     echo \core\notification::info(get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php')));
 }
 
-// Display existing mapping if it exists
-if ($existing_mapping && $existing_provider && $existing_badge) {
-    echo \html_writer::start_div('alert alert-info');
-    echo \html_writer::tag('h4', get_string('current_mapping', 'local_navigatr'));
-    
-    // Add badge image if available
-    if (!empty($existing_badge['image_url'])) {
-        $badge_img = \html_writer::img($existing_badge['image_url'], $existing_badge['name'], [
-            'style' => 'max-width: 100px; max-height: 100px; border-radius: 8px;'
-        ]);
-        echo \html_writer::div($badge_img, 'badge-image-container', [
-            'style' => 'float: left; margin-right: 15px; margin-bottom: 10px;'
-        ]);
-    }
-    
-    echo \html_writer::start_div('mapping-details');
-    echo \html_writer::tag('p', get_string('provider', 'local_navigatr') . ': ' . s($existing_provider['name']));
-    
-    $badge_text = get_string('badge', 'local_navigatr') . ': ' . s($existing_badge['name']);
-    if (!empty($existing_badge['url'])) {
-        $badge_link = \html_writer::link($existing_badge['url'], get_string('view_badge', 'local_navigatr'), [
-            'target' => '_blank',
-            'class' => 'btn btn-sm btn-link'
-        ]);
-        $badge_text .= ' ' . $badge_link;
-    }
-    echo \html_writer::tag('p', $badge_text);
-    
-    if (!empty($existing_badge['description'])) {
-        echo \html_writer::tag('p', get_string('badgedesc', 'local_navigatr') . ': ' . s($existing_badge['description']));
-    }
-    echo \html_writer::end_div();
-    
-    // Clear float
-    echo \html_writer::div('', '', ['style' => 'clear: both;']);
-    echo \html_writer::start_div('mt-3 d-flex gap-2');
-    
-    // Change mapping button
-    $change_url = new \moodle_url('/local/navigatr/badge_selection.php', [
-        'id' => $courseid,
-        'provider_id' => $existing_mapping->provider_id
-    ]);
-    $change_button = $OUTPUT->single_button($change_url, get_string('change_mapping', 'local_navigatr'), 'get', ['class' => 'btn-link']);
-    echo $change_button;
-    
-    // Remove mapping button with confirmation
-    $remove_url = new \moodle_url('/local/navigatr/course_settings.php', [
-        'id' => $courseid,
-        'action' => 'removemapping',
-        'sesskey' => sesskey()
-    ]);
-    $remove_button = $OUTPUT->single_button($remove_url, get_string('remove_mapping', 'local_navigatr'), 'get', [
-        'class' => 'btn-danger',
-        'onclick' => 'return confirm(\'' . get_string('remove_mapping_confirm', 'local_navigatr') . '\')'
-    ]);
-    echo $remove_button;
-    
-    echo \html_writer::end_div();
-    echo \html_writer::end_div();
-}
+// Display existing mapping if it exists using template
+echo \local_navigatr\output\course_settings_output::render_current_mapping(
+    $existing_mapping, 
+    $existing_provider, 
+    $existing_badge, 
+    $courseid
+);
 
 $form->display();
 
