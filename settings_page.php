@@ -105,6 +105,13 @@ if (!empty($current_username) && !empty($current_password)) {
     echo \html_writer::end_div();
 }
 
+// Handle session timeout gracefully
+$data = data_submitted();
+if ($data && !confirm_sesskey()) {
+    // Session expired, redirect to refresh the page
+    redirect(new moodle_url('/local/navigatr/settings_page.php'));
+}
+
 // Create form
 $form = new \local_navigatr\form\admin_settings_form();
 
