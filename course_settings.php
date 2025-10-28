@@ -70,10 +70,39 @@ if ($existing_mapping) {
         $badge_response = $client->get("/badge/{$existing_mapping->badge_id}");
         if ($badge_response->ok) {
             $existing_badge = $badge_response->body;
+            
+            // Update cached badge metadata if it has changed
+            $needs_update = false;
+            if ($existing_mapping->badge_name !== ($existing_badge['name'] ?? null)) {
+                $existing_mapping->badge_name = $existing_badge['name'] ?? null;
+                $needs_update = true;
+            }
+            if ($existing_mapping->badge_image_url !== ($existing_badge['image_url'] ?? null)) {
+                $existing_mapping->badge_image_url = $existing_badge['image_url'] ?? null;
+                $needs_update = true;
+            }
+            
+            if ($needs_update) {
+                $existing_mapping->timemodified = time();
+                $DB->update_record('local_navigatr_map', $existing_mapping);
+            }
+        } else {
+            // API call failed, use cached data
+            $existing_badge = [
+                'name' => $existing_mapping->badge_name ?? 'Unknown Badge',
+                'image_url' => $existing_mapping->badge_image_url ?? null,
+                'description' => null,
+                'url' => null
+            ];
         }
     } catch (Exception $e) {
-        // If API calls fail, we'll just show the form without existing info
-        $existing_mapping = null;
+        // If API calls fail, use cached data
+        $existing_badge = [
+            'name' => $existing_mapping->badge_name ?? 'Unknown Badge',
+            'image_url' => $existing_mapping->badge_image_url ?? null,
+            'description' => null,
+            'url' => null
+        ];
     }
 }
 

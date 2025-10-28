@@ -94,6 +94,19 @@ if ($form->is_cancelled()) {
     $mapping->timecreated = time();
     $mapping->timemodified = time();
     
+    // Fetch badge metadata from API
+    try {
+        $client = new \local_navigatr\local\api_client();
+        $badge_response = $client->get("/badge/{$data->badge_id}");
+        if ($badge_response->ok && isset($badge_response->body)) {
+            $mapping->badge_name = $badge_response->body['name'] ?? null;
+            $mapping->badge_image_url = $badge_response->body['image_url'] ?? null;
+        }
+    } catch (Exception $e) {
+        // If API call fails, leave fields as null - will be populated later
+        error_log("Failed to fetch badge metadata: " . $e->getMessage());
+    }
+    
     // Check if mapping already exists
     $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
     if ($existing) {
