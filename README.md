@@ -60,13 +60,8 @@ This plugin integrates Moodle with the Navigatr badging platform, providing auto
 
 1. You will first need a Navigatr provider account. If you don't have an account, you can sign up for a free trial at [https://stag.navigatr.app/register/plan/launch](https://stag.navigatr.app/register/plan/launch)
 2. Copy the plugin files to `local/navigatr/` in your Moodle installation. The following files and folders are optional and can be omitted:
-   - `/scripts` (development automation)
-   - `/tests` (test files)
-   - `/images` (documentation screenshots)
    - `/.github` (CI/CD configuration)
    - `/.gitignore` (Git configuration)
-   - `/CHANGES.md` (development documentation)
-   - `/README.md` (development documentation)
 3. Visit the Moodle admin notifications page to install the plugin
 4. Configure Navigatr credentials in Site Administration → Plugins → Local plugins → Navigatr
 
@@ -80,8 +75,8 @@ Navigate to **Site Administration → Plugins → Local plugins → Navigatr** t
 - **HTTP Timeout (Advanced)**: Configure request timeout (default: 30 seconds). Increase if you experience timeout errors.
 - **Logging Level (Advanced)**: Set debug logging level (Error, Info, Debug). Default is Error for production use.
 - **Environment (Advanced)**: If you would like to test with your account on the Navigatr Staging platform choose `Staging`.
-- **Test Connection**: Check your username and password are correct and a connection can be made (appears as a secondary button).
-- **Save Changes**: After saving your changes you are ready to configure your course mappings (appears as a primary button).
+- **Test Connection**: Check your username and password are correct and a connection can be made.
+- **Save Changes**: After saving your changes you are ready to configure your course mappings.
 - **Help Documentation**: Links to Navigatr Help Centre are provided for additional support.
 
 ![Admin Settings Page](images/plugin-settings.png)
