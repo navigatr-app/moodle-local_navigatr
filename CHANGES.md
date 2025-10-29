@@ -5,7 +5,27 @@ All notable changes to the Navigatr plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2025-11-29
+## [1.1.0] - 2024-10-29
+
+### Major Security & Quality Improvements
+
+This release delivers a major security and code quality enhancement, systematically addressing identified vulnerabilities whilst modernising the code base to meet current Moodle development standards. The improvements span security hardening, performance optimisation, and user experience refinements.
+
+### Security Enhancements in 1.1.0
+
+- Password encryption with AES-256-CBC
+- Form validation improvements
+- Capability system modernization
+- Event-based logging system
+- GDPR compliance improvements
+
+### Code Quality Improvements in 1.1.0
+
+- Template system modernization
+- Parameter handling standardization
+- Unused code removal
+- Test infrastructure enhancement
+- Audit logging integration
 
 ### Fixes in 1.1.0
 
@@ -39,8 +59,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed unused functions from cache.php and provider_selection_form.php
 - Added core event triggers for audit logging integration with Moodle's logging system
 - Simplified parameter handling by replacing optional_param with required_param
+- Resolved deduplication key concern by confirming badge IDs are globally unique across providers
 
-## [1.0.0] - 2025-11-15
+## [1.0.0] - 2024-11-15
 
 ### Added in 1.0.0
 
