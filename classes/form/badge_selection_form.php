@@ -45,8 +45,8 @@ class badge_selection_form extends \moodleform {
         $provider_name = $this->_customdata['provider_name'];
 
         // Add hidden course ID
-        $mform->addElement('hidden', 'courseid', $courseid);
-        $mform->setType('courseid', PARAM_INT);
+        $mform->addElement('hidden', 'id', $courseid);
+        $mform->setType('id', PARAM_INT);
 
         // Add hidden provider ID
         $mform->addElement('hidden', 'provider_id', $provider_id);

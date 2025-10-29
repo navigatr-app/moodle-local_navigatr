@@ -25,14 +25,8 @@
 require_once('../../config.php');
 require_once($CFG->dirroot . '/local/navigatr/classes/form/badge_selection_form.php');
 
-// Get course ID from URL parameter or form data
-$courseid = optional_param('id', 0, PARAM_INT);
-if (empty($courseid)) {
-    $courseid = optional_param('courseid', 0, PARAM_INT);
-}
-if (empty($courseid)) {
-    throw new \moodle_exception('missingparam', 'error', '', 'id');
-}
+// Get course ID from URL parameter
+$courseid = required_param('id', PARAM_INT);
 
 // Get provider ID from URL parameter or form data  
 $provider_id = optional_param('provider_id', 0, PARAM_INT);
