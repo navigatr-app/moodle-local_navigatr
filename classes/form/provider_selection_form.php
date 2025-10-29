@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,17 +32,18 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * Provider selection form class.
  */
-class provider_selection_form extends \moodleform {
-
+class provider_selection_form extends \moodleform
+{
     /**
      * Form definition.
      */
-    public function definition() {
+    public function definition()
+    {
         global $DB;
-        
+
         $mform = $this->_form;
         $courseid = $this->_customdata['courseid'];
-        
+
         // Form action will be set automatically by Moodle
 
         // Add hidden field to preserve course ID
@@ -88,7 +90,8 @@ class provider_selection_form extends \moodleform {
      *
      * @return array Providers array
      */
-    private function get_providers() {
+    private function get_providers()
+    {
         try {
             // Check cache first for user details
             $cached_user = \local_navigatr\local\cache::get_user_detail();
@@ -104,17 +107,16 @@ class provider_selection_form extends \moodleform {
             if ($response->ok && is_array($response->body) && isset($response->body['providers'])) {
                 // Cache the entire user detail response
                 \local_navigatr\local\cache::set_user_detail($response->body);
-                
+
                 // Store the user ID for future use
                 if (isset($response->body['id'])) {
                     set_config('nav_user_id', $response->body['id'], 'local_navigatr');
                 }
-                
+
                 return $response->body['providers'];
             }
 
             return [];
-
         } catch (\Exception $e) {
             // Trigger event for failed API request
             $eventdata = \local_navigatr\event\api_request_failed::create([
@@ -128,5 +130,4 @@ class provider_selection_form extends \moodleform {
             return [];
         }
     }
-
 }

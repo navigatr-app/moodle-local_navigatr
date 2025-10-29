@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -33,14 +34,15 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class token_refresh_failed extends \core\event\base {
-
+class token_refresh_failed extends \core\event\base
+{
     /**
      * Init method.
      *
      * @return void
      */
-    protected function init() {
+    protected function init()
+    {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
@@ -50,10 +52,11 @@ class token_refresh_failed extends \core\event\base {
      *
      * @return string
      */
-    public function get_description() {
+    public function get_description()
+    {
         $error = isset($this->other['error']) ? $this->other['error'] : 'unknown error';
         $environment = isset($this->other['environment']) ? $this->other['environment'] : 'unknown';
-        
+
         return "Token refresh failed for {$environment} environment. Error: {$error}.";
     }
 
@@ -62,7 +65,8 @@ class token_refresh_failed extends \core\event\base {
      *
      * @return string
      */
-    public static function get_name() {
+    public static function get_name()
+    {
         return get_string('eventtokenrefreshfailed', 'local_navigatr');
     }
 
@@ -71,7 +75,8 @@ class token_refresh_failed extends \core\event\base {
      *
      * @return \moodle_url
      */
-    public function get_url() {
+    public function get_url()
+    {
         return new \moodle_url('/admin/settings.php', ['section' => 'local_navigatr']);
     }
 
@@ -81,7 +86,8 @@ class token_refresh_failed extends \core\event\base {
      * @throws \coding_exception
      * @return void
      */
-    protected function validate_data() {
+    protected function validate_data()
+    {
         parent::validate_data();
 
         if (!isset($this->other['error'])) {
@@ -89,4 +95,3 @@ class token_refresh_failed extends \core\event\base {
         }
     }
 }
-

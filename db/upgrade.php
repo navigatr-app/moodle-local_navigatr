@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -27,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Post upgrade hook.
  */
-function xmldb_local_navigatr_upgrade($oldversion) {
+function xmldb_local_navigatr_upgrade($oldversion)
+{
     return true;
 }

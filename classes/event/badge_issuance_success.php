@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -29,12 +30,13 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Badge issuance success event class.
  */
-class badge_issuance_success extends \core\event\base {
-
+class badge_issuance_success extends \core\event\base
+{
     /**
      * Initialise the event.
      */
-    protected function init() {
+    protected function init()
+    {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'local_navigatr_audit';
@@ -46,7 +48,8 @@ class badge_issuance_success extends \core\event\base {
      *
      * @return string
      */
-    public static function get_name() {
+    public static function get_name()
+    {
         return get_string('event_badge_issuance_success', 'local_navigatr');
     }
 
@@ -55,11 +58,12 @@ class badge_issuance_success extends \core\event\base {
      *
      * @return string
      */
-    public function get_description() {
+    public function get_description()
+    {
         $badgeid = isset($this->other['badge_id']) ? $this->other['badge_id'] : 'unknown';
         $providerid = isset($this->other['provider_id']) ? $this->other['provider_id'] : 'unknown';
         $httpcode = isset($this->other['http_code']) ? $this->other['http_code'] : 'unknown';
-        
+
         return "User {$this->userid} successfully received badge '{$badgeid}' from provider '{$providerid}' for course {$this->courseid} (HTTP {$httpcode})";
     }
 
@@ -68,7 +72,8 @@ class badge_issuance_success extends \core\event\base {
      *
      * @return \moodle_url
      */
-    public function get_url() {
+    public function get_url()
+    {
         return new \moodle_url('/course/view.php', ['id' => $this->courseid]);
     }
 
@@ -77,7 +82,8 @@ class badge_issuance_success extends \core\event\base {
      *
      * @return array
      */
-    protected function get_legacy_logdata() {
+    protected function get_legacy_logdata()
+    {
         return [
             $this->courseid,
             'local_navigatr',

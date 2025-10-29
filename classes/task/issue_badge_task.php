@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -32,12 +33,13 @@ require_once(__DIR__ . '/../../classes/local/api_client.php');
 /**
  * Adhoc task for issuing Navigatr badges.
  */
-class issue_badge_task extends \core\task\adhoc_task {
-
+class issue_badge_task extends \core\task\adhoc_task
+{
     /**
      * Execute the task.
      */
-    public function execute() {
+    public function execute()
+    {
         global $DB;
 
         $data = $this->get_custom_data();
@@ -49,13 +51,20 @@ class issue_badge_task extends \core\task\adhoc_task {
 
         // Get user details
         $user = \core_user::get_user($userid, 'id,email,firstname,lastname', MUST_EXIST);
-        
+
         // Validate required user fields
         $requiredfields = ['email', 'firstname', 'lastname'];
         foreach ($requiredfields as $field) {
             if (empty($user->$field)) {
-                $this->write_audit($userid, $courseid, $mapping->provider_id, $mapping->badge_id, 
-                    'error', 400, json_encode(['error' => get_string('missing_user_field', 'local_navigatr', $field)]));
+                $this->write_audit(
+                    $userid,
+                    $courseid,
+                    $mapping->provider_id,
+                    $mapping->badge_id,
+                    'error',
+                    400,
+                    json_encode(['error' => get_string('missing_user_field', 'local_navigatr', $field)])
+                );
                 return;
             }
         }
@@ -102,24 +111,37 @@ class issue_badge_task extends \core\task\adhoc_task {
             // Handle 401 - try re-authentication once
             if ($response->code === 401) {
                 \local_navigatr\local\token_manager::reauth();
-                
+
                 $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
             }
 
             // Write audit record
-            $this->write_audit($userid, $courseid, $mapping->provider_id, $mapping->badge_id,
-                $response->ok ? 'success' : 'error', $response->code, json_encode($response->body));
+            $this->write_audit(
+                $userid,
+                $courseid,
+                $mapping->provider_id,
+                $mapping->badge_id,
+                $response->ok ? 'success' : 'error',
+                $response->code,
+                json_encode($response->body)
+            );
 
             // Throw exception for terminal failures to allow Moodle retries
             if (!$response->ok && $response->code >= 500) {
                 throw new \moodle_exception('issue_failed', 'local_navigatr', '', $response->code);
             }
-
         } catch (\Exception $e) {
             // Write error audit record
-            $this->write_audit($userid, $courseid, $mapping->provider_id, $mapping->badge_id,
-                'error', 500, json_encode(['error' => $e->getMessage()]));
-            
+            $this->write_audit(
+                $userid,
+                $courseid,
+                $mapping->provider_id,
+                $mapping->badge_id,
+                'error',
+                500,
+                json_encode(['error' => $e->getMessage()])
+            );
+
             // Re-throw to allow Moodle retry mechanism
             throw $e;
         }
@@ -132,7 +154,8 @@ class issue_badge_task extends \core\task\adhoc_task {
      * @param int $courseid Course ID
      * @return int|null Course score (0-100) or null if not available
      */
-    private function get_course_score($userid, $courseid) {
+    private function get_course_score($userid, $courseid)
+    {
         global $DB;
 
         // Try to get final grade from gradebook
@@ -184,11 +207,12 @@ class issue_badge_task extends \core\task\adhoc_task {
      * @param int $httpcode HTTP response code
      * @param string $responsejson Response JSON
      */
-    private function write_audit($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson) {
+    private function write_audit($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson)
+    {
         global $DB;
 
         $dedupekey = "{$userid}:{$courseid}:{$badgeid}";
-        
+
         $record = (object) [
             'userid' => $userid,
             'courseid' => $courseid,
@@ -225,7 +249,8 @@ class issue_badge_task extends \core\task\adhoc_task {
      * @param int $httpcode HTTP response code
      * @param string $responsejson Response JSON
      */
-    private function trigger_audit_event($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson) {
+    private function trigger_audit_event($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson)
+    {
         $context = \context_course::instance($courseid);
         $other = [
             'badge_id' => $badgeid,
@@ -248,7 +273,7 @@ class issue_badge_task extends \core\task\adhoc_task {
                 'other' => $other
             ]);
         }
-        
+
         $event->trigger();
     }
 }

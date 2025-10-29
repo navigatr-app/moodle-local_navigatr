@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -29,14 +30,15 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Event observer class.
  */
-class observer {
-
+class observer
+{
     /**
      * Handle course completion event.
      *
      * @param \core\event\course_completed $event Course completion event
      */
-    public static function course_completed(\core\event\course_completed $event) {
+    public static function course_completed(\core\event\course_completed $event)
+    {
         global $DB;
 
         $courseid = $event->courseid;
@@ -79,15 +81,16 @@ class observer {
      *
      * @param \core\event\course_restored $event Course restored event
      */
-    public static function course_restored(\core\event\course_restored $event) {
+    public static function course_restored(\core\event\course_restored $event)
+    {
         global $DB, $CFG;
 
         $courseid = $event->courseid;
-        
+
         // The restore event doesn't provide direct access to the backup directory,
         // but we can search for recent restore directories in the temp folder
         debugging('local_navigatr: Looking for recent backup directories', DEBUG_DEVELOPER);
-        
+
         // Get all backup directories
         $backupbasedir = $CFG->tempdir . '/backup';
         if (!is_dir($backupbasedir)) {
@@ -103,7 +106,7 @@ class observer {
         }
 
         // Sort by modification time, most recent first
-        usort($dirs, function($a, $b) {
+        usort($dirs, function ($a, $b) {
             return filemtime($b) - filemtime($a);
         });
 
@@ -164,7 +167,7 @@ class observer {
 
                 try {
                     $newid = $DB->insert_record('local_navigatr_map', $record);
-                    
+
                     // Trigger event for successful restore
                     $eventdata = \local_navigatr\event\course_mapping_restored::create([
                         'context' => \context_course::instance($courseid),

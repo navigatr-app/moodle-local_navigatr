@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,20 +32,21 @@ require_once($CFG->dirroot . '/backup/moodle2/backup_local_plugin.class.php');
  *
  * Provides backup functionality for course badge mappings and audit records.
  */
-class backup_local_navigatr_plugin extends backup_local_plugin {
-
+class backup_local_navigatr_plugin extends backup_local_plugin
+{
     /**
      * Define the course plugin structure for backup
      *
      * @return backup_plugin_element
      */
-    protected function define_course_plugin_structure() {
+    protected function define_course_plugin_structure()
+    {
 
         // Get the user info setting to determine if we should backup audit records.
         $userinfo = $this->get_setting_value('users');
 
         // Debug logging to track backup operations.
-        debugging('local_navigatr: Starting backup structure definition (userinfo: ' . 
+        debugging('local_navigatr: Starting backup structure definition (userinfo: ' .
                  ($userinfo ? 'included' : 'excluded') . ')', DEBUG_DEVELOPER);
 
         // Create the plugin element - this will be the root of our backup structure.
@@ -110,7 +112,7 @@ class backup_local_navigatr_plugin extends backup_local_plugin {
             // Annotate user IDs for proper mapping during restore.
             // userid varies across records and must be remapped to new user IDs.
             $audit->annotate_ids('user', 'userid');
-            
+
             // Note: courseid not annotated as it's filtered by VAR_COURSEID and will be explicitly set during restore.
             // provider_id and badge_id are external references to Navigatr platform (not Moodle entities).
 
@@ -124,4 +126,3 @@ class backup_local_navigatr_plugin extends backup_local_plugin {
         return $plugin;
     }
 }
-

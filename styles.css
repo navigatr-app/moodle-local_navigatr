@@ -38,7 +38,7 @@
         align-items: center;
         text-align: center;
     }
-    
+
     .current-mapping .mapping-actions {
         flex-direction: column;
     }

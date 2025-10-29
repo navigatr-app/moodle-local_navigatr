@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -34,10 +35,11 @@ require_once($CFG->libdir . '/filelib.php');
  * @copyright  2024 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class api_client {
+class api_client
+{
     /** @var string Base URL for Navigatr API */
     private $baseurl;
-    
+
     /** @var int Request timeout in seconds */
     private $timeout;
 
@@ -46,14 +48,15 @@ class api_client {
      *
      * @return string Base URL for Navigatr API
      */
-    public static function get_base_url() {
+    public static function get_base_url()
+    {
         $env = get_config('local_navigatr', 'env') ?: 'production';
-        
+
         $baseurls = [
             'production' => 'https://api.navigatr.app/v1',
             'staging' => 'https://stagapi.navigatr.app/v1',
         ];
-        
+
         return $baseurls[$env] ?? $baseurls['production'];
     }
 
@@ -63,7 +66,8 @@ class api_client {
      * @param string|null $baseurl Base URL for Navigatr API (optional, will use config if null)
      * @param int $timeout Request timeout in seconds
      */
-    public function __construct($baseurl = null, $timeout = null) {
+    public function __construct($baseurl = null, $timeout = null)
+    {
         $this->baseurl = $baseurl ? rtrim($baseurl, '/') : self::get_base_url();
         $this->timeout = $timeout ?? get_config('local_navigatr', 'timeout') ?: 30;
     }
@@ -78,13 +82,14 @@ class api_client {
      * @param bool $require_auth Whether to include Bearer token (default: true)
      * @return object Response object with ok, code, body properties
      */
-    private function make_request($method, $path, $data = null, $headers = [], $require_auth = true) {
+    private function make_request($method, $path, $data = null, $headers = [], $require_auth = true)
+    {
         $url = $this->baseurl . '/' . ltrim($path, '/');
-        
-        
+
+
         // Use Moodle cURL wrapper
         $curl = new \curl();
-        
+
         // Prepare JSON data
         $json_data = null;
         if ($data !== null) {
@@ -140,22 +145,22 @@ class api_client {
             # Raise an error
             throw new \moodle_exception(get_string('invalid_method', 'local_navigatr', $method));
         }
-        
+
         // Get response info
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
         $curlerror = $curl->error;
-        
+
         // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } elseif ($httpcode === false || $httpcode === null) {
             $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
-        
+
         // Check for cURL errors
         $haserror = $error !== 0 || !empty($curlerror);
-        
+
         // Parse response
         $body = null;
         if ($response !== false && !$haserror) {
@@ -182,11 +187,12 @@ class api_client {
      * @param string $password Navigatr password
      * @return object Response object
      */
-    public function get_token($username, $password) {
+    public function get_token($username, $password)
+    {
         $url = $this->baseurl . '/token';
-        
+
         $curl = new \curl();
-        
+
         // Set cURL options for form-encoded data
         $curloptions = [
             'CURLOPT_TIMEOUT' => $this->timeout,
@@ -209,22 +215,22 @@ class api_client {
 
         // Make POST request with form data (no auth required for token endpoint)
         $response = $curl->post($url, $form_data, $curloptions);
-        
+
         // Get response info
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
         $curlerror = $curl->error;
-        
+
         // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } elseif ($httpcode === false || $httpcode === null) {
             $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
-        
+
         // Check for cURL errors
         $haserror = $error !== 0 || !empty($curlerror);
-        
+
         // Parse response
         $body = null;
         if ($response !== false && !$haserror) {
@@ -250,11 +256,12 @@ class api_client {
      * @param string $refresh_token Navigatr refresh token
      * @return object Response object
      */
-    public function refresh_token($refresh_token) {
+    public function refresh_token($refresh_token)
+    {
         $url = $this->baseurl . '/token';
-        
+
         $curl = new \curl();
-        
+
         // Set cURL options for form-encoded data
         $curloptions = [
             'CURLOPT_TIMEOUT' => $this->timeout,
@@ -277,22 +284,22 @@ class api_client {
 
         // Make POST request with form data
         $response = $curl->post($url, $form_data, $curloptions);
-        
+
         // Get response info
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
         $curlerror = $curl->error;
-        
+
         // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } elseif ($httpcode === false || $httpcode === null) {
             $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
-        
+
         // Check for cURL errors
         $haserror = $error !== 0 || !empty($curlerror);
-        
+
         // Parse response
         $body = null;
         if ($response !== false && !$haserror) {
@@ -320,14 +327,15 @@ class api_client {
      * @param string $environment Environment (staging, production)
      * @return object Response object
      */
-    public static function test_connection($username, $password, $environment = 'production') {
+    public static function test_connection($username, $password, $environment = 'production')
+    {
         // Temporarily set environment for this test
         $original_env = get_config('local_navigatr', 'env');
         set_config('env', $environment, 'local_navigatr');
-        
+
         // Create API client (will use the environment we just set)
         $client = new self();
-        
+
         // Authenticate using form-encoded data
         $authresponse = $client->get_token($username, $password);
 
@@ -336,7 +344,7 @@ class api_client {
             // Store tokens temporarily for this test
             set_config('access_token', $authresponse->body['access_token'], 'local_navigatr');
             set_config('access_expires_at', time() + 300, 'local_navigatr'); // 5 minutes
-            
+
             if (isset($authresponse->body['refresh_token'])) {
                 set_config('refresh_token', $authresponse->body['refresh_token'], 'local_navigatr');
                 set_config('refresh_expires_at', time() + 86400, 'local_navigatr'); // 1 day
@@ -370,7 +378,8 @@ class api_client {
      * @param array $headers Additional headers
      * @return object Response object
      */
-    public function post($path, $data = null, $headers = []) {
+    public function post($path, $data = null, $headers = [])
+    {
         return $this->make_request('POST', $path, $data, $headers);
     }
 
@@ -382,7 +391,8 @@ class api_client {
      * @param array $headers Additional headers
      * @return object Response object
      */
-    public function put($path, $data = null, $headers = []) {
+    public function put($path, $data = null, $headers = [])
+    {
         return $this->make_request('PUT', $path, $data, $headers);
     }
 
@@ -393,7 +403,8 @@ class api_client {
      * @param array $headers Additional headers
      * @return object Response object
      */
-    public function get($path, $headers = [], $require_auth = true) {
+    public function get($path, $headers = [], $require_auth = true)
+    {
         return $this->make_request('GET', $path, null, $headers, $require_auth);
     }
 }
