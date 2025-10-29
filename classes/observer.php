@@ -39,12 +39,6 @@ class observer {
     public static function course_completed(\core\event\course_completed $event) {
         global $DB;
 
-        // Debug: Log that observer was called using Moodle's debugging system
-        debugging("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->userid}", DEBUG_DEVELOPER);
-        
-        // Also log to a file for easier debugging
-        error_log("NAVIGATR OBSERVER: Course completion event triggered for course {$event->courseid}, user {$event->userid}");
-
         $courseid = $event->courseid;
         $userid = $event->userid;
 
@@ -61,6 +55,18 @@ class observer {
             'courseid' => $courseid,
         ]);
         \core\task\manager::queue_adhoc_task($task);
+
+        // Trigger event for badge issuance being queued
+        $eventdata = \local_navigatr\event\badge_issuance_queued::create([
+            'context' => \context_course::instance($courseid),
+            'userid' => $userid,
+            'courseid' => $courseid,
+            'other' => [
+                'badgeid' => $mapping->badge_id,
+                'provider_id' => $mapping->provider_id,
+            ]
+        ]);
+        $eventdata->trigger();
     }
 
     /**
@@ -133,7 +139,15 @@ class observer {
         // Check if a mapping already exists for this course
         $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
         if ($existing) {
-            debugging('local_navigatr: Mapping already exists for course ' . $courseid . ' - skipping restore to preserve existing configuration', DEBUG_DEVELOPER);
+            // Trigger event for skipped mapping
+            $eventdata = \local_navigatr\event\course_mapping_skipped::create([
+                'context' => \context_course::instance($courseid),
+                'courseid' => $courseid,
+                'other' => [
+                    'reason' => 'Mapping already exists - preserving existing configuration',
+                ]
+            ]);
+            $eventdata->trigger();
             return;
         }
 
@@ -150,7 +164,18 @@ class observer {
 
                 try {
                     $newid = $DB->insert_record('local_navigatr_map', $record);
-                    debugging('local_navigatr: Mapping restored successfully (new id: ' . $newid . ')', DEBUG_DEVELOPER);
+                    
+                    // Trigger event for successful restore
+                    $eventdata = \local_navigatr\event\course_mapping_restored::create([
+                        'context' => \context_course::instance($courseid),
+                        'courseid' => $courseid,
+                        'other' => [
+                            'badge_id' => $record->badge_id,
+                            'provider_id' => $record->provider_id,
+                            'new_mapping_id' => $newid,
+                        ]
+                    ]);
+                    $eventdata->trigger();
                 } catch (\Exception $e) {
                     debugging('local_navigatr: Failed to restore mapping - ' . $e->getMessage(), DEBUG_NORMAL);
                 }

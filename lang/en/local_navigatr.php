@@ -170,3 +170,11 @@ $string['test_connection'] = 'Test Connection';
 $string['save_changes'] = 'Save changes';
 $string['create_export_request'] = 'Create new data export request';
 $string['create_deletion_request'] = 'Create new data deletion request';
+
+// Event strings
+$string['eventbadgeissuancequeued'] = 'Badge issuance queued';
+$string['eventcoursemappingrestored'] = 'Course mapping restored';
+$string['eventcoursemappingskipped'] = 'Course mapping skipped';
+$string['eventapiconnectiontested'] = 'API connection tested';
+$string['eventtokenrefreshfailed'] = 'Token refresh failed';
+$string['eventapirequestfailed'] = 'API request failed';

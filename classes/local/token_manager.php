@@ -110,8 +110,15 @@ class token_manager {
                 return true;
             }
         } catch (\Exception $e) {
-            // Log error but don't throw
-            debugging("Token refresh failed: " . $e->getMessage(), DEBUG_NORMAL);
+            // Trigger event for token refresh failure
+            $eventdata = \local_navigatr\event\token_refresh_failed::create([
+                'context' => \context_system::instance(),
+                'other' => [
+                    'error' => $e->getMessage(),
+                    'environment' => get_config('local_navigatr', 'env') ?: 'production',
+                ]
+            ]);
+            $eventdata->trigger();
         }
 
         return false;

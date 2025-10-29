@@ -321,13 +321,6 @@ class api_client {
      * @return object Response object
      */
     public static function test_connection($username, $password, $environment = 'production') {
-        // Enable debug logging for connection test
-        $debuglevel = get_config('local_navigatr', 'loglevel') ?: 'error';
-        $debugenabled = in_array($debuglevel, ['info', 'debug']);
-        
-        if ($debugenabled) {
-            debugging("Testing connection to {$environment} environment", DEBUG_DEVELOPER);
-        }
         // Temporarily set environment for this test
         $original_env = get_config('local_navigatr', 'env');
         set_config('env', $environment, 'local_navigatr');
@@ -337,12 +330,6 @@ class api_client {
         
         // Authenticate using form-encoded data
         $authresponse = $client->get_token($username, $password);
-        
-        if ($debugenabled) {
-            debugging("Auth response - OK: " . ($authresponse->ok ? 'true' : 'false') . 
-                     ", Code: " . $authresponse->code . 
-                     ", Error: " . ($authresponse->error ?? 'none'), DEBUG_DEVELOPER);
-        }
 
         // If authentication successful, store tokens for future use
         if ($authresponse->ok && isset($authresponse->body['access_token'])) {
@@ -354,16 +341,23 @@ class api_client {
                 set_config('refresh_token', $authresponse->body['refresh_token'], 'local_navigatr');
                 set_config('refresh_expires_at', time() + 86400, 'local_navigatr'); // 1 day
             }
-            
-            if ($debugenabled) {
-                debugging("Tokens stored successfully", DEBUG_DEVELOPER);
-            }
         }
 
         // Restore original environment
         if ($original_env !== false) {
             set_config('env', $original_env, 'local_navigatr');
         }
+
+        // Trigger event for connection test
+        $eventdata = \local_navigatr\event\api_connection_tested::create([
+            'context' => \context_system::instance(),
+            'other' => [
+                'environment' => $environment,
+                'success' => $authresponse->ok,
+                'response_code' => $authresponse->code,
+            ]
+        ]);
+        $eventdata->trigger();
 
         return $authresponse;
     }

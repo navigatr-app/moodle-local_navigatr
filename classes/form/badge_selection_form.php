@@ -112,8 +112,15 @@ class badge_selection_form extends \moodleform {
             return [];
 
         } catch (\Exception $e) {
-            // Log error but don't output to page
-            error_log("Exception in get_badges: " . $e->getMessage());
+            // Trigger event for failed API request
+            $eventdata = \local_navigatr\event\api_request_failed::create([
+                'context' => \context_system::instance(),
+                'other' => [
+                    'operation' => 'get_badges',
+                    'error' => $e->getMessage(),
+                ]
+            ]);
+            $eventdata->trigger();
             return [];
         }
     }
