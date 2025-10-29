@@ -73,7 +73,6 @@ Navigate to **Site Administration → Plugins → Local plugins → Navigatr** t
 
 - **Credentials**: Enter your Navigatr username and password. This user should be a provider admin on Navigatr.
 - **HTTP Timeout (Advanced)**: Configure request timeout (default: 30 seconds). Increase if you experience timeout errors.
-- **Logging Level (Advanced)**: Set debug logging level (Error, Info, Debug). Default is Error for production use.
 - **Environment (Advanced)**: If you would like to test with your account on the Navigatr Staging platform choose `Staging`.
 - **Test Connection**: Check your username and password are correct and a connection can be made.
 - **Save Changes**: After saving your changes you are ready to configure your course mappings.
@@ -260,7 +259,13 @@ The plugin implements Moodle's privacy API:
 
 ### Debugging
 
-Enable debug logging in plugin settings to see detailed API interactions. Logs are stored in Moodle's debug log.
+The plugin uses Moodle's built-in debug system for logging. To see detailed API interactions:
+
+1. **Enable Moodle Debugging**: Go to **Site Administration → Development → Debugging**
+2. **Set Debug Level**: Choose "DEVELOPER" for detailed logging or "NORMAL" for error logging
+3. **View Logs**: Check **Site Administration → Reports → Logs** for debug information
+
+The plugin logs important events using Moodle's event system, which are visible in the standard Moodle logs.
 
 ### HTTP Status Codes
 

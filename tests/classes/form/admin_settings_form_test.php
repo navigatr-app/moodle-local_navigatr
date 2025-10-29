@@ -120,14 +120,14 @@ class admin_settings_form_test extends advanced_testcase {
     }
 
     /**
-     * Test log level field
+     * Test form definition method exists
      */
-    public function test_loglevel_field() {
+    public function test_form_definition() {
         $this->resetAfterTest();
         
         $form = new admin_settings_form();
         
-        // Test that form has log level field
+        // Test that form definition method exists
         $this->assertTrue(method_exists($form, 'definition'));
     }
 

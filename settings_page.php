@@ -88,7 +88,6 @@ if ($data = $form->get_data()) {
     set_config('username', $data->username, 'local_navigatr');
     \local_navigatr\local\password_manager::store_password($data->password);
     set_config('timeout', $data->timeout, 'local_navigatr');
-    set_config('loglevel', $data->loglevel, 'local_navigatr');
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));
 } else {
     // Set form data with current configuration values

@@ -68,14 +68,6 @@ class admin_settings_form extends \moodleform {
         $mform->addHelpButton('timeout', 'timeout', 'local_navigatr');
         $mform->addRule('timeout', get_string('required'), 'required', null, 'client');
 
-        $mform->addElement('select', 'loglevel', get_string('loglevel', 'local_navigatr'), [
-            'error' => get_string('loglevel_error', 'local_navigatr'),
-            'info' => get_string('loglevel_info', 'local_navigatr'),
-            'debug' => get_string('loglevel_debug', 'local_navigatr'),
-        ]);
-        $mform->setType('loglevel', PARAM_ALPHA);
-        $mform->addHelpButton('loglevel', 'loglevel', 'local_navigatr');
-
         // Environment selection
         $mform->addElement('select', 'env', get_string('environment', 'local_navigatr'), [
             'production' => get_string('environment_production', 'local_navigatr'),
@@ -95,7 +87,6 @@ class admin_settings_form extends \moodleform {
         $data = [
             'username' => get_config('local_navigatr', 'username'),
             'timeout' => get_config('local_navigatr', 'timeout') ?: 30,
-            'loglevel' => get_config('local_navigatr', 'loglevel') ?: 'error',
             'env' => get_config('local_navigatr', 'env') ?: 'production',
         ];
         $this->set_data($data);

@@ -34,6 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed unused capability issue by making local/navigatr:managecredentials actively used in settings_page.php
 - Fixed privacy provider issue by confirming all required GDPR compliance methods are already implemented
 - Fixed form setDefaults usage by replacing setDefault() calls with proper set_data() method following Moodle best practices
+- Remove unused plugin loglevel configuration that was never actually used for conditional logging
 
 ## [1.0.0] - 2025-11-15
 
