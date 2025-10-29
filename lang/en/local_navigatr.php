@@ -61,6 +61,11 @@ $string['invalid_method'] = 'Invalid method: {$a}';
 $string['missing_user_field'] = 'Missing user field: {$a}';
 
 // Privacy
+$string['privacy:metadata:local_navigatr_map'] = 'Course badge mapping configuration';
+$string['privacy:metadata:local_navigatr_map:courseid'] = 'Course ID';
+$string['privacy:metadata:local_navigatr_map:provider_id'] = 'Provider ID';
+$string['privacy:metadata:local_navigatr_map:badge_id'] = 'Badge ID';
+$string['privacy:metadata:local_navigatr_map:timemodified'] = 'Last modified time';
 $string['privacy:metadata:local_navigatr_audit'] = 'Badge issuance audit records';
 $string['privacy:metadata:local_navigatr_audit:userid'] = 'User ID';
 $string['privacy:metadata:local_navigatr_audit:courseid'] = 'Course ID';

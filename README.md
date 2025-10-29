@@ -166,6 +166,48 @@ Stores badge issuance audit records:
 - `response_json` - Raw API response
 - `dedupe_key` - Unique key for idempotency
 
+## Course Backup & Restore
+
+The plugin implements Moodle's Backup/Restore API to ensure that Navigatr badge configurations and audit records are properly included in course backups and can be restored when courses are imported or restored.
+
+### What Gets Backed Up
+
+#### Course Badge Mappings (Always Included)
+
+- **Course-to-badge configuration**: Which badge is issued when users complete the course
+- **Provider and badge details**: Navigatr provider ID, badge ID, badge name, and image URL
+- **Timestamps**: When the mapping was created and last modified
+
+#### Badge Issuance Audit Records (Conditionally Included)
+
+- **Only when user data is included** in the backup
+- **Complete audit trail**: Records of all badge issuance attempts for users in the course
+- **API responses**: HTTP status codes and response details from Navigatr API calls
+- **User information**: Which users had badges issued and when
+
+### What Gets Restored
+
+#### Course Badge Mappings
+
+- **Restored automatically** when a course is restored
+- **Preserves configuration**: The restored course will issue the same badge when users complete it
+- **No duplicate mappings**: If a mapping already exists for the target course, it won't be overwritten
+
+#### Badge Issuance Audit Records
+
+- **Only restored when user data is included** in the restore operation
+- **Historical record**: Maintains the audit trail of what happened in the original course
+- **User ID mapping**: Automatically maps user IDs to the correct users in the target system
+- **No re-issuance**: Badges are not re-issued during restore (they already exist on Navigatr's platform)
+
+### Important Notes
+
+- **Badges are not re-issued**: The actual badges exist on Navigatr's platform and don't need to be re-created
+- **Audit trail preservation**: Restoring audit records maintains the historical record of badge issuances
+- **Privacy compliance**: Audit records are only backed up/restored when user data is included
+- **Course configuration**: Badge mappings are always backed up as they're part of the course structure
+- **Manual testing guide**: See `docs/backup-restore-manual-testing.md` for detailed testing instructions
+
 ## Capabilities
 
 - `local/navigatr:managecredentials` - Manage site-level Navigatr credentials (admin only)

@@ -24,7 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed reauth() method from private to public
 - Implemented Behat step definitions and simplified scenarios
 - Improved observer tests with real behaviour validation
-- Retrieve and store badge name and image and update cache.
+- Retrieve and store badge name and image and update cache
+- Implement backup/restore API for course-badge mapping
 
 ## [1.0.0] - 2025-11-15
 
