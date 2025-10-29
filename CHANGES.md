@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced debugging/error_log calls with custom events by implementing event system to replace all debugging() and error_log() calls
 - Fixed cancel redirect in settings page by correcting URL and moving form handling before page output to prevent redirect errors
 - Removed redundant course mapping check from issue_badge_task.php as observer already validates mapping exists before queuing task
+- Fixed course progress bug by passing course object instead of course ID to get_course_progress_percentage method
 
 ## [1.0.0] - 2025-11-15
 

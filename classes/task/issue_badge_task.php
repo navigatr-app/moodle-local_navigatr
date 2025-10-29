@@ -152,7 +152,8 @@ class issue_badge_task extends \core\task\adhoc_task {
 
         // Try to get completion percentage if gradebook doesn't have final grade
         if (class_exists('\core_completion\progress')) {
-            $progress = \core_completion\progress::get_course_progress_percentage($courseid, $userid);
+            $course = get_course($courseid);
+            $progress = \core_completion\progress::get_course_progress_percentage($course, $userid);
             if ($progress !== null) {
                 return round($progress);
             }
