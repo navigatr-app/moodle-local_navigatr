@@ -26,6 +26,9 @@
 require_once(__DIR__ . '/../../config.php');
 require_once($CFG->libdir . '/adminlib.php');
 
+// Check capability explicitly for consistency
+require_capability('local/navigatr:managecredentials', context_system::instance());
+
 admin_externalpage_setup('local_navigatr_settings');
 
 $PAGE->set_url('/local/navigatr/settings_page.php');

@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed cancel redirect in settings page by correcting URL and moving form handling before page output to prevent redirect errors
 - Removed redundant course mapping check from issue_badge_task.php as observer already validates mapping exists before queuing task
 - Fixed course progress bug by passing course object instead of course ID to get_course_progress_percentage method
+- Fixed capability check mismatch by adding explicit require_capability check in settings_page.php for consistent permission validation
 
 ## [1.0.0] - 2025-11-15
 
