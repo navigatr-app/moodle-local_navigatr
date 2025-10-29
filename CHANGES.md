@@ -36,6 +36,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed form setDefaults usage by replacing setDefault() calls with proper set_data() method following Moodle best practices
 - Remove unused plugin loglevel configuration that was never actually used for conditional logging
 - Deleted unused XML fixture file
+- Removed unused functions from cache.php and provider_selection_form.php
 
 ## [1.0.0] - 2025-11-15
 

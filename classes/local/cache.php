@@ -31,27 +31,6 @@ defined('MOODLE_INTERNAL') || die();
  */
 class cache {
 
-    /**
-     * Get providers for a user.
-     *
-     * @param string $userid Navigatr user ID
-     * @return array|null Providers array or null if not cached
-     */
-    public static function get_providers($userid) {
-        $cache = \cache::make('local_navigatr', 'providers');
-        return $cache->get($userid);
-    }
-
-    /**
-     * Set providers for a user.
-     *
-     * @param string $userid Navigatr user ID
-     * @param array $providers Providers array
-     */
-    public static function set_providers($userid, $providers) {
-        $cache = \cache::make('local_navigatr', 'providers');
-        $cache->set($userid, $providers);
-    }
 
     /**
      * Get badges for a provider.
@@ -81,45 +60,6 @@ class cache {
         $cache->set($key, $badges);
     }
 
-    /**
-     * Clear all caches.
-     */
-    public static function clear_all() {
-        $providerscache = \cache::make('local_navigatr', 'providers');
-        $badgescache = \cache::make('local_navigatr', 'badges');
-        $userdetailcache = \cache::make('local_navigatr', 'user_detail');
-        
-        $providerscache->purge();
-        $badgescache->purge();
-        $userdetailcache->purge();
-    }
-
-    /**
-     * Clear providers cache for a user.
-     *
-     * @param string $userid Navigatr user ID
-     */
-    public static function clear_providers($userid) {
-        $cache = \cache::make('local_navigatr', 'providers');
-        $cache->delete($userid);
-    }
-
-    /**
-     * Clear badges cache for a provider.
-     *
-     * @param string $providerid Provider ID
-     */
-    public static function clear_badges($providerid) {
-        $cache = \cache::make('local_navigatr', 'badges');
-        
-        // Clear all pages for this provider
-        for ($page = 1; $page <= 10; $page++) { // Reasonable limit
-            for ($size = 10; $size <= 100; $size += 10) { // Common page sizes
-                $key = "{$providerid}:{$page}:{$size}";
-                $cache->delete($key);
-            }
-        }
-    }
 
     /**
      * Get user detail from cache.
@@ -141,11 +81,4 @@ class cache {
         $cache->set('current_user', $userdetail);
     }
 
-    /**
-     * Clear user detail cache.
-     */
-    public static function clear_user_detail() {
-        $cache = \cache::make('local_navigatr', 'user_detail');
-        $cache->delete('current_user');
-    }
 }

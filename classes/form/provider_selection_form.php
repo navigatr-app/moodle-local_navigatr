@@ -129,44 +129,4 @@ class provider_selection_form extends \moodleform {
         }
     }
 
-    /**
-     * Get badges for a provider.
-     *
-     * @param int $providerid Provider ID
-     * @return array Badges array
-     */
-    private function get_badges($providerid) {
-        try {
-            // Check cache first
-            $cached = \local_navigatr\local\cache::get_badges($providerid, 1, 50);
-            if ($cached !== null && is_array($cached)) {
-                return $cached;
-            }
-
-            // Fetch from API
-            $client = new \local_navigatr\local\api_client();
-            $api_path = "/badge?provider_id={$providerid}&status=Published&source=Internal&page=1&size=50";
-            $response = $client->get($api_path);
-
-            if ($response->ok && isset($response->body['items']) && is_array($response->body['items'])) {
-                $badges = $response->body['items'];
-                \local_navigatr\local\cache::set_badges($providerid, 1, 50, $badges);
-                return $badges;
-            }
-
-            return [];
-
-        } catch (\Exception $e) {
-            // Trigger event for failed API request
-            $eventdata = \local_navigatr\event\api_request_failed::create([
-                'context' => \context_system::instance(),
-                'other' => [
-                    'operation' => 'get_badges',
-                    'error' => $e->getMessage(),
-                ]
-            ]);
-            $eventdata->trigger();
-            return [];
-        }
-    }
 }
