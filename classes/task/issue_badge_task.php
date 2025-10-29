@@ -44,13 +44,8 @@ class issue_badge_task extends \core\task\adhoc_task {
         $userid = $data->userid;
         $courseid = $data->courseid;
 
-        // Get mapping for this course
+        // Get mapping for this course (guaranteed to exist as observer already checked)
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
-        if (!$mapping) {
-            $this->write_audit($userid, $courseid, 0, 0, 'error', 404, 
-                json_encode(['error' => get_string('no_mapping_found', 'local_navigatr')]));
-            return;
-        }
 
         // Get user details
         $user = \core_user::get_user($userid, 'id,email,firstname,lastname', MUST_EXIST);
