@@ -72,6 +72,23 @@ if ($data && confirm_sesskey()) {
     }
 }
 
+// Create form and handle cancellation/submission BEFORE any output
+$form = new \local_navigatr\form\admin_settings_form();
+
+if ($form->is_cancelled()) {
+    redirect(new moodle_url('/admin/category.php', ['category' => 'localplugins']));
+}
+
+if ($data = $form->get_data()) {
+    // Form was submitted and validated
+    set_config('env', $data->env, 'local_navigatr');
+    set_config('username', $data->username, 'local_navigatr');
+    \local_navigatr\local\password_manager::store_password($data->password);
+    set_config('timeout', $data->timeout, 'local_navigatr');
+    set_config('loglevel', $data->loglevel, 'local_navigatr');
+    \core\notification::success(get_string('settingssaved', 'local_navigatr'));
+}
+
 echo $OUTPUT->header();
 
 // Display admin notice
@@ -103,30 +120,6 @@ if (!empty($current_username) && !empty($current_password)) {
     ]);
     echo $remove_button;
     echo \html_writer::end_div();
-}
-
-// Handle session timeout gracefully
-$data = data_submitted();
-if ($data && !confirm_sesskey()) {
-    // Session expired, redirect to refresh the page
-    redirect(new moodle_url('/local/navigatr/settings_page.php'));
-}
-
-// Create form
-$form = new \local_navigatr\form\admin_settings_form();
-
-if ($form->is_cancelled()) {
-    redirect(new moodle_url('/admin/settings.php', ['section' => 'localplugins']));
-}
-
-if ($data = $form->get_data()) {
-    // Form was submitted and validated
-    set_config('env', $data->env, 'local_navigatr');
-    set_config('username', $data->username, 'local_navigatr');
-    \local_navigatr\local\password_manager::store_password($data->password);
-    set_config('timeout', $data->timeout, 'local_navigatr');
-    set_config('loglevel', $data->loglevel, 'local_navigatr');
-    \core\notification::success(get_string('settingssaved', 'local_navigatr'));
 }
 
 $form->display();

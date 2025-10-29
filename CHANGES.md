@@ -27,6 +27,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Retrieve and store badge name and image and update cache
 - Implement backup/restore API for course-badge mapping
 - Replaced debugging/error_log calls with custom events by implementing event system to replace all debugging() and error_log() calls
+- Fixed cancel redirect in settings page by correcting URL and moving form handling before page output to prevent redirect errors
 
 ## [1.0.0] - 2025-11-15
 
