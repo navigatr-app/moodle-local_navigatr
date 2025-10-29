@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -25,14 +26,15 @@
 /**
  * Navigatr plugin test helper
  */
-class local_navigatr_test_helper {
-
+class local_navigatr_test_helper
+{
     /**
      * Set up test configuration
      *
      * @param array $config Configuration data
      */
-    public static function setup_test_config($config = []) {
+    public static function setup_test_config($config = [])
+    {
         $defaults = [
             'username' => 'test_user',
             'password' => 'test_password',
@@ -41,9 +43,9 @@ class local_navigatr_test_helper {
             'retry_attempts' => 3,
             'retry_delay' => 60
         ];
-        
+
         $config = array_merge($defaults, $config);
-        
+
         foreach ($config as $key => $value) {
             set_config($key, $value, 'local_navigatr');
         }
@@ -55,22 +57,23 @@ class local_navigatr_test_helper {
      * @param array $capabilities Capabilities to assign
      * @return stdClass Created user
      */
-    public static function create_user_with_capabilities($capabilities = []) {
+    public static function create_user_with_capabilities($capabilities = [])
+    {
         global $DB;
-        
+
         $user = new stdClass();
         $user->username = 'testuser_' . time();
         $user->firstname = 'Test';
         $user->lastname = 'User';
         $user->email = 'testuser@example.com';
         $user->id = $DB->insert_record('user', $user);
-        
+
         // Assign capabilities
         foreach ($capabilities as $capability) {
             $context = context_system::instance();
             assign_capability($capability, CAP_ALLOW, $user->id, $context->id);
         }
-        
+
         return $user;
     }
 
@@ -80,21 +83,22 @@ class local_navigatr_test_helper {
      * @param array $data Course data
      * @return stdClass Created course
      */
-    public static function create_course_with_completion($data = []) {
+    public static function create_course_with_completion($data = [])
+    {
         global $DB;
-        
+
         $defaults = [
             'fullname' => 'Test Course',
             'shortname' => 'TC' . time(),
             'enablecompletion' => 1,
             'completionstartonenrol' => 1
         ];
-        
+
         $data = array_merge($defaults, $data);
-        
+
         $course = (object) $data;
         $course->id = $DB->insert_record('course', $course);
-        
+
         return $course;
     }
 
@@ -105,7 +109,8 @@ class local_navigatr_test_helper {
      * @param array $data Response data
      * @return array API response
      */
-    public static function simulate_api_response($type = 'success', $data = []) {
+    public static function simulate_api_response($type = 'success', $data = [])
+    {
         switch ($type) {
             case 'success':
                 return [
@@ -116,7 +121,7 @@ class local_navigatr_test_helper {
                         'message' => 'Badge issued successfully'
                     ])
                 ];
-                
+
             case 'error':
                 return [
                     'code' => 400,
@@ -126,7 +131,7 @@ class local_navigatr_test_helper {
                         'message' => 'Badge issuance failed'
                     ])
                 ];
-                
+
             case 'timeout':
                 return [
                     'code' => 408,
@@ -136,7 +141,7 @@ class local_navigatr_test_helper {
                         'message' => 'API request timed out'
                     ])
                 ];
-                
+
             case 'unauthorized':
                 return [
                     'code' => 401,
@@ -146,7 +151,7 @@ class local_navigatr_test_helper {
                         'message' => 'Invalid credentials'
                     ])
                 ];
-                
+
             default:
                 return [
                     'code' => 500,
@@ -165,9 +170,10 @@ class local_navigatr_test_helper {
      * @param array $data Audit data
      * @return stdClass Created audit record
      */
-    public static function create_audit_record($data = []) {
+    public static function create_audit_record($data = [])
+    {
         global $DB;
-        
+
         $defaults = [
             'userid' => 1,
             'courseid' => 1,
@@ -181,33 +187,34 @@ class local_navigatr_test_helper {
             'created_at' => time(),
             'updated_at' => time()
         ];
-        
+
         $data = array_merge($defaults, $data);
-        
+
         $audit = (object) $data;
         $audit->id = $DB->insert_record('local_navigatr_audit', $audit);
-        
+
         return $audit;
     }
 
     /**
      * Clean up test data
      */
-    public static function cleanup_test_data() {
+    public static function cleanup_test_data()
+    {
         global $DB;
-        
+
         // Clean up audit records
         $DB->delete_records('local_navigatr_audit');
-        
+
         // Clean up course badge mappings
         $DB->delete_records('local_navigatr_course_badges');
-        
+
         // Clean up badges
         $DB->delete_records('local_navigatr_badges');
-        
+
         // Clean up providers
         $DB->delete_records('local_navigatr_providers');
-        
+
         // Clean up configuration
         $DB->delete_records('config_plugins', ['plugin' => 'local_navigatr']);
     }
@@ -218,12 +225,13 @@ class local_navigatr_test_helper {
      * @param array $criteria Search criteria
      * @param string $message Assertion message
      */
-    public static function assert_audit_record_exists($criteria, $message = '') {
+    public static function assert_audit_record_exists($criteria, $message = '')
+    {
         global $DB;
-        
+
         $records = $DB->get_records('local_navigatr_audit', $criteria);
         $this->assertCount(1, $records, $message);
-        
+
         return reset($records);
     }
 
@@ -233,9 +241,10 @@ class local_navigatr_test_helper {
      * @param array $criteria Search criteria
      * @param string $message Assertion message
      */
-    public static function assert_audit_record_not_exists($criteria, $message = '') {
+    public static function assert_audit_record_not_exists($criteria, $message = '')
+    {
         global $DB;
-        
+
         $records = $DB->get_records('local_navigatr_audit', $criteria);
         $this->assertCount(0, $records, $message);
     }

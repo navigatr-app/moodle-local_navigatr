@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -25,17 +26,18 @@
 /**
  * Navigatr plugin test data generator
  */
-class local_navigatr_generator extends component_generator_base {
-
+class local_navigatr_generator extends component_generator_base
+{
     /**
      * Create a Navigatr provider
      *
      * @param array $data Provider data
      * @return stdClass Created provider
      */
-    public function create_provider($data = []) {
+    public function create_provider($data = [])
+    {
         global $DB;
-        
+
         $defaults = [
             'name' => 'Test Provider',
             'api_url' => 'https://api.navigatr.test',
@@ -45,12 +47,12 @@ class local_navigatr_generator extends component_generator_base {
             'created_at' => time(),
             'updated_at' => time()
         ];
-        
+
         $data = array_merge($defaults, $data);
-        
+
         $provider = (object) $data;
         $provider->id = $DB->insert_record('local_navigatr_providers', $provider);
-        
+
         return $provider;
     }
 
@@ -60,9 +62,10 @@ class local_navigatr_generator extends component_generator_base {
      * @param array $data Badge data
      * @return stdClass Created badge
      */
-    public function create_badge($data = []) {
+    public function create_badge($data = [])
+    {
         global $DB;
-        
+
         $defaults = [
             'provider_id' => 1,
             'name' => 'Test Badge',
@@ -73,12 +76,12 @@ class local_navigatr_generator extends component_generator_base {
             'created_at' => time(),
             'updated_at' => time()
         ];
-        
+
         $data = array_merge($defaults, $data);
-        
+
         $badge = (object) $data;
         $badge->id = $DB->insert_record('local_navigatr_badges', $badge);
-        
+
         return $badge;
     }
 
@@ -88,9 +91,10 @@ class local_navigatr_generator extends component_generator_base {
      * @param array $data Mapping data
      * @return stdClass Created mapping
      */
-    public function create_course_badge_mapping($data = []) {
+    public function create_course_badge_mapping($data = [])
+    {
         global $DB;
-        
+
         $defaults = [
             'courseid' => 1,
             'provider_id' => 1,
@@ -101,12 +105,12 @@ class local_navigatr_generator extends component_generator_base {
             'created_at' => time(),
             'updated_at' => time()
         ];
-        
+
         $data = array_merge($defaults, $data);
-        
+
         $mapping = (object) $data;
         $mapping->id = $DB->insert_record('local_navigatr_course_badges', $mapping);
-        
+
         return $mapping;
     }
 
@@ -116,9 +120,10 @@ class local_navigatr_generator extends component_generator_base {
      * @param array $data Audit data
      * @return stdClass Created audit record
      */
-    public function create_audit_record($data = []) {
+    public function create_audit_record($data = [])
+    {
         global $DB;
-        
+
         $defaults = [
             'userid' => 1,
             'courseid' => 1,
@@ -132,12 +137,12 @@ class local_navigatr_generator extends component_generator_base {
             'created_at' => time(),
             'updated_at' => time()
         ];
-        
+
         $data = array_merge($defaults, $data);
-        
+
         $audit = (object) $data;
         $audit->id = $DB->insert_record('local_navigatr_audit', $audit);
-        
+
         return $audit;
     }
 
@@ -147,7 +152,8 @@ class local_navigatr_generator extends component_generator_base {
      * @param array $data Setup data
      * @return stdClass Complete test setup
      */
-    public function create_test_setup($data = []) {
+    public function create_test_setup($data = [])
+    {
         $defaults = [
             'user' => null,
             'course' => null,
@@ -155,32 +161,32 @@ class local_navigatr_generator extends component_generator_base {
             'badge' => null,
             'mapping' => null
         ];
-        
+
         $data = array_merge($defaults, $data);
-        
+
         $setup = new stdClass();
-        
+
         // Create user if not provided
         if (!$data['user']) {
             $setup->user = $this->getDataGenerator()->create_user();
         } else {
             $setup->user = $data['user'];
         }
-        
+
         // Create course if not provided
         if (!$data['course']) {
             $setup->course = $this->getDataGenerator()->create_course();
         } else {
             $setup->course = $data['course'];
         }
-        
+
         // Create provider if not provided
         if (!$data['provider']) {
             $setup->provider = $this->create_provider();
         } else {
             $setup->provider = $data['provider'];
         }
-        
+
         // Create badge if not provided
         if (!$data['badge']) {
             $setup->badge = $this->create_badge([
@@ -189,7 +195,7 @@ class local_navigatr_generator extends component_generator_base {
         } else {
             $setup->badge = $data['badge'];
         }
-        
+
         // Create mapping if not provided
         if (!$data['mapping']) {
             $setup->mapping = $this->create_course_badge_mapping([
@@ -202,7 +208,7 @@ class local_navigatr_generator extends component_generator_base {
         } else {
             $setup->mapping = $data['mapping'];
         }
-        
+
         return $setup;
     }
 }

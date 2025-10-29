@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,7 +32,8 @@ defined('MOODLE_INTERNAL') || die();
  * @param stdClass $course The course to add settings for
  * @param context $context The context of the course
  */
-function local_navigatr_extend_navigation_course($navigation, $course, $context) {
+function local_navigatr_extend_navigation_course($navigation, $course, $context)
+{
     if (has_capability('local/navigatr:configurecourse', $context)) {
         $url = new moodle_url('/local/navigatr/course_settings.php', ['id' => $course->id]);
         $navigation->add(
@@ -52,7 +54,8 @@ function local_navigatr_extend_navigation_course($navigation, $course, $context)
  * @param stdClass $course The course to add settings for
  * @param context $context The context of the course
  */
-function local_navigatr_extend_navigation_course_settings($navigation, $course, $context) {
+function local_navigatr_extend_navigation_course_settings($navigation, $course, $context)
+{
     if (has_capability('local/navigatr:configurecourse', $context)) {
         $url = new moodle_url('/local/navigatr/course_settings.php', ['id' => $course->id]);
         $navigation->add(

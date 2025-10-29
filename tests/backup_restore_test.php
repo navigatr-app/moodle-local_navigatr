@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -44,17 +45,18 @@ use restore_controller;
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class backup_restore_test extends advanced_testcase {
-
+class backup_restore_test extends advanced_testcase
+{
     /**
      * Test backup class exists and has required methods
      */
-    public function test_backup_class_structure() {
+    public function test_backup_class_structure()
+    {
         global $CFG;
-        
+
         // Load the backup class.
         require_once($CFG->dirroot . '/local/navigatr/backup/moodle2/backup_local_navigatr_plugin.class.php');
-        
+
         $this->assertTrue(class_exists('backup_local_navigatr_plugin'));
         $this->assertTrue(method_exists('backup_local_navigatr_plugin', 'define_course_plugin_structure'));
     }
@@ -62,12 +64,13 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test restore class exists and has required methods
      */
-    public function test_restore_class_structure() {
+    public function test_restore_class_structure()
+    {
         global $CFG;
-        
+
         // Load the restore class.
         require_once($CFG->dirroot . '/local/navigatr/backup/moodle2/restore_local_navigatr_plugin.class.php');
-        
+
         $this->assertTrue(class_exists('restore_local_navigatr_plugin'));
         $this->assertTrue(method_exists('restore_local_navigatr_plugin', 'define_course_plugin_structure'));
         $this->assertTrue(method_exists('restore_local_navigatr_plugin', 'process_local_navigatr_mapping'));
@@ -77,9 +80,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test full backup and restore cycle with badge mapping
      */
-    public function test_backup_and_restore_mapping() {
+    public function test_backup_and_restore_mapping()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -103,8 +107,14 @@ class backup_restore_test extends advanced_testcase {
         $this->assertTrue($DB->record_exists('local_navigatr_map', ['id' => $mappingid]));
 
         // Backup the course.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
         $bc->destroy();
@@ -117,8 +127,14 @@ class backup_restore_test extends advanced_testcase {
         $newcourse = $this->getDataGenerator()->create_course();
 
         // Restore the backup to the new course.
-        $rc = new restore_controller($backupid, $newcourse->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $newcourse->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->execute_precheck();
         $rc->execute_plan();
         $rc->destroy();
@@ -135,9 +151,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test backup and restore with audit records (user data included)
      */
-    public function test_backup_and_restore_with_audit_records() {
+    public function test_backup_and_restore_with_audit_records()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -176,8 +193,14 @@ class backup_restore_test extends advanced_testcase {
         $this->assertTrue($DB->record_exists('local_navigatr_audit', ['id' => $auditid]));
 
         // Backup the course with user data.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->get_plan()->get_setting('users')->set_value(true);
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
@@ -191,8 +214,14 @@ class backup_restore_test extends advanced_testcase {
         $newcourse = $this->getDataGenerator()->create_course();
 
         // Restore the backup with user data.
-        $rc = new restore_controller($backupid, $newcourse->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $newcourse->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->get_plan()->get_setting('users')->set_value(true);
         $rc->execute_precheck();
         $rc->execute_plan();
@@ -213,9 +242,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test backup and restore without user data (audit records excluded)
      */
-    public function test_backup_without_user_data() {
+    public function test_backup_without_user_data()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -251,8 +281,14 @@ class backup_restore_test extends advanced_testcase {
         $DB->insert_record('local_navigatr_audit', $audit);
 
         // Backup the course WITHOUT user data.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->get_plan()->get_setting('users')->set_value(false);
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
@@ -266,8 +302,14 @@ class backup_restore_test extends advanced_testcase {
         $newcourse = $this->getDataGenerator()->create_course();
 
         // Restore the backup without user data.
-        $rc = new restore_controller($backupid, $newcourse->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $newcourse->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->get_plan()->get_setting('users')->set_value(false);
         $rc->execute_precheck();
         $rc->execute_plan();
@@ -283,9 +325,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test that existing mappings are not overwritten during restore
      */
-    public function test_restore_does_not_overwrite_existing_mapping() {
+    public function test_restore_does_not_overwrite_existing_mapping()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -304,8 +347,14 @@ class backup_restore_test extends advanced_testcase {
         $DB->insert_record('local_navigatr_map', $mapping1);
 
         // Backup the course.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course1->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course1->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
         $bc->destroy();
@@ -323,8 +372,14 @@ class backup_restore_test extends advanced_testcase {
         $DB->insert_record('local_navigatr_map', $existing);
 
         // Restore the backup to course2 (which already has a mapping).
-        $rc = new restore_controller($backupid, $course2->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $course2->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->execute_precheck();
         $rc->execute_plan();
         $rc->destroy();
@@ -340,9 +395,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test user ID mapping during restore
      */
-    public function test_user_id_mapping() {
+    public function test_user_id_mapping()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -377,8 +433,14 @@ class backup_restore_test extends advanced_testcase {
         $DB->insert_record('local_navigatr_audit', $audit);
 
         // Backup with user data.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->get_plan()->get_setting('users')->set_value(true);
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
@@ -388,8 +450,14 @@ class backup_restore_test extends advanced_testcase {
         $newcourse = $this->getDataGenerator()->create_course();
 
         // Restore.
-        $rc = new restore_controller($backupid, $newcourse->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $newcourse->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->get_plan()->get_setting('users')->set_value(true);
         $rc->execute_precheck();
         $rc->execute_plan();
@@ -404,9 +472,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test backup and restore with empty course (no mappings)
      */
-    public function test_backup_restore_empty_course() {
+    public function test_backup_restore_empty_course()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -419,8 +488,14 @@ class backup_restore_test extends advanced_testcase {
         $this->assertFalse($DB->record_exists('local_navigatr_map', ['courseid' => $course->id]));
 
         // Backup the course.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
         $bc->destroy();
@@ -429,8 +504,14 @@ class backup_restore_test extends advanced_testcase {
         $newcourse = $this->getDataGenerator()->create_course();
 
         // Restore the backup.
-        $rc = new restore_controller($backupid, $newcourse->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $newcourse->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->execute_precheck();
         $rc->execute_plan();
         $rc->destroy();
@@ -442,9 +523,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test duplicate dedupe_key handling during restore
      */
-    public function test_duplicate_dedupe_key_handling() {
+    public function test_duplicate_dedupe_key_handling()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -481,8 +563,14 @@ class backup_restore_test extends advanced_testcase {
         $DB->insert_record('local_navigatr_audit', $audit);
 
         // Backup with user data.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->get_plan()->get_setting('users')->set_value(true);
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
@@ -498,8 +586,14 @@ class backup_restore_test extends advanced_testcase {
         // This test verifies the restore process handles the data correctly.
 
         // Restore.
-        $rc = new restore_controller($backupid, $newcourse->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $newcourse->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->get_plan()->get_setting('users')->set_value(true);
         $rc->execute_precheck();
         $rc->execute_plan();
@@ -509,7 +603,7 @@ class backup_restore_test extends advanced_testcase {
         // In a real restore scenario, the dedupe_key stays the same as it was in the backup.
         $count = $DB->count_records('local_navigatr_audit', ['courseid' => $newcourse->id]);
         $this->assertEquals(1, $count, 'One audit record should be restored');
-        
+
         // Verify the dedupe_key was preserved from the original backup.
         $restored = $DB->get_record('local_navigatr_audit', ['courseid' => $newcourse->id]);
         $this->assertNotEmpty($restored);
@@ -519,9 +613,10 @@ class backup_restore_test extends advanced_testcase {
     /**
      * Test handling of audit records for users that don't exist in target system
      */
-    public function test_missing_user_handling() {
+    public function test_missing_user_handling()
+    {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
-        
+
         global $DB, $USER;
 
         $this->resetAfterTest(true);
@@ -571,8 +666,14 @@ class backup_restore_test extends advanced_testcase {
         $DB->insert_record('local_navigatr_audit', $audit2);
 
         // Backup with user data.
-        $bc = new backup_controller(backup::TYPE_1COURSE, $course->id, backup::FORMAT_MOODLE,
-            backup::INTERACTIVE_NO, backup::MODE_GENERAL, $USER->id);
+        $bc = new backup_controller(
+            backup::TYPE_1COURSE,
+            $course->id,
+            backup::FORMAT_MOODLE,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id
+        );
         $bc->get_plan()->get_setting('users')->set_value(true);
         $bc->execute_plan();
         $backupid = $bc->get_backupid();
@@ -588,8 +689,14 @@ class backup_restore_test extends advanced_testcase {
 
         // Restore with user data.
         // The restore should handle the missing user2 gracefully.
-        $rc = new restore_controller($backupid, $newcourse->id, backup::INTERACTIVE_NO,
-            backup::MODE_GENERAL, $USER->id, backup::TARGET_EXISTING_ADDING);
+        $rc = new restore_controller(
+            $backupid,
+            $newcourse->id,
+            backup::INTERACTIVE_NO,
+            backup::MODE_GENERAL,
+            $USER->id,
+            backup::TARGET_EXISTING_ADDING
+        );
         $rc->get_plan()->get_setting('users')->set_value(true);
         $rc->execute_precheck();
         $rc->execute_plan();
@@ -621,4 +728,3 @@ class backup_restore_test extends advanced_testcase {
         $this->assertEquals(1, $totalaudits, 'Only audit records for existing users should be restored');
     }
 }
-

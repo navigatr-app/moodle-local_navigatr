@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -28,7 +29,7 @@ require_once($CFG->dirroot . '/local/navigatr/classes/form/badge_selection_form.
 // Get course ID from URL parameter
 $courseid = required_param('id', PARAM_INT);
 
-// Get provider ID from URL parameter or form data  
+// Get provider ID from URL parameter or form data
 $provider_id = optional_param('provider_id', 0, PARAM_INT);
 if (empty($provider_id)) {
     throw new \moodle_exception('missingparam', 'error', '', 'provider_id');
@@ -77,17 +78,17 @@ $form = new \local_navigatr\form\badge_selection_form(null, [
 // Handle form submission
 if ($form->is_cancelled()) {
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
-} else if ($data = $form->get_data()) {
+} elseif ($data = $form->get_data()) {
     // Save the mapping
     global $DB;
-    
+
     $mapping = new \stdClass();
     $mapping->courseid = $courseid;
     $mapping->provider_id = $data->provider_id;
     $mapping->badge_id = $data->badge_id;
     $mapping->timecreated = time();
     $mapping->timemodified = time();
-    
+
     // Fetch badge metadata from API
     try {
         $client = new \local_navigatr\local\api_client();
@@ -100,7 +101,7 @@ if ($form->is_cancelled()) {
         // If API call fails, leave fields as null - will be populated later
         error_log("Failed to fetch badge metadata: " . $e->getMessage());
     }
-    
+
     // Check if mapping already exists
     $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
     if ($existing) {
@@ -109,7 +110,7 @@ if ($form->is_cancelled()) {
     } else {
         $DB->insert_record('local_navigatr_map', $mapping);
     }
-    
+
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,12 +32,13 @@ use stdClass;
 /**
  * Unit tests for Navigatr Badge Issuance Task
  */
-class issue_badge_task_test extends advanced_testcase {
-
+class issue_badge_task_test extends advanced_testcase
+{
     /**
      * Test task class structure
      */
-    public function test_class_structure() {
+    public function test_class_structure()
+    {
         $this->assertTrue(class_exists(issue_badge_task::class));
         $this->assertTrue(method_exists(issue_badge_task::class, 'execute'));
         $this->assertTrue(method_exists(issue_badge_task::class, 'get_name'));
@@ -45,13 +47,14 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task execution with valid data
      */
-    public function test_execute_with_valid_data() {
+    public function test_execute_with_valid_data()
+    {
         $this->resetAfterTest();
-        
+
         // Create test user and course
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
-        
+
         // Create test data
         $task = new issue_badge_task();
         $task->userid = $user->id;
@@ -60,7 +63,7 @@ class issue_badge_task_test extends advanced_testcase {
         $task->badge_id = 'test_badge';
         $task->badge_name = 'Test Badge';
         $task->badge_image_url = 'https://example.com/badge.png';
-        
+
         // Test that task can be created and configured
         $this->assertEquals($user->id, $task->userid);
         $this->assertEquals($course->id, $task->courseid);
@@ -68,18 +71,18 @@ class issue_badge_task_test extends advanced_testcase {
         $this->assertEquals('test_badge', $task->badge_id);
         $this->assertEquals('Test Badge', $task->badge_name);
         $this->assertEquals('https://example.com/badge.png', $task->badge_image_url);
-        
+
         // Test task execution (mock API calls)
         $this->set_config('api_unavailable', 0, 'local_navigatr');
         $this->set_config('username', 'test_user', 'local_navigatr');
         $this->set_config('password', 'test_password', 'local_navigatr');
-        
+
         // Execute task
         $result = $task->execute();
-        
+
         // Verify task executed successfully
         $this->assertTrue($result);
-        
+
         // Verify audit record was created
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
@@ -87,7 +90,7 @@ class issue_badge_task_test extends advanced_testcase {
             'courseid' => $course->id
         ]);
         $this->assertCount(1, $audit_records);
-        
+
         $audit_record = reset($audit_records);
         $this->assertEquals($user->id, $audit_record->userid);
         $this->assertEquals($course->id, $audit_record->courseid);
@@ -97,10 +100,11 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task name
      */
-    public function test_get_name() {
+    public function test_get_name()
+    {
         $task = new issue_badge_task();
         $name = $task->get_name();
-        
+
         $this->assertIsString($name);
         $this->assertNotEmpty($name);
     }
@@ -108,11 +112,12 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task execution method exists
      */
-    public function test_execute_method() {
+    public function test_execute_method()
+    {
         $task = new issue_badge_task();
-        
+
         $this->assertTrue(method_exists($task, 'execute'));
-        
+
         $reflection = new \ReflectionMethod(issue_badge_task::class, 'execute');
         $this->assertTrue($reflection->isPublic());
     }
@@ -120,13 +125,14 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test audit record creation
      */
-    public function test_audit_record_creation() {
+    public function test_audit_record_creation()
+    {
         $this->resetAfterTest();
-        
+
         // Create test user and course
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
-        
+
         // Create task
         $task = new issue_badge_task();
         $task->userid = $user->id;
@@ -135,15 +141,15 @@ class issue_badge_task_test extends advanced_testcase {
         $task->badge_id = 'test_badge';
         $task->badge_name = 'Test Badge';
         $task->badge_image_url = 'https://example.com/badge.png';
-        
+
         // Execute task
         $this->set_config('api_unavailable', 0, 'local_navigatr');
         $this->set_config('username', 'test_user', 'local_navigatr');
         $this->set_config('password', 'test_password', 'local_navigatr');
-        
+
         $result = $task->execute();
         $this->assertTrue($result);
-        
+
         // Verify audit record was created with correct data
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
@@ -151,7 +157,7 @@ class issue_badge_task_test extends advanced_testcase {
             'courseid' => $course->id
         ]);
         $this->assertCount(1, $audit_records);
-        
+
         $audit_record = reset($audit_records);
         $this->assertEquals($user->id, $audit_record->userid);
         $this->assertEquals($course->id, $audit_record->courseid);
@@ -165,17 +171,18 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test deduplication key generation
      */
-    public function test_deduplication_key() {
+    public function test_deduplication_key()
+    {
         $this->resetAfterTest();
-        
+
         $task = new issue_badge_task();
         $task->userid = 123;
         $task->courseid = 456;
         $task->badge_id = 'test_badge_789';
-        
+
         // Test deduplication key format
         $expected_key = "123:456:test_badge_789";
-        
+
         // Test that the key generation logic exists
         $reflection = new \ReflectionClass(issue_badge_task::class);
         $this->assertTrue($reflection->hasMethod('create_audit_record'));
@@ -184,12 +191,13 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test error handling for missing user
      */
-    public function test_missing_user_handling() {
+    public function test_missing_user_handling()
+    {
         $this->resetAfterTest();
-        
+
         // Create test course
         $course = $this->getDataGenerator()->create_course();
-        
+
         $task = new issue_badge_task();
         $task->userid = 99999; // Non-existent user
         $task->courseid = $course->id;
@@ -197,18 +205,18 @@ class issue_badge_task_test extends advanced_testcase {
         $task->badge_id = 'test_badge';
         $task->badge_name = 'Test Badge';
         $task->badge_image_url = 'https://example.com/badge.png';
-        
+
         // Set up configuration
         $this->set_config('api_unavailable', 0, 'local_navigatr');
         $this->set_config('username', 'test_user', 'local_navigatr');
         $this->set_config('password', 'test_password', 'local_navigatr');
-        
+
         // Execute task - should handle missing user gracefully
         $result = $task->execute();
-        
+
         // Task should complete but with error status
         $this->assertTrue($result);
-        
+
         // Verify audit record was created with error status
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
@@ -216,7 +224,7 @@ class issue_badge_task_test extends advanced_testcase {
             'courseid' => $course->id
         ]);
         $this->assertCount(1, $audit_records);
-        
+
         $audit_record = reset($audit_records);
         $this->assertEquals('error', $audit_record->status);
         $this->assertStringContainsString('User not found', $audit_record->error_message);
@@ -225,15 +233,16 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test error handling for missing course
      */
-    public function test_missing_course_handling() {
+    public function test_missing_course_handling()
+    {
         $this->resetAfterTest();
-        
+
         $task = new issue_badge_task();
         $task->userid = 1;
         $task->courseid = 99999; // Non-existent course
         $task->provider_id = 'test_provider';
         $task->badge_id = 'test_badge';
-        
+
         // Test that method exists and can handle missing courses
         $this->assertTrue(method_exists($task, 'execute'));
     }
@@ -241,13 +250,14 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test API client integration
      */
-    public function test_api_client_integration() {
+    public function test_api_client_integration()
+    {
         $this->resetAfterTest();
-        
+
         // Test that task uses API client
         $reflection = new \ReflectionClass(issue_badge_task::class);
         $this->assertTrue($reflection->hasMethod('execute'));
-        
+
         // Test that API client is used in execution
         $method = $reflection->getMethod('execute');
         $this->assertTrue($method->isPublic());
@@ -256,16 +266,17 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test retry mechanism
      */
-    public function test_retry_mechanism() {
+    public function test_retry_mechanism()
+    {
         $this->resetAfterTest();
-        
+
         // Test that task can be retried
         $task = new issue_badge_task();
         $task->userid = 1;
         $task->courseid = 1;
         $task->provider_id = 'test_provider';
         $task->badge_id = 'test_badge';
-        
+
         // Test that task supports retry
         $this->assertTrue(method_exists($task, 'execute'));
     }
@@ -273,11 +284,12 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task data validation
      */
-    public function test_task_data_validation() {
+    public function test_task_data_validation()
+    {
         $this->resetAfterTest();
-        
+
         $task = new issue_badge_task();
-        
+
         // Test required fields
         $this->assertTrue(property_exists($task, 'userid'));
         $this->assertTrue(property_exists($task, 'courseid'));
@@ -290,13 +302,14 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test HTTP error handling
      */
-    public function test_http_error_handling() {
+    public function test_http_error_handling()
+    {
         $this->resetAfterTest();
-        
+
         // Create test user and course
         $user = $this->getDataGenerator()->create_user();
         $course = $this->getDataGenerator()->create_course();
-        
+
         // Create task
         $task = new issue_badge_task();
         $task->userid = $user->id;
@@ -305,18 +318,18 @@ class issue_badge_task_test extends advanced_testcase {
         $task->badge_id = 'test_badge';
         $task->badge_name = 'Test Badge';
         $task->badge_image_url = 'https://example.com/badge.png';
-        
+
         // Set up configuration to simulate API error
         $this->set_config('api_unavailable', 1, 'local_navigatr');
         $this->set_config('username', 'test_user', 'local_navigatr');
         $this->set_config('password', 'test_password', 'local_navigatr');
-        
+
         // Execute task
         $result = $task->execute();
-        
+
         // Task should complete but with error status
         $this->assertTrue($result);
-        
+
         // Verify audit record was created with error status
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
@@ -324,7 +337,7 @@ class issue_badge_task_test extends advanced_testcase {
             'courseid' => $course->id
         ]);
         $this->assertCount(1, $audit_records);
-        
+
         $audit_record = reset($audit_records);
         $this->assertEquals('error', $audit_record->status);
         $this->assertStringContainsString('API unavailable', $audit_record->error_message);
@@ -333,9 +346,10 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test authentication error handling
      */
-    public function test_auth_error_handling() {
+    public function test_auth_error_handling()
+    {
         $this->resetAfterTest();
-        
+
         // Test that method exists and can handle auth errors
         $this->assertTrue(method_exists(issue_badge_task::class, 'execute'));
     }
@@ -343,16 +357,17 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task scheduling
      */
-    public function test_task_scheduling() {
+    public function test_task_scheduling()
+    {
         $this->resetAfterTest();
-        
+
         // Test that task can be scheduled
         $task = new issue_badge_task();
         $task->userid = 1;
         $task->courseid = 1;
         $task->provider_id = 'test_provider';
         $task->badge_id = 'test_badge';
-        
+
         // Test that task is schedulable
         $this->assertInstanceOf(issue_badge_task::class, $task);
     }
@@ -360,9 +375,10 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task cleanup
      */
-    public function test_task_cleanup() {
+    public function test_task_cleanup()
+    {
         $this->resetAfterTest();
-        
+
         // Test that task can be cleaned up
         $task = new issue_badge_task();
         $this->assertInstanceOf(issue_badge_task::class, $task);
@@ -371,9 +387,10 @@ class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task failure handling
      */
-    public function test_task_failure_handling() {
+    public function test_task_failure_handling()
+    {
         $this->resetAfterTest();
-        
+
         // Test that task can handle failures gracefully
         $this->assertTrue(method_exists(issue_badge_task::class, 'execute'));
     }

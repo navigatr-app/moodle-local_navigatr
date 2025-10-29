@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -33,14 +34,15 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class badge_issuance_queued extends \core\event\base {
-
+class badge_issuance_queued extends \core\event\base
+{
     /**
      * Init method.
      *
      * @return void
      */
-    protected function init() {
+    protected function init()
+    {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'local_navigatr_map';
@@ -51,10 +53,11 @@ class badge_issuance_queued extends \core\event\base {
      *
      * @return string
      */
-    public function get_description() {
+    public function get_description()
+    {
         $badgeid = isset($this->other['badgeid']) ? $this->other['badgeid'] : 'unknown';
         $providerid = isset($this->other['provider_id']) ? $this->other['provider_id'] : 'unknown';
-        
+
         return "Badge issuance task queued for user {$this->userid} in course {$this->courseid}. " .
                "Badge ID: {$badgeid}, Provider ID: {$providerid}.";
     }
@@ -64,7 +67,8 @@ class badge_issuance_queued extends \core\event\base {
      *
      * @return string
      */
-    public static function get_name() {
+    public static function get_name()
+    {
         return get_string('eventbadgeissuancequeued', 'local_navigatr');
     }
 
@@ -73,7 +77,8 @@ class badge_issuance_queued extends \core\event\base {
      *
      * @return \moodle_url
      */
-    public function get_url() {
+    public function get_url()
+    {
         return new \moodle_url('/course/view.php', ['id' => $this->courseid]);
     }
 
@@ -83,7 +88,8 @@ class badge_issuance_queued extends \core\event\base {
      * @throws \coding_exception
      * @return void
      */
-    protected function validate_data() {
+    protected function validate_data()
+    {
         parent::validate_data();
 
         if (!isset($this->other['badgeid'])) {
@@ -95,4 +101,3 @@ class badge_issuance_queued extends \core\event\base {
         }
     }
 }
-

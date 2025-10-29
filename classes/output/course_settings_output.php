@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -29,8 +30,8 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Course settings output class.
  */
-class course_settings_output {
-
+class course_settings_output
+{
     /**
      * Render the current mapping display.
      *
@@ -40,7 +41,8 @@ class course_settings_output {
      * @param int $courseid The course ID
      * @return string Rendered HTML
      */
-    public static function render_current_mapping($existing_mapping, $existing_provider, $existing_badge, $courseid) {
+    public static function render_current_mapping($existing_mapping, $existing_provider, $existing_badge, $courseid)
+    {
         global $OUTPUT;
 
         if (!$existing_mapping || !$existing_provider || !$existing_badge) {
@@ -78,7 +80,7 @@ class course_settings_output {
         // Ensure URLs are properly encoded
         $template_data['change_url'] = $change_url->out(false); // false = don't HTML encode
         $template_data['remove_url'] = $remove_url->out(false);
-        
+
         return $OUTPUT->render_from_template('local_navigatr/course/course_settings', $template_data);
     }
 }

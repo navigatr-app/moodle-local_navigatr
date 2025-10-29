@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,14 +32,15 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * Badge selection form class.
  */
-class badge_selection_form extends \moodleform {
-
+class badge_selection_form extends \moodleform
+{
     /**
      * Form definition.
      */
-    protected function definition() {
+    protected function definition()
+    {
         global $DB;
-        
+
         $mform = $this->_form;
         $courseid = $this->_customdata['courseid'];
         $provider_id = $this->_customdata['provider_id'];
@@ -62,7 +64,7 @@ class badge_selection_form extends \moodleform {
         // Get badges for the selected provider
         $badges = $this->get_badges($provider_id);
         $badgeoptions = ['' => get_string('select_badge', 'local_navigatr')];
-        
+
         // Ensure badges is an array before iterating
         if (is_array($badges)) {
             foreach ($badges as $badge) {
@@ -79,7 +81,7 @@ class badge_selection_form extends \moodleform {
 
         // Add submit button
         $mform->addElement('submit', 'select_badge', get_string('select_badge_continue', 'local_navigatr'), ['class' => 'btn-primary mr-2']);
-        
+
         // Add cancel button
         $mform->addElement('cancel', 'cancel', get_string('cancel'), ['class' => 'btn-secondary']);
     }
@@ -90,7 +92,8 @@ class badge_selection_form extends \moodleform {
      * @param int $providerid Provider ID
      * @return array Badges array
      */
-    private function get_badges($providerid) {
+    private function get_badges($providerid)
+    {
         try {
             // Check cache first
             $cached = \local_navigatr\local\cache::get_badges($providerid, 1, 50);
@@ -110,7 +113,6 @@ class badge_selection_form extends \moodleform {
             }
 
             return [];
-
         } catch (\Exception $e) {
             // Trigger event for failed API request
             $eventdata = \local_navigatr\event\api_request_failed::create([

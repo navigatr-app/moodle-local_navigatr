@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,12 +32,13 @@ use moodle_exception;
 /**
  * Unit tests for Navigatr Token Manager
  */
-class token_manager_test extends advanced_testcase {
-
+class token_manager_test extends advanced_testcase
+{
     /**
      * Test token manager class structure
      */
-    public function test_class_structure() {
+    public function test_class_structure()
+    {
         $this->assertTrue(class_exists(token_manager::class));
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
         $this->assertTrue(method_exists(token_manager::class, 'clear_tokens'));
@@ -45,12 +47,13 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test token retrieval with no stored tokens
      */
-    public function test_get_access_token_no_tokens() {
+    public function test_get_access_token_no_tokens()
+    {
         $this->resetAfterTest();
-        
+
         // Clear any existing tokens
         token_manager::clear_tokens();
-        
+
         // Test that method exists and is static
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
         $reflection = new \ReflectionMethod(token_manager::class, 'get_access_token');
@@ -60,23 +63,24 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test token clearing functionality
      */
-    public function test_clear_tokens() {
+    public function test_clear_tokens()
+    {
         $this->resetAfterTest();
-        
+
         // Set some mock tokens
         set_config('access_token', 'mock_token', 'local_navigatr');
         set_config('access_expires_at', time() + 300, 'local_navigatr');
         set_config('refresh_token', 'mock_refresh', 'local_navigatr');
         set_config('refresh_expires_at', time() + 86400, 'local_navigatr');
         set_config('nav_user_id', '123', 'local_navigatr');
-        
+
         // Verify tokens are set
         $this->assertNotEmpty(get_config('local_navigatr', 'access_token'));
         $this->assertNotEmpty(get_config('local_navigatr', 'refresh_token'));
-        
+
         // Clear tokens
         token_manager::clear_tokens();
-        
+
         // Verify tokens are cleared
         $this->assertEmpty(get_config('local_navigatr', 'access_token'));
         $this->assertEmpty(get_config('local_navigatr', 'refresh_token'));
@@ -86,13 +90,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test token expiration handling
      */
-    public function test_token_expiration() {
+    public function test_token_expiration()
+    {
         $this->resetAfterTest();
-        
+
         // Set expired token
         set_config('access_token', 'expired_token', 'local_navigatr');
         set_config('access_expires_at', time() - 3600, 'local_navigatr'); // Expired 1 hour ago
-        
+
         // Test that method handles expired tokens
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
     }
@@ -100,13 +105,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test token refresh with valid refresh token
      */
-    public function test_token_refresh_valid() {
+    public function test_token_refresh_valid()
+    {
         $this->resetAfterTest();
-        
+
         // Set valid refresh token
         set_config('refresh_token', 'valid_refresh_token', 'local_navigatr');
         set_config('refresh_expires_at', time() + 3600, 'local_navigatr'); // Valid for 1 hour
-        
+
         // Test that refresh mechanism exists
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
     }
@@ -114,13 +120,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test token refresh with expired refresh token
      */
-    public function test_token_refresh_expired() {
+    public function test_token_refresh_expired()
+    {
         $this->resetAfterTest();
-        
+
         // Set expired refresh token
         set_config('refresh_token', 'expired_refresh_token', 'local_navigatr');
         set_config('refresh_expires_at', time() - 3600, 'local_navigatr'); // Expired 1 hour ago
-        
+
         // Test that method handles expired refresh tokens
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
     }
@@ -128,13 +135,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test re-authentication when no valid tokens
      */
-    public function test_reauth_no_credentials() {
+    public function test_reauth_no_credentials()
+    {
         $this->resetAfterTest();
-        
+
         // Clear credentials
         unset_config('username', 'local_navigatr');
         \local_navigatr\local\password_manager::clear_password();
-        
+
         // Test that method exists and handles missing credentials
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
     }
@@ -142,13 +150,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test re-authentication with credentials
      */
-    public function test_reauth_with_credentials() {
+    public function test_reauth_with_credentials()
+    {
         $this->resetAfterTest();
-        
+
         // Set credentials
         set_config('username', 'test_user', 'local_navigatr');
         \local_navigatr\local\password_manager::store_password('test_password');
-        
+
         // Test that method exists
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
     }
@@ -156,13 +165,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test JWT token decoding
      */
-    public function test_jwt_decoding() {
+    public function test_jwt_decoding()
+    {
         $this->resetAfterTest();
-        
+
         // Test that JWT decoding method exists
         $reflection = new \ReflectionClass(token_manager::class);
         $this->assertTrue($reflection->hasMethod('decode_jwt_sub'));
-        
+
         $method = $reflection->getMethod('decode_jwt_sub');
         $this->assertTrue($method->isPrivate());
     }
@@ -170,13 +180,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test token storage
      */
-    public function test_token_storage() {
+    public function test_token_storage()
+    {
         $this->resetAfterTest();
-        
+
         // Test that token storage method exists
         $reflection = new \ReflectionClass(token_manager::class);
         $this->assertTrue($reflection->hasMethod('store_tokens'));
-        
+
         $method = $reflection->getMethod('store_tokens');
         $this->assertTrue($method->isPrivate());
     }
@@ -184,13 +195,14 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test lock-based concurrency control
      */
-    public function test_lock_mechanism() {
+    public function test_lock_mechanism()
+    {
         $this->resetAfterTest();
-        
+
         // Test that lock mechanism exists
         $reflection = new \ReflectionClass(token_manager::class);
         $this->assertTrue($reflection->hasMethod('refresh_or_reauth_with_lock'));
-        
+
         $method = $reflection->getMethod('refresh_or_reauth_with_lock');
         $this->assertTrue($method->isPrivate());
     }
@@ -198,12 +210,13 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test error handling for authentication failures
      */
-    public function test_auth_failure_handling() {
+    public function test_auth_failure_handling()
+    {
         $this->resetAfterTest();
-        
+
         // Test that method exists and can handle failures
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
-        
+
         // Test that clear_tokens method exists for cleanup
         $this->assertTrue(method_exists(token_manager::class, 'clear_tokens'));
     }
@@ -211,16 +224,17 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test token validation logic
      */
-    public function test_token_validation() {
+    public function test_token_validation()
+    {
         $this->resetAfterTest();
-        
+
         // Test with valid token
         set_config('access_token', 'valid_token', 'local_navigatr');
         set_config('access_expires_at', time() + 300, 'local_navigatr');
-        
+
         // Test that method exists
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
-        
+
         // Test with invalid token
         set_config('access_token', '', 'local_navigatr');
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
@@ -229,9 +243,10 @@ class token_manager_test extends advanced_testcase {
     /**
      * Test concurrent access handling
      */
-    public function test_concurrent_access() {
+    public function test_concurrent_access()
+    {
         $this->resetAfterTest();
-        
+
         // Test that lock mechanism exists for concurrent access
         $reflection = new \ReflectionClass(token_manager::class);
         $this->assertTrue($reflection->hasMethod('refresh_or_reauth_with_lock'));

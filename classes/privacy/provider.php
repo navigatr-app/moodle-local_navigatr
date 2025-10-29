@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -26,27 +27,28 @@ namespace local_navigatr\privacy;
 
 defined('MOODLE_INTERNAL') || die();
 
-use \core_privacy\local\metadata\collection;
-use \core_privacy\local\request\contextlist;
-use \core_privacy\local\request\approved_contextlist;
-use \core_privacy\local\request\userlist;
-use \core_privacy\local\request\approved_userlist;
+use core_privacy\local\metadata\collection;
+use core_privacy\local\request\contextlist;
+use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\userlist;
+use core_privacy\local\request\approved_userlist;
 
 /**
  * Privacy provider class.
  */
-class provider implements 
+class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\plugin\provider,
-    \core_privacy\local\request\core_userlist_provider {
-
+    \core_privacy\local\request\core_userlist_provider
+{
     /**
      * Returns metadata about this plugin.
      *
      * @param collection $collection The initialised collection to add items to.
      * @return collection A listing of user data stored through this plugin.
      */
-    public static function get_metadata(collection $collection) : collection {
+    public static function get_metadata(collection $collection): collection
+    {
         $collection->add_database_table('local_navigatr_audit', [
             'userid' => 'privacy:metadata:local_navigatr_audit:userid',
             'courseid' => 'privacy:metadata:local_navigatr_audit:courseid',
@@ -71,7 +73,8 @@ class provider implements
      * @param int $userid The user to search.
      * @return contextlist $contextlist The contextlist containing the list of contexts used in this plugin.
      */
-    public static function get_contexts_for_userid(int $userid) : contextlist {
+    public static function get_contexts_for_userid(int $userid): contextlist
+    {
         $contextlist = new contextlist();
 
         // Add course contexts where user has audit records
@@ -81,7 +84,7 @@ class provider implements
                 JOIN {local_navigatr_audit} na ON na.courseid = co.id
                 WHERE c.contextlevel = :contextlevel
                 AND na.userid = :userid";
-        
+
         $contextlist->add_from_sql($sql, [
             'contextlevel' => CONTEXT_COURSE,
             'userid' => $userid
@@ -95,7 +98,8 @@ class provider implements
      *
      * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
      */
-    public static function get_users_in_context(userlist $userlist) {
+    public static function get_users_in_context(userlist $userlist)
+    {
         $context = $userlist->get_context();
 
         if ($context->contextlevel != CONTEXT_COURSE) {
@@ -105,7 +109,7 @@ class provider implements
         $sql = "SELECT na.userid
                 FROM {local_navigatr_audit} na
                 WHERE na.courseid = :courseid";
-        
+
         $userlist->add_from_sql('userid', $sql, ['courseid' => $context->instanceid]);
     }
 
@@ -114,7 +118,8 @@ class provider implements
      *
      * @param approved_contextlist $contextlist The approved contexts to export information for.
      */
-    public static function export_user_data(approved_contextlist $contextlist) {
+    public static function export_user_data(approved_contextlist $contextlist)
+    {
         global $DB;
 
         $user = $contextlist->get_user();
@@ -126,7 +131,7 @@ class provider implements
             }
 
             $courseid = $context->instanceid;
-            
+
             // Get audit records for this user and course
             $auditrecords = $DB->get_records('local_navigatr_audit', [
                 'userid' => $userid,
@@ -149,7 +154,8 @@ class provider implements
      *
      * @param approved_contextlist $contextlist The approved contexts and user information to delete information for.
      */
-    public static function delete_data_for_user(approved_contextlist $contextlist) {
+    public static function delete_data_for_user(approved_contextlist $contextlist)
+    {
         global $DB;
 
         $user = $contextlist->get_user();
@@ -161,7 +167,7 @@ class provider implements
             }
 
             $courseid = $context->instanceid;
-            
+
             // Delete audit records for this user and course
             $DB->delete_records('local_navigatr_audit', [
                 'userid' => $userid,
@@ -175,24 +181,28 @@ class provider implements
      *
      * @param approved_userlist $userlist The approved context and user information to delete information for.
      */
-    public static function delete_data_for_users(approved_userlist $userlist) {
+    public static function delete_data_for_users(approved_userlist $userlist)
+    {
         global $DB;
 
         $context = $userlist->get_context();
-        
+
         if ($context->contextlevel != CONTEXT_COURSE) {
             return;
         }
 
         $courseid = $context->instanceid;
         $userids = $userlist->get_userids();
-        
+
         if (!empty($userids)) {
             list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
             $params = array_merge(['courseid' => $courseid], $inparams);
-            
-            $DB->delete_records_select('local_navigatr_audit', 
-                "courseid = :courseid AND userid $insql", $params);
+
+            $DB->delete_records_select(
+                'local_navigatr_audit',
+                "courseid = :courseid AND userid $insql",
+                $params
+            );
         }
     }
 
@@ -201,7 +211,8 @@ class provider implements
      *
      * @param \context $context The specific context to delete data for.
      */
-    public static function delete_data_for_all_users_in_context(\context $context) {
+    public static function delete_data_for_all_users_in_context(\context $context)
+    {
         global $DB;
 
         if ($context->contextlevel != CONTEXT_COURSE) {
@@ -209,7 +220,7 @@ class provider implements
         }
 
         $courseid = $context->instanceid;
-        
+
         // Delete all audit records for this course
         $DB->delete_records('local_navigatr_audit', ['courseid' => $courseid]);
     }

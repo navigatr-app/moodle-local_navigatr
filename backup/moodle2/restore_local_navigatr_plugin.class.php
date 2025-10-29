@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -31,14 +32,15 @@ require_once($CFG->dirroot . '/backup/moodle2/restore_local_plugin.class.php');
  *
  * Provides restore functionality for course badge mappings and audit records.
  */
-class restore_local_navigatr_plugin extends restore_local_plugin {
-
+class restore_local_navigatr_plugin extends restore_local_plugin
+{
     /**
      * Define the course plugin structure for restore
      *
      * @return array Array of restore_path_element objects
      */
-    protected function define_course_plugin_structure() {
+    protected function define_course_plugin_structure()
+    {
 
         $paths = [];
 
@@ -47,15 +49,19 @@ class restore_local_navigatr_plugin extends restore_local_plugin {
 
         // Define the path to badge mappings in the backup XML.
         // This tells Moodle where to find the mapping data and which method to call to process it.
-        $paths[] = new restore_path_element('local_navigatr_mapping',
-            $this->get_pathfor('/mappings/mapping'));
+        $paths[] = new restore_path_element(
+            'local_navigatr_mapping',
+            $this->get_pathfor('/mappings/mapping')
+        );
 
         debugging('local_navigatr: Badge mappings path defined for restore', DEBUG_DEVELOPER);
 
         // Define the path to audit records if user data is being restored.
         if ($this->get_setting_value('users')) {
-            $paths[] = new restore_path_element('local_navigatr_audit',
-                $this->get_pathfor('/audits/audit'));
+            $paths[] = new restore_path_element(
+                'local_navigatr_audit',
+                $this->get_pathfor('/audits/audit')
+            );
 
             debugging('local_navigatr: Audit records path defined for restore (user data included)', DEBUG_DEVELOPER);
         } else {
@@ -72,7 +78,8 @@ class restore_local_navigatr_plugin extends restore_local_plugin {
      *
      * @param array|object $data The mapping data from backup
      */
-    public function process_local_navigatr_mapping($data) {
+    public function process_local_navigatr_mapping($data)
+    {
         global $DB;
 
         $data = (object)$data;
@@ -94,7 +101,7 @@ class restore_local_navigatr_plugin extends restore_local_plugin {
         $existing = $DB->get_record('local_navigatr_map', ['courseid' => $data->courseid]);
 
         if ($existing) {
-            debugging('local_navigatr: Mapping already exists for courseid ' . $data->courseid . 
+            debugging('local_navigatr: Mapping already exists for courseid ' . $data->courseid .
                      ' - skipping restore to preserve existing configuration', DEBUG_DEVELOPER);
             return;
         }
@@ -110,7 +117,6 @@ class restore_local_navigatr_plugin extends restore_local_plugin {
             // Set mapping for potential future reference.
             // This allows other restore processes to reference our data if needed.
             $this->set_mapping('local_navigatr_map', $oldid, $newid);
-
         } catch (Exception $e) {
             debugging('local_navigatr: Failed to restore mapping - ' . $e->getMessage(), DEBUG_NORMAL);
         }
@@ -121,12 +127,13 @@ class restore_local_navigatr_plugin extends restore_local_plugin {
      *
      * @param array|object $data The audit data from backup
      */
-    public function process_local_navigatr_audit($data) {
+    public function process_local_navigatr_audit($data)
+    {
         global $DB;
 
         $data = (object)$data;
 
-        debugging('local_navigatr: Processing audit restore (old userid: ' . $data->userid . 
+        debugging('local_navigatr: Processing audit restore (old userid: ' . $data->userid .
                  ', old courseid: ' . $data->courseid . ', badge_id: ' . $data->badge_id . ')', DEBUG_DEVELOPER);
 
         // Map old course ID to new course ID.
@@ -156,7 +163,7 @@ class restore_local_navigatr_plugin extends restore_local_plugin {
             $existing = $DB->get_record('local_navigatr_audit', ['dedupe_key' => $data->dedupe_key]);
 
             if ($existing) {
-                debugging('local_navigatr: Audit record with dedupe_key ' . $data->dedupe_key . 
+                debugging('local_navigatr: Audit record with dedupe_key ' . $data->dedupe_key .
                          ' already exists - skipping to avoid duplicate', DEBUG_DEVELOPER);
                 return;
             }
@@ -164,11 +171,9 @@ class restore_local_navigatr_plugin extends restore_local_plugin {
             // Insert the restored audit record.
             $newid = $DB->insert_record('local_navigatr_audit', $data);
             debugging('local_navigatr: Audit record restored successfully (new id: ' . $newid . ')', DEBUG_DEVELOPER);
-
         } catch (dml_exception $e) {
             // Handle database exceptions (like unique constraint violations).
             debugging('local_navigatr: Failed to restore audit record - ' . $e->getMessage(), DEBUG_NORMAL);
         }
     }
 }
-

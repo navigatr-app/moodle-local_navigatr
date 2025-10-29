@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -43,12 +44,16 @@ $PAGE->set_heading($course->fullname . ' - ' . get_string('select_provider', 'lo
 // Handle remove mapping action
 if (optional_param('action', '', PARAM_ALPHA) === 'removemapping') {
     require_sesskey();
-    
+
     $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
     if ($mapping) {
         $DB->delete_records('local_navigatr_map', ['courseid' => $courseid]);
-        redirect(new moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]), 
-                get_string('mapping_removed', 'local_navigatr'), null, \core\output\notification::NOTIFY_SUCCESS);
+        redirect(
+            new moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]),
+            get_string('mapping_removed', 'local_navigatr'),
+            null,
+            \core\output\notification::NOTIFY_SUCCESS
+        );
     }
 }
 
@@ -65,12 +70,12 @@ if ($existing_mapping) {
         if ($provider_response->ok) {
             $existing_provider = $provider_response->body;
         }
-        
+
         // Fetch badge details
         $badge_response = $client->get("/badge/{$existing_mapping->badge_id}");
         if ($badge_response->ok) {
             $existing_badge = $badge_response->body;
-            
+
             // Update cached badge metadata if it has changed
             $needs_update = false;
             if ($existing_mapping->badge_name !== ($existing_badge['name'] ?? null)) {
@@ -81,7 +86,7 @@ if ($existing_mapping) {
                 $existing_mapping->badge_image_url = $existing_badge['image_url'] ?? null;
                 $needs_update = true;
             }
-            
+
             if ($needs_update) {
                 $existing_mapping->timemodified = time();
                 $DB->update_record('local_navigatr_map', $existing_mapping);
@@ -154,9 +159,9 @@ if (empty($providers)) {
 
 // Display existing mapping if it exists using template
 echo \local_navigatr\output\course_settings_output::render_current_mapping(
-    $existing_mapping, 
-    $existing_provider, 
-    $existing_badge, 
+    $existing_mapping,
+    $existing_provider,
+    $existing_badge,
     $courseid
 );
 

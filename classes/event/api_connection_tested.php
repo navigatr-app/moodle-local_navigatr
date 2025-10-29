@@ -1,4 +1,5 @@
 <?php
+
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -33,14 +34,15 @@ defined('MOODLE_INTERNAL') || die();
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class api_connection_tested extends \core\event\base {
-
+class api_connection_tested extends \core\event\base
+{
     /**
      * Init method.
      *
      * @return void
      */
-    protected function init() {
+    protected function init()
+    {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
@@ -50,11 +52,12 @@ class api_connection_tested extends \core\event\base {
      *
      * @return string
      */
-    public function get_description() {
+    public function get_description()
+    {
         $environment = isset($this->other['environment']) ? $this->other['environment'] : 'unknown';
         $success = isset($this->other['success']) ? ($this->other['success'] ? 'successful' : 'failed') : 'unknown';
         $code = isset($this->other['response_code']) ? $this->other['response_code'] : 'N/A';
-        
+
         return "API connection test to {$environment} environment was {$success}. Response code: {$code}.";
     }
 
@@ -63,7 +66,8 @@ class api_connection_tested extends \core\event\base {
      *
      * @return string
      */
-    public static function get_name() {
+    public static function get_name()
+    {
         return get_string('eventapiconnectiontested', 'local_navigatr');
     }
 
@@ -72,7 +76,8 @@ class api_connection_tested extends \core\event\base {
      *
      * @return \moodle_url
      */
-    public function get_url() {
+    public function get_url()
+    {
         return new \moodle_url('/admin/settings.php', ['section' => 'local_navigatr']);
     }
 
@@ -82,7 +87,8 @@ class api_connection_tested extends \core\event\base {
      * @throws \coding_exception
      * @return void
      */
-    protected function validate_data() {
+    protected function validate_data()
+    {
         parent::validate_data();
 
         if (!isset($this->other['environment'])) {
@@ -94,4 +100,3 @@ class api_connection_tested extends \core\event\base {
         }
     }
 }
-
