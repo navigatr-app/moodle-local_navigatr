@@ -22,11 +22,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace local_navigatr;
+
+defined('MOODLE_INTERNAL') || die();
+
 use advanced_testcase;
-use local_navigatr\observer;
 
 /**
  * Unit tests for Navigatr Observer
+ *
+ * @package    local_navigatr
+ * @copyright  2025 Navigatr
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class observer_test extends advanced_testcase {
 
