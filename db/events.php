@@ -38,3 +38,19 @@ $observers = [
         'internal'    => false,
     ],
 ];
+
+// Define custom events for audit logging
+$events = [
+    [
+        'eventname' => '\local_navigatr\event\badge_issuance_success',
+        'component' => 'local_navigatr',
+    ],
+    [
+        'eventname' => '\local_navigatr\event\badge_issuance_failed',
+        'component' => 'local_navigatr',
+    ],
+    [
+        'eventname' => '\local_navigatr\event\badge_issuance_retry',
+        'component' => 'local_navigatr',
+    ],
+];

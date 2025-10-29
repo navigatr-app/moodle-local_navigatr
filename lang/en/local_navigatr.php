@@ -173,3 +173,8 @@ $string['eventcoursemappingskipped'] = 'Course mapping skipped';
 $string['eventapiconnectiontested'] = 'API connection tested';
 $string['eventtokenrefreshfailed'] = 'Token refresh failed';
 $string['eventapirequestfailed'] = 'API request failed';
+
+// Badge issuance audit events
+$string['event_badge_issuance_success'] = 'Badge issuance successful';
+$string['event_badge_issuance_failed'] = 'Badge issuance failed';
+$string['event_badge_issuance_retry'] = 'Badge issuance queued for retry';

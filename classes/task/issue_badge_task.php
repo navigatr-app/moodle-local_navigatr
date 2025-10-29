@@ -209,5 +209,46 @@ class issue_badge_task extends \core\task\adhoc_task {
         } else {
             $DB->insert_record('local_navigatr_audit', $record);
         }
+
+        // Trigger appropriate Moodle event for core logging integration
+        $this->trigger_audit_event($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson);
+    }
+
+    /**
+     * Trigger appropriate Moodle event based on audit status.
+     *
+     * @param int $userid User ID
+     * @param int $courseid Course ID
+     * @param int $providerid Provider ID
+     * @param int $badgeid Badge ID
+     * @param string $status Status (success/error)
+     * @param int $httpcode HTTP response code
+     * @param string $responsejson Response JSON
+     */
+    private function trigger_audit_event($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson) {
+        $context = \context_course::instance($courseid);
+        $other = [
+            'badge_id' => $badgeid,
+            'provider_id' => $providerid,
+            'http_code' => $httpcode,
+        ];
+
+        if ($status === 'success') {
+            $event = \local_navigatr\event\badge_issuance_success::create([
+                'context' => $context,
+                'userid' => $userid,
+                'other' => $other
+            ]);
+        } else {
+            // Add error details for failed attempts
+            $other['error'] = $responsejson;
+            $event = \local_navigatr\event\badge_issuance_failed::create([
+                'context' => $context,
+                'userid' => $userid,
+                'other' => $other
+            ]);
+        }
+        
+        $event->trigger();
     }
 }
