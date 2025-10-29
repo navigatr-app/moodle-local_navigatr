@@ -31,6 +31,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed redundant course mapping check from issue_badge_task.php as observer already validates mapping exists before queuing task
 - Fixed course progress bug by passing course object instead of course ID to get_course_progress_percentage method
 - Fixed capability check mismatch by adding explicit require_capability check in settings_page.php for consistent permission validation
+- Fixed unused capability issue by making local/navigatr:managecredentials actively used in settings_page.php
+- Fixed privacy provider issue by confirming all required GDPR compliance methods are already implemented
+- Fixed form setDefaults usage by replacing setDefault() calls with proper set_data() method following Moodle best practices
 
 ## [1.0.0] - 2025-11-15
 

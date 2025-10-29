@@ -90,6 +90,9 @@ if ($data = $form->get_data()) {
     set_config('timeout', $data->timeout, 'local_navigatr');
     set_config('loglevel', $data->loglevel, 'local_navigatr');
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));
+} else {
+    // Set form data with current configuration values
+    $form->set_form_data();
 }
 
 echo $OUTPUT->header();
