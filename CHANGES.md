@@ -15,14 +15,14 @@ This release delivers a major security and code quality enhancement, systematica
 
 - Password encryption with AES-256-CBC
 - Form validation improvements
-- Capability system modernization
+- Capability system modernisation
 - Event-based logging system
 - GDPR compliance improvements
 
 ### Code Quality Improvements in 1.1.0
 
-- Template system modernization
-- Parameter handling standardization
+- Template system modernisation
+- Parameter handling standardisation
 - Unused code removal
 - Test infrastructure enhancement
 - Audit logging integration
@@ -104,13 +104,13 @@ This release delivers a major security and code quality enhancement, systematica
 ### Changed in 0.9.1
 
 - Restructured project files to root folder
-- Improved API client initialization and README documentation
+- Improved API client initialisation and README documentation
 - Updated test workflows and CI/CD pipeline
 
 ### Fixed in 0.9.1
 
 - Badge and provider selection functionality
-- Observer registration and error message sanitization
+- Observer registration and error message sanitisation
 - Course completion reset and test database setup
 
 ### Removed in 0.9.1
