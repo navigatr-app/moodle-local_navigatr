@@ -24,6 +24,8 @@
 
 namespace local_navigatr\local;
 
+defined('MOODLE_INTERNAL') || die();
+
 // Include Moodle's cURL library
 require_once($CFG->libdir . '/filelib.php');
 

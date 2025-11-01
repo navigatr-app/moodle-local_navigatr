@@ -24,8 +24,6 @@
 
 namespace local_navigatr\local;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Token manager class for handling Navigatr API authentication.
  */

@@ -24,8 +24,6 @@
 
 namespace local_navigatr\local;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Password manager class for handling encrypted password storage.
  */

@@ -24,8 +24,6 @@
 
 namespace local_navigatr\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Course mapping skipped event class.
  *

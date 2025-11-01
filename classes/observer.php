@@ -24,8 +24,6 @@
 
 namespace local_navigatr;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Event observer class.
  */

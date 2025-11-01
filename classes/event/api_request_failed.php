@@ -24,8 +24,6 @@
 
 namespace local_navigatr\event;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * API request failed event class.
  *

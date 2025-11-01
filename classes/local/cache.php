@@ -24,8 +24,6 @@
 
 namespace local_navigatr\local;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Cache helper class for Navigatr API data.
  */
