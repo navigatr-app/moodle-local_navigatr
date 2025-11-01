@@ -364,7 +364,7 @@ class api_client
                 'environment' => $environment,
                 'success' => $authresponse->ok,
                 'response_code' => $authresponse->code,
-            ]
+            ],
         ]);
         $eventdata->trigger();
 

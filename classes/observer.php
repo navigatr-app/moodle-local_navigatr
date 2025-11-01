@@ -63,7 +63,7 @@ class observer
             'other' => [
                 'badgeid' => $mapping->badge_id,
                 'provider_id' => $mapping->provider_id,
-            ]
+            ],
         ]);
         $eventdata->trigger();
     }
@@ -145,7 +145,7 @@ class observer
                 'courseid' => $courseid,
                 'other' => [
                     'reason' => 'Mapping already exists - preserving existing configuration',
-                ]
+                ],
             ]);
             $eventdata->trigger();
             return;
@@ -173,7 +173,7 @@ class observer
                             'badge_id' => $record->badge_id,
                             'provider_id' => $record->provider_id,
                             'new_mapping_id' => $newid,
-                        ]
+                        ],
                     ]);
                     $eventdata->trigger();
                 } catch (\Exception $e) {

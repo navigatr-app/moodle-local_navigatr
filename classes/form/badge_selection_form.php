@@ -124,7 +124,7 @@ class badge_selection_form extends \moodleform
                 'other' => [
                     'operation' => 'get_badges',
                     'error' => $e->getMessage(),
-                ]
+                ],
             ]);
             $eventdata->trigger();
             return [];

@@ -116,7 +116,7 @@ class token_manager
                 'other' => [
                     'error' => $e->getMessage(),
                     'environment' => get_config('local_navigatr', 'env') ?: 'production',
-                ]
+                ],
             ]);
             $eventdata->trigger();
         }

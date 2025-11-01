@@ -74,8 +74,8 @@ class api_client_test extends advanced_testcase
                 'access_token' => 'mock_access_token',
                 'refresh_token' => 'mock_refresh_token',
                 'id_token' => 'mock_id_token',
-                'expires_in' => 300
-            ]
+                'expires_in' => 300,
+            ],
         ];
 
         // We can't easily mock HTTP requests in unit tests,

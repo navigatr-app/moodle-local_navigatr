@@ -128,7 +128,7 @@ class provider_selection_form extends \moodleform
                 'other' => [
                     'operation' => 'get_providers',
                     'error' => $e->getMessage(),
-                ]
+                ],
             ]);
             $eventdata->trigger();
             return [];

@@ -31,8 +31,8 @@ $capabilities = [
         'contextlevel' => CONTEXT_SYSTEM,
         'archetypes' => [
             'manager' => CAP_ALLOW,
-            'coursecreator' => CAP_PROHIBIT
-        ]
+            'coursecreator' => CAP_PROHIBIT,
+        ],
     ],
     'local/navigatr:configurecourse' => [
         'riskbitmask' => RISK_CONFIG,
@@ -40,7 +40,7 @@ $capabilities = [
         'contextlevel' => CONTEXT_COURSE,
         'archetypes' => [
             'editingteacher' => CAP_ALLOW,
-            'manager' => CAP_ALLOW
-        ]
+            'manager' => CAP_ALLOW,
+        ],
     ],
 ];

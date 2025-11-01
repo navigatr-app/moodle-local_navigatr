@@ -71,7 +71,7 @@ $PAGE->set_heading(get_string('select_badge', 'local_navigatr'));
 $form = new \local_navigatr\form\badge_selection_form(null, [
     'courseid' => $courseid,
     'provider_id' => $provider_id,
-    'provider_name' => $provider_name ?? get_string('unknown_provider', 'local_navigatr')
+    'provider_name' => $provider_name ?? get_string('unknown_provider', 'local_navigatr'),
 ]);
 
 // Handle form submission
