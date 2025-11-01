@@ -40,7 +40,7 @@ class behat_navigatr extends \behat_base implements Context {
             'Site administration',
             'Plugins',
             'Local plugins',
-            'Navigatr'
+            'Navigatr',
         ]);
     }
 
@@ -57,7 +57,7 @@ class behat_navigatr extends \behat_base implements Context {
         if (isset($data['username'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Username',
-                $data['username']
+                $data['username'],
             ]);
         }
 
@@ -65,7 +65,7 @@ class behat_navigatr extends \behat_base implements Context {
         if (isset($data['password'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Password',
-                $data['password']
+                $data['password'],
             ]);
         }
     }
@@ -78,7 +78,7 @@ class behat_navigatr extends \behat_base implements Context {
     public function i_test_the_navigatr_connection() {
         $this->execute('behat_general::i_click_on', [
             'Test Connection',
-            'button'
+            'button',
         ]);
     }
 
@@ -95,7 +95,7 @@ class behat_navigatr extends \behat_base implements Context {
         if (isset($data['provider'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Provider',
-                $data['provider']
+                $data['provider'],
             ]);
         }
 
@@ -103,7 +103,7 @@ class behat_navigatr extends \behat_base implements Context {
         if (isset($data['badge'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Badge',
-                $data['badge']
+                $data['badge'],
             ]);
         }
     }
@@ -117,13 +117,13 @@ class behat_navigatr extends \behat_base implements Context {
         // Navigate to course completion.
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Course administration',
-            'Completion'
+            'Completion',
         ]);
 
         // Mark course as complete.
         $this->execute('behat_general::i_click_on', [
             'Mark as complete',
-            'button'
+            'button',
         ]);
     }
 
@@ -134,7 +134,7 @@ class behat_navigatr extends \behat_base implements Context {
      */
     public function i_should_see_badge_issuance_in_audit_log() {
         $this->execute('behat_general::i_should_see', [
-            'Badge issued successfully'
+            'Badge issued successfully',
         ]);
     }
 
@@ -155,7 +155,7 @@ class behat_navigatr extends \behat_base implements Context {
      */
     public function the_badge_issuance_should_be_queued_for_retry() {
         $this->execute('behat_general::i_should_see', [
-            'Badge issuance queued for retry'
+            'Badge issuance queued for retry',
         ]);
     }
 
@@ -166,7 +166,7 @@ class behat_navigatr extends \behat_base implements Context {
      */
     public function only_one_badge_should_be_issued() {
         $this->execute('behat_general::i_should_see', [
-            'Duplicate badge issuance prevented'
+            'Duplicate badge issuance prevented',
         ]);
     }
 
@@ -181,25 +181,25 @@ class behat_navigatr extends \behat_base implements Context {
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Site administration',
             'Privacy and policies',
-            'Data requests'
+            'Data requests',
         ]);
 
         // Create export request.
         $this->execute('behat_general::i_click_on', [
             'Create new data export request',
-            'button'
+            'button',
         ]);
 
         // Select user.
         $this->execute('behat_forms::i_set_the_field_to', [
             'User',
-            $username
+            $username,
         ]);
 
         // Submit request.
         $this->execute('behat_general::i_click_on', [
             'Submit',
-            'button'
+            'button',
         ]);
     }
 
@@ -210,7 +210,9 @@ class behat_navigatr extends \behat_base implements Context {
      * @param string $text
      */
     public function i_should_see_in_the_export($text) {
-        $this->execute('behat_general::i_should_see', [$text]);
+        $this->execute('behat_general::i_should_see', [
+            $text,
+        ]);
     }
 
     /**
@@ -224,25 +226,25 @@ class behat_navigatr extends \behat_base implements Context {
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Site administration',
             'Privacy and policies',
-            'Data requests'
+            'Data requests',
         ]);
 
         // Create deletion request.
         $this->execute('behat_general::i_click_on', [
             'Create new data deletion request',
-            'button'
+            'button',
         ]);
 
         // Select user.
         $this->execute('behat_forms::i_set_the_field_to', [
             'User',
-            $username
+            $username,
         ]);
 
         // Submit request.
         $this->execute('behat_general::i_click_on', [
             'Submit',
-            'button'
+            'button',
         ]);
     }
 
@@ -253,7 +255,7 @@ class behat_navigatr extends \behat_base implements Context {
      */
     public function the_navigatr_audit_records_should_be_deleted() {
         $this->execute('behat_general::i_should_see', [
-            'User data deleted successfully'
+            'User data deleted successfully',
         ]);
     }
 }

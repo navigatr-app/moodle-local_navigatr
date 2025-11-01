@@ -702,14 +702,14 @@ final class backup_restore_test extends advanced_testcase {
         // Verify user1's audit record was restored.
         $user1audits = $DB->count_records('local_navigatr_audit', [
             'courseid' => $newcourse->id,
-            'userid' => $user1->id
+            'userid' => $user1->id,
         ]);
         $this->assertEquals(1, $user1audits);
 
         // Verify user2's audit record was NOT restored (user doesn't exist).
         $user2audits = $DB->count_records('local_navigatr_audit', [
             'courseid' => $newcourse->id,
-            'userid' => $user2id
+            'userid' => $user2id,
         ]);
         $this->assertEquals(0, $user2audits, 'Audit record for missing user should not be restored');
 

@@ -38,7 +38,7 @@ class local_navigatr_test_helper {
             'api_url' => 'https://api.navigatr.test',
             'api_unavailable' => 0,
             'retry_attempts' => 3,
-            'retry_delay' => 60
+            'retry_delay' => 60,
         ];
 
         $config = array_merge($defaults, $config);
@@ -86,7 +86,7 @@ class local_navigatr_test_helper {
             'fullname' => 'Test Course',
             'shortname' => 'TC' . time(),
             'enablecompletion' => 1,
-            'completionstartonenrol' => 1
+            'completionstartonenrol' => 1,
         ];
 
         $data = array_merge($defaults, $data);
@@ -112,8 +112,8 @@ class local_navigatr_test_helper {
                     'body' => json_encode([
                         'success' => true,
                         'badge_id' => $data['badge_id'] ?? 'test_badge',
-                        'message' => 'Badge issued successfully'
-                    ])
+                        'message' => 'Badge issued successfully',
+                    ]),
                 ];
 
             case 'error':
@@ -122,8 +122,8 @@ class local_navigatr_test_helper {
                     'body' => json_encode([
                         'success' => false,
                         'error' => $data['error'] ?? 'Bad request',
-                        'message' => 'Badge issuance failed'
-                    ])
+                        'message' => 'Badge issuance failed',
+                    ]),
                 ];
 
             case 'timeout':
@@ -132,8 +132,8 @@ class local_navigatr_test_helper {
                     'body' => json_encode([
                         'success' => false,
                         'error' => 'Request timeout',
-                        'message' => 'API request timed out'
-                    ])
+                        'message' => 'API request timed out',
+                    ]),
                 ];
 
             case 'unauthorized':
@@ -142,8 +142,8 @@ class local_navigatr_test_helper {
                     'body' => json_encode([
                         'success' => false,
                         'error' => 'Unauthorized',
-                        'message' => 'Invalid credentials'
-                    ])
+                        'message' => 'Invalid credentials',
+                    ]),
                 ];
 
             default:
@@ -152,8 +152,8 @@ class local_navigatr_test_helper {
                     'body' => json_encode([
                         'success' => false,
                         'error' => 'Internal server error',
-                        'message' => 'Unexpected error occurred'
-                    ])
+                        'message' => 'Unexpected error occurred',
+                    ]),
                 ];
         }
     }
@@ -178,7 +178,7 @@ class local_navigatr_test_helper {
             'error_message' => null,
             'api_response' => null,
             'created_at' => time(),
-            'updated_at' => time()
+            'updated_at' => time(),
         ];
 
         $data = array_merge($defaults, $data);

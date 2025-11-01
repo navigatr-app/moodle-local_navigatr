@@ -85,7 +85,7 @@ final class issue_badge_task_test extends advanced_testcase {
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
             'userid' => $user->id,
-            'courseid' => $course->id
+            'courseid' => $course->id,
         ]);
         $this->assertCount(1, $audit_records);
 
@@ -152,7 +152,7 @@ final class issue_badge_task_test extends advanced_testcase {
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
             'userid' => $user->id,
-            'courseid' => $course->id
+            'courseid' => $course->id,
         ]);
         $this->assertCount(1, $audit_records);
 
@@ -219,7 +219,7 @@ final class issue_badge_task_test extends advanced_testcase {
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
             'userid' => 99999,
-            'courseid' => $course->id
+            'courseid' => $course->id,
         ]);
         $this->assertCount(1, $audit_records);
 
@@ -332,7 +332,7 @@ final class issue_badge_task_test extends advanced_testcase {
         global $DB;
         $audit_records = $DB->get_records('local_navigatr_audit', [
             'userid' => $user->id,
-            'courseid' => $course->id
+            'courseid' => $course->id,
         ]);
         $this->assertCount(1, $audit_records);
 

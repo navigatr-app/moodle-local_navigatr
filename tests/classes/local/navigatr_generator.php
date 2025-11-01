@@ -42,7 +42,7 @@ class local_navigatr_generator extends component_generator_base {
             'password' => 'test_password',
             'enabled' => 1,
             'created_at' => time(),
-            'updated_at' => time()
+            'updated_at' => time(),
         ];
 
         $data = array_merge($defaults, $data);
@@ -70,7 +70,7 @@ class local_navigatr_generator extends component_generator_base {
             'criteria' => 'Complete the test course',
             'enabled' => 1,
             'created_at' => time(),
-            'updated_at' => time()
+            'updated_at' => time(),
         ];
 
         $data = array_merge($defaults, $data);
@@ -98,7 +98,7 @@ class local_navigatr_generator extends component_generator_base {
             'badge_image_url' => 'https://example.com/badge.png',
             'enabled' => 1,
             'created_at' => time(),
-            'updated_at' => time()
+            'updated_at' => time(),
         ];
 
         $data = array_merge($defaults, $data);
@@ -129,7 +129,7 @@ class local_navigatr_generator extends component_generator_base {
             'error_message' => null,
             'api_response' => null,
             'created_at' => time(),
-            'updated_at' => time()
+            'updated_at' => time(),
         ];
 
         $data = array_merge($defaults, $data);
@@ -152,7 +152,7 @@ class local_navigatr_generator extends component_generator_base {
             'course' => null,
             'provider' => null,
             'badge' => null,
-            'mapping' => null
+            'mapping' => null,
         ];
 
         $data = array_merge($defaults, $data);
@@ -183,7 +183,7 @@ class local_navigatr_generator extends component_generator_base {
         // Create badge if not provided.
         if (!$data['badge']) {
             $setup->badge = $this->create_badge([
-                'provider_id' => $setup->provider->id
+                'provider_id' => $setup->provider->id,
             ]);
         } else {
             $setup->badge = $data['badge'];
@@ -196,7 +196,7 @@ class local_navigatr_generator extends component_generator_base {
                 'provider_id' => $setup->provider->id,
                 'badge_id' => $setup->badge->id,
                 'badge_name' => $setup->badge->name,
-                'badge_image_url' => $setup->badge->image_url
+                'badge_image_url' => $setup->badge->image_url,
             ]);
         } else {
             $setup->mapping = $data['mapping'];
