@@ -20,6 +20,17 @@
     @package    local_navigatr
     @copyright  2025 Navigatr
     @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+    @template   local_navigatr/course/course_settings
+    
+    Template context variables:
+    @var bool existing_mapping Whether an existing badge mapping exists for the course
+    @var string provider_name The name of the Navigatr provider
+    @var string badge_name The name of the badge
+    @var string badge_description (Optional) The description of the badge
+    @var string badge_image_url (Optional) The URL to the badge image
+    @var string badge_url (Optional) The URL to view the badge on Navigatr
+    @var string change_url The URL to change the badge mapping
+    @var string remove_url The URL to remove the badge mapping
 }}
 {{#existing_mapping}}
 <div class="alert alert-info current-mapping">
