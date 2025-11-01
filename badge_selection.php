@@ -97,8 +97,8 @@ if ($form->is_cancelled()) {
             $mapping->badge_image_url = $badge_response->body['image_url'] ?? null;
         }
     } catch (Exception $e) {
-        // If API call fails, leave fields as null - will be populated later
-        error_log("Failed to fetch badge metadata: " . $e->getMessage());
+        // If API call fails, leave fields as null - will be populated later.
+        debugging("Failed to fetch badge metadata: " . $e->getMessage(), DEBUG_NORMAL);
     }
 
     // Check if mapping already exists

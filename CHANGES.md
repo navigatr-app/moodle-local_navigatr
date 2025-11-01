@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed all 44 PHP files by removing the blank line after `<?php` so the copyright header starts on line 2. This resolves ~70 prechecker errors.
 - Fixed PHPDoc incomplete parameter lists.
 - Fixed test directory structure by moving test files from `tests/classes/*` to `tests/*` directories to match Moodle's expected structure.
+- Replaced `error_log()` with `debugging()` in `badge_selection.php` to comply with Moodle coding standards.
 - Added missing language strings.
 - Added the correct header and copyright/author notes to the files which were missing.
 
