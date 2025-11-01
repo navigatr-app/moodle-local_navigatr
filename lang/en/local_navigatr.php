@@ -55,6 +55,7 @@ $string['auth_failed'] = 'Authentication failed';
 $string['timeout_invalid'] = 'Timeout must be between 1 and 300 seconds';
 $string['invalid_method'] = 'Invalid method: {$a}';
 $string['missing_user_field'] = 'Missing user field: {$a}';
+$string['issue_failed'] = 'Badge issuance failed with HTTP code {$a}. The task will be retried automatically.';
 
 // Privacy
 $string['privacy:metadata:local_navigatr_map'] = 'Course badge mapping configuration';
@@ -149,6 +150,8 @@ $string['cachedef_user_detail'] = 'Navigatr user detail cache';
 $string['cachedef_user_detail_desc'] = 'Caches user detail information from Navigatr API to improve performance';
 $string['cachedef_locks'] = 'Navigatr locks cache';
 $string['cachedef_locks_desc'] = 'Caches lock information for Navigatr operations to prevent conflicts';
+$string['cachedef_tokens'] = 'Navigatr tokens cache';
+$string['cachedef_tokens_desc'] = 'Caches authentication tokens from Navigatr API to improve performance and reduce authentication requests';
 
 // Test-related strings
 $string['connection_successful'] = 'Connection successful';
