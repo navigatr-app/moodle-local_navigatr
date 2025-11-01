@@ -17,6 +17,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced `elseif` with `else if` (two words) in all files to comply with Moodle coding standards
 - Fixed line length violations by breaking long lines to stay under Moodle's 132 character limit
 - Fixed array trailing commas by adding trailing commas to all multi-line arrays to comply with Moodle coding standards
+- Fixed minor code quality issues:
+  - Replaced Perl-style comment with standard comment syntax
+  - Removed commented-out code comments
+  - Fixed comment capitalization
+  - Removed duplicate empty lines
+  - Removed trailing whitespace from strings
+  - Replaced long list syntax with array destructuring
+  - Sorted interfaces alphabetically
 - Removed empty IF/CATCH statements.
 - Added missing language strings.
 - Added the correct header and copyright/author notes to the files which were missing.

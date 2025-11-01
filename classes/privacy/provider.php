@@ -37,8 +37,8 @@ use core_privacy\local\request\approved_userlist;
  */
 class provider implements
     \core_privacy\local\metadata\provider,
-    \core_privacy\local\request\plugin\provider,
-    \core_privacy\local\request\core_userlist_provider
+    \core_privacy\local\request\core_userlist_provider,
+    \core_privacy\local\request\plugin\provider
 {
     /**
      * Returns metadata about this plugin.
@@ -194,7 +194,7 @@ class provider implements
         $userids = $userlist->get_userids();
 
         if (!empty($userids)) {
-            list($insql, $inparams) = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+            [$insql, $inparams] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
             $params = array_merge(['courseid' => $courseid], $inparams);
 
             $DB->delete_records_select(

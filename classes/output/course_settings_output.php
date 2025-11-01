@@ -77,7 +77,7 @@ class course_settings_output
         ];
 
         // Ensure URLs are properly encoded
-        $template_data['change_url'] = $change_url->out(false); // false = don't HTML encode
+        $template_data['change_url'] = $change_url->out(false); // False = don't HTML encode
         $template_data['remove_url'] = $remove_url->out(false);
 
         return $OUTPUT->render_from_template('local_navigatr/course/course_settings', $template_data);

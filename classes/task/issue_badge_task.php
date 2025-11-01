@@ -159,9 +159,9 @@ class issue_badge_task extends \core\task\adhoc_task
 
         // Try to get final grade from gradebook
         $grade = $DB->get_record_sql(
-            "SELECT gg.finalgrade, gi.grademax 
-             FROM {grade_grades} gg 
-             JOIN {grade_items} gi ON gg.itemid = gi.id 
+            "SELECT gg.finalgrade, gi.grademax
+             FROM {grade_grades} gg
+             JOIN {grade_items} gi ON gg.itemid = gi.id
              WHERE gg.userid = ? AND gi.courseid = ? AND gi.itemtype = 'course'",
             [$userid, $courseid]
         );

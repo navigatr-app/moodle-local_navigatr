@@ -87,7 +87,6 @@ class api_client
     {
         $url = $this->baseurl . '/' . ltrim($path, '/');
 
-
         // Use Moodle cURL wrapper
         $curl = new \curl();
 
@@ -143,7 +142,7 @@ class api_client
         } else if ($method === 'GET') {
             $response = $curl->get($url, null, $curloptions);
         } else {
-            # Raise an error
+            // Raise an error.
             throw new \moodle_exception(get_string('invalid_method', 'local_navigatr', $method));
         }
 
@@ -156,7 +155,7 @@ class api_client
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } else if ($httpcode === false || $httpcode === null) {
-            $httpcode = 0; // get_string('error_network', 'local_navigatr')
+            $httpcode = 0;
         }
 
         // Check for cURL errors
@@ -226,7 +225,7 @@ class api_client
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } else if ($httpcode === false || $httpcode === null) {
-            $httpcode = 0; // get_string('error_network', 'local_navigatr')
+            $httpcode = 0;
         }
 
         // Check for cURL errors
@@ -295,7 +294,7 @@ class api_client
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } else if ($httpcode === false || $httpcode === null) {
-            $httpcode = 0; // get_string('error_network', 'local_navigatr')
+            $httpcode = 0;
         }
 
         // Check for cURL errors
