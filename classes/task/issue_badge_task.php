@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -45,13 +45,13 @@ class issue_badge_task extends \core\task\adhoc_task
         $userid = $data->userid;
         $courseid = $data->courseid;
 
-        // Get mapping for this course (guaranteed to exist as observer already checked)
+        // Get mapping for this course (guaranteed to exist as observer already checked).
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
 
-        // Get user details
+        // Get user details.
         $user = \core_user::get_user($userid, 'id,email,firstname,lastname', MUST_EXIST);
 
-        // Validate required user fields
+        // Validate required user fields.
         $requiredfields = ['email', 'firstname', 'lastname'];
         foreach ($requiredfields as $field) {
             if (empty($user->$field)) {
@@ -68,7 +68,7 @@ class issue_badge_task extends \core\task\adhoc_task
             }
         }
 
-        // Check for existing successful issuance (idempotency)
+        // Check for existing successful issuance (idempotency).
         $dedupekey = "{$userid}:{$courseid}:{$mapping->badge_id}";
         $existing = $DB->get_record('local_navigatr_audit', [
             'dedupe_key' => $dedupekey,
@@ -79,18 +79,18 @@ class issue_badge_task extends \core\task\adhoc_task
         }
 
         try {
-            // Get access token
-            // Get API client
+            // Get access token.
+            // Get API client.
             $client = new \local_navigatr\local\api_client();
 
-            // Get course name for evidence text
+            // Get course name for evidence text.
             $course = $DB->get_record('course', ['id' => $courseid], 'fullname');
             $course_name = $course ? $course->fullname : get_string('unknown_course', 'local_navigatr');
 
-            // Get course completion score if available
+            // Get course completion score if available.
             $score = $this->get_course_score($userid, $courseid);
 
-            // Prepare badge issuance payload
+            // Prepare badge issuance payload.
             $payload = [
                 'evidence_text' => "Recipient completed course {$course_name}",
                 'provider_id' => $mapping->provider_id,
@@ -99,22 +99,22 @@ class issue_badge_task extends \core\task\adhoc_task
                 'recipient_lastname' => $user->lastname
             ];
 
-            // Add score to payload only if available
+            // Add score to payload only if available.
             if ($score !== null) {
                 $payload['score'] = $score;
             }
 
-            // Issue badge
+            // Issue badge.
             $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
 
-            // Handle 401 - try re-authentication once
+            // Handle 401 - try re-authentication once.
             if ($response->code === 401) {
                 \local_navigatr\local\token_manager::reauth();
 
                 $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
             }
 
-            // Write audit record
+            // Write audit record.
             $this->write_audit(
                 $userid,
                 $courseid,
@@ -125,12 +125,12 @@ class issue_badge_task extends \core\task\adhoc_task
                 json_encode($response->body)
             );
 
-            // Throw exception for terminal failures to allow Moodle retries
+            // Throw exception for terminal failures to allow Moodle retries.
             if (!$response->ok && $response->code >= 500) {
                 throw new \moodle_exception('issue_failed', 'local_navigatr', '', $response->code);
             }
         } catch (\Exception $e) {
-            // Write error audit record
+            // Write error audit record.
             $this->write_audit(
                 $userid,
                 $courseid,
@@ -141,7 +141,7 @@ class issue_badge_task extends \core\task\adhoc_task
                 json_encode(['error' => $e->getMessage()])
             );
 
-            // Re-throw to allow Moodle retry mechanism
+            // Re-throw to allow Moodle retry mechanism.
             throw $e;
         }
     }
@@ -157,7 +157,7 @@ class issue_badge_task extends \core\task\adhoc_task
     {
         global $DB;
 
-        // Try to get final grade from gradebook
+        // Try to get final grade from gradebook.
         $grade = $DB->get_record_sql(
             "SELECT gg.finalgrade, gi.grademax
              FROM {grade_grades} gg
@@ -167,12 +167,12 @@ class issue_badge_task extends \core\task\adhoc_task
         );
 
         if ($grade && $grade->finalgrade !== null && $grade->grademax > 0) {
-            // Convert to percentage (0-100)
+            // Convert to percentage (0-100).
             $percentage = ($grade->finalgrade / $grade->grademax) * 100;
             return round($percentage);
         }
 
-        // Try to get completion percentage if gradebook doesn't have final grade
+        // Try to get completion percentage if gradebook doesn't have final grade.
         if (class_exists('\core_completion\progress')) {
             $course = get_course($courseid);
             $progress = \core_completion\progress::get_course_progress_percentage($course, $userid);
@@ -181,14 +181,14 @@ class issue_badge_task extends \core\task\adhoc_task
             }
         }
 
-        // Try course completion criteria
+        // Try course completion criteria.
         $completion = $DB->get_record('course_completions', [
             'userid' => $userid,
             'course' => $courseid
         ]);
 
         if ($completion && $completion->timecompleted) {
-            // If course is completed but no specific score, return 100
+            // If course is completed but no specific score, return 100.
             return 100;
         }
 
@@ -224,7 +224,7 @@ class issue_badge_task extends \core\task\adhoc_task
             'timecreated' => time(),
         ];
 
-        // Use insert_or_update to handle duplicate dedupe_key
+        // Use insert_or_update to handle duplicate dedupe_key.
         $existing = $DB->get_record('local_navigatr_audit', ['dedupe_key' => $dedupekey]);
         if ($existing) {
             $record->id = $existing->id;
@@ -233,7 +233,7 @@ class issue_badge_task extends \core\task\adhoc_task
             $DB->insert_record('local_navigatr_audit', $record);
         }
 
-        // Trigger appropriate Moodle event for core logging integration
+        // Trigger appropriate Moodle event for core logging integration.
         $this->trigger_audit_event($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson);
     }
 
@@ -264,7 +264,7 @@ class issue_badge_task extends \core\task\adhoc_task
                 'other' => $other
             ]);
         } else {
-            // Add error details for failed attempts
+            // Add error details for failed attempts.
             $other['error'] = $responsejson;
             $event = \local_navigatr\event\badge_issuance_failed::create([
                 'context' => $context,

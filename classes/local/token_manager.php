@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -44,7 +44,7 @@ class token_manager
             return $accesstoken;
         }
 
-        // Token missing or expired, need to refresh/re-authenticate
+        // Token missing or expired, need to refresh/re-authenticate.
         self::refresh_or_reauth_with_lock();
 
         $accesstoken = $cache->get('access_token');
@@ -70,7 +70,7 @@ class token_manager
         }
 
         try {
-            // Double-check after acquiring lock
+            // Double-check after acquiring lock.
             $cache = \cache::make('local_navigatr', 'tokens');
             $accesstoken = $cache->get('access_token');
 
@@ -78,7 +78,7 @@ class token_manager
                 return; // Another process already refreshed
             }
 
-            // Try refresh first, then re-auth if that fails
+            // Try refresh first, then re-auth if that fails.
             if (!self::refresh()) {
                 self::reauth();
             }
@@ -110,7 +110,7 @@ class token_manager
                 return true;
             }
         } catch (\Exception $e) {
-            // Trigger event for token refresh failure
+            // Trigger event for token refresh failure.
             $eventdata = \local_navigatr\event\token_refresh_failed::create([
                 'context' => \context_system::instance(),
                 'other' => [
@@ -145,7 +145,7 @@ class token_manager
             throw new \moodle_exception('auth_failed', 'local_navigatr');
         }
 
-        // Decode JWT to get user ID
+        // Decode JWT to get user ID.
         $idtoken = $response->body['id_token'] ?? '';
         $userid = self::decode_jwt_sub($idtoken);
 
@@ -167,13 +167,13 @@ class token_manager
         $refreshtoken = $tokens['refresh_token'] ?? '';
         $idtoken = $tokens['id_token'] ?? '';
 
-        // Store access token in cache (4-minute TTL)
+        // Store access token in cache (4-minute TTL).
         if (!empty($accesstoken)) {
             $cache = \cache::make('local_navigatr', 'tokens');
             $cache->set('access_token', $accesstoken);
         }
 
-        // Store refresh token encrypted in config table (1 day TTL)
+        // Store refresh token encrypted in config table (1 day TTL).
         if (!empty($refreshtoken)) {
             $refreshexpires = time() + 86400;
             set_config('refresh_token', $refreshtoken, 'local_navigatr');

@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -56,7 +56,7 @@ class behat_navigatr extends \behat_base implements Context
     {
         $data = $table->getRowsHash();
 
-        // Set username
+        // Set username.
         if (isset($data['username'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Username',
@@ -64,7 +64,7 @@ class behat_navigatr extends \behat_base implements Context
             ]);
         }
 
-        // Set password
+        // Set password.
         if (isset($data['password'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Password',
@@ -96,7 +96,7 @@ class behat_navigatr extends \behat_base implements Context
     {
         $data = $table->getRowsHash();
 
-        // Set provider
+        // Set provider.
         if (isset($data['provider'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Provider',
@@ -104,7 +104,7 @@ class behat_navigatr extends \behat_base implements Context
             ]);
         }
 
-        // Set badge
+        // Set badge.
         if (isset($data['badge'])) {
             $this->execute('behat_forms::i_set_the_field_to', [
                 'Badge',
@@ -120,13 +120,13 @@ class behat_navigatr extends \behat_base implements Context
      */
     public function i_complete_the_course()
     {
-        // Navigate to course completion
+        // Navigate to course completion.
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Course administration',
             'Completion'
         ]);
 
-        // Mark course as complete
+        // Mark course as complete.
         $this->execute('behat_general::i_click_on', [
             'Mark as complete',
             'button'
@@ -152,7 +152,7 @@ class behat_navigatr extends \behat_base implements Context
      */
     public function the_navigatr_api_is_unavailable()
     {
-        // Set a configuration to simulate API unavailability
+        // Set a configuration to simulate API unavailability.
         set_config('api_unavailable', 1, 'local_navigatr');
     }
 
@@ -188,26 +188,26 @@ class behat_navigatr extends \behat_base implements Context
      */
     public function i_create_a_data_export_request_for($username)
     {
-        // Navigate to privacy settings
+        // Navigate to privacy settings.
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Site administration',
             'Privacy and policies',
             'Data requests'
         ]);
 
-        // Create export request
+        // Create export request.
         $this->execute('behat_general::i_click_on', [
             'Create new data export request',
             'button'
         ]);
 
-        // Select user
+        // Select user.
         $this->execute('behat_forms::i_set_the_field_to', [
             'User',
             $username
         ]);
 
-        // Submit request
+        // Submit request.
         $this->execute('behat_general::i_click_on', [
             'Submit',
             'button'
@@ -233,26 +233,26 @@ class behat_navigatr extends \behat_base implements Context
      */
     public function i_create_a_data_deletion_request_for($username)
     {
-        // Navigate to privacy settings
+        // Navigate to privacy settings.
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Site administration',
             'Privacy and policies',
             'Data requests'
         ]);
 
-        // Create deletion request
+        // Create deletion request.
         $this->execute('behat_general::i_click_on', [
             'Create new data deletion request',
             'button'
         ]);
 
-        // Select user
+        // Select user.
         $this->execute('behat_forms::i_set_the_field_to', [
             'User',
             $username
         ]);
 
-        // Submit request
+        // Submit request.
         $this->execute('behat_general::i_click_on', [
             'Submit',
             'button'

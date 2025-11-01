@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -41,8 +41,8 @@ class password_manager
             return '';
         }
 
-        // Use OpenSSL encryption with a site-specific key
-        // Note: We use our own encryption method rather than Moodle's encrypt_user_password()
+        // Use OpenSSL encryption with a site-specific key.
+        // Note: We use our own encryption method rather than Moodle's encrypt_user_password().
         // as that function is designed for user passwords and may not be suitable for API credentials.
         $key = self::get_encryption_key();
         $iv = openssl_random_pseudo_bytes(16);
@@ -52,7 +52,7 @@ class password_manager
             throw new \moodle_exception('encryption_failed', 'local_navigatr');
         }
 
-        // Combine IV and encrypted data, then base64 encode
+        // Combine IV and encrypted data, then base64 encode.
         return base64_encode($iv . $encrypted);
     }
 
@@ -96,26 +96,26 @@ class password_manager
     {
         global $CFG;
 
-        // Use a site-specific key stored in config
+        // Use a site-specific key stored in config.
         $key = get_config('local_navigatr', 'encryption_key');
 
         if (empty($key)) {
-            // Generate a new key based on site URL and available secrets
+            // Generate a new key based on site URL and available secrets.
             $site_key = $CFG->wwwroot;
 
-            // Use available password salt properties (different versions have different names)
+            // Use available password salt properties (different versions have different names).
             if (isset($CFG->passwordsaltmain)) {
                 $site_key .= $CFG->passwordsaltmain;
             } else if (isset($CFG->passwordsalt)) {
                 $site_key .= $CFG->passwordsalt;
             } else {
-                // Fallback to a combination of site-specific values
+                // Fallback to a combination of site-specific values.
                 $site_key .= $CFG->dataroot . $CFG->dbname;
             }
 
             $key = hash('sha256', $site_key . 'navigatr_plugin_key', true);
 
-            // Store the key for future use
+            // Store the key for future use.
             set_config('encryption_key', base64_encode($key), 'local_navigatr');
         } else {
             $key = base64_decode($key);

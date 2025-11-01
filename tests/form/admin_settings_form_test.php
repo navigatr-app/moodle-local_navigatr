@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -53,7 +53,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that definition method exists and is public
+        // Test that definition method exists and is public.
         $this->assertTrue(method_exists($form, 'definition'));
 
         $reflection = new \ReflectionMethod(admin_settings_form::class, 'definition');
@@ -69,7 +69,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that validation method exists
+        // Test that validation method exists.
         $this->assertTrue(method_exists($form, 'validation'));
 
         $reflection = new \ReflectionMethod(admin_settings_form::class, 'validation');
@@ -85,7 +85,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form can be created
+        // Test that form can be created.
         $this->assertInstanceOf(admin_settings_form::class, $form);
     }
 
@@ -98,7 +98,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form has username field
+        // Test that form has username field.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -111,7 +111,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form has password field
+        // Test that form has password field.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -124,7 +124,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form has timeout field
+        // Test that form has timeout field.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -137,7 +137,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form definition method exists
+        // Test that form definition method exists.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -150,7 +150,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form has environment field
+        // Test that form has environment field.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -163,7 +163,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form has test connection button
+        // Test that form has test connection button.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -176,7 +176,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that validation method exists
+        // Test that validation method exists.
         $this->assertTrue(method_exists($form, 'validation'));
     }
 
@@ -189,7 +189,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form can handle submission
+        // Test that form can handle submission.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -202,7 +202,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form can handle cancellation
+        // Test that form can handle cancellation.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -215,7 +215,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form can process data
+        // Test that form can process data.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -228,7 +228,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form can handle errors
+        // Test that form can handle errors.
         $this->assertTrue(method_exists($form, 'validation'));
     }
 
@@ -241,7 +241,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form has security measures
+        // Test that form has security measures.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -254,7 +254,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form is accessible
+        // Test that form is accessible.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 
@@ -267,7 +267,7 @@ final class admin_settings_form_test extends advanced_testcase
 
         $form = new admin_settings_form();
 
-        // Test that form supports i18n
+        // Test that form supports i18n.
         $this->assertTrue(method_exists($form, 'definition'));
     }
 }

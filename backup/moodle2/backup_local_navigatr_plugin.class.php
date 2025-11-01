@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -78,8 +78,8 @@ class backup_local_navigatr_plugin extends backup_local_plugin
         ]);
 
         // No ID annotations needed:
-        // - courseid: filtered by VAR_COURSEID, will be explicitly set during restore
-        // - provider_id and badge_id: external references to Navigatr platform (not Moodle entities)
+        // - courseid: filtered by VAR_COURSEID, will be explicitly set during restore.
+        // - provider_id and badge_id: external references to Navigatr platform (not Moodle entities).
 
         debugging('local_navigatr: Badge mappings structure defined for backup', DEBUG_DEVELOPER);
 

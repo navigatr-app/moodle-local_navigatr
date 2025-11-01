@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -25,26 +25,26 @@
 require_once('../../config.php');
 require_once($CFG->dirroot . '/local/navigatr/classes/form/badge_selection_form.php');
 
-// Get course ID from URL parameter
+// Get course ID from URL parameter.
 $courseid = required_param('id', PARAM_INT);
 
-// Get provider ID from URL parameter or form data
+// Get provider ID from URL parameter or form data.
 $provider_id = optional_param('provider_id', 0, PARAM_INT);
 if (empty($provider_id)) {
     throw new \moodle_exception('missingparam', 'error', '', 'provider_id');
 }
 
-// Get course
+// Get course.
 $course = get_course($courseid);
 require_login($course);
 
-// Get course context
+// Get course context.
 $context = context_course::instance($courseid);
 
-// Check capabilities
+// Check capabilities.
 require_capability('local/navigatr:configurecourse', $context);
 
-// Get provider name
+// Get provider name.
 $providers = [];
 try {
     $client = new \local_navigatr\local\api_client();
@@ -61,24 +61,24 @@ try {
     $provider_name = get_string('unknown_provider', 'local_navigatr');
 }
 
-// Set up page
+// Set up page.
 $PAGE->set_url('/local/navigatr/badge_selection.php', ['id' => $courseid, 'provider_id' => $provider_id]);
 $PAGE->set_context($context);
 $PAGE->set_title(get_string('select_badge', 'local_navigatr'));
 $PAGE->set_heading(get_string('select_badge', 'local_navigatr'));
 
-// Create form
+// Create form.
 $form = new \local_navigatr\form\badge_selection_form(null, [
     'courseid' => $courseid,
     'provider_id' => $provider_id,
     'provider_name' => $provider_name ?? get_string('unknown_provider', 'local_navigatr'),
 ]);
 
-// Handle form submission
+// Handle form submission.
 if ($form->is_cancelled()) {
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
 } else if ($data = $form->get_data()) {
-    // Save the mapping
+    // Save the mapping.
     global $DB;
 
     $mapping = new \stdClass();
@@ -88,7 +88,7 @@ if ($form->is_cancelled()) {
     $mapping->timecreated = time();
     $mapping->timemodified = time();
 
-    // Fetch badge metadata from API
+    // Fetch badge metadata from API.
     try {
         $client = new \local_navigatr\local\api_client();
         $badge_response = $client->get("/badge/{$data->badge_id}");
@@ -101,7 +101,7 @@ if ($form->is_cancelled()) {
         debugging("Failed to fetch badge metadata: " . $e->getMessage(), DEBUG_NORMAL);
     }
 
-    // Check if mapping already exists
+    // Check if mapping already exists.
     $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
     if ($existing) {
         $mapping->id = $existing->id;
@@ -113,11 +113,11 @@ if ($form->is_cancelled()) {
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
 }
 
-// Output page
+// Output page.
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('select_badge', 'local_navigatr'));
 
-// Show navigation breadcrumb
+// Show navigation breadcrumb.
 $PAGE->navbar->add($course->shortname, new \moodle_url('/course/view.php', ['id' => $courseid]));
 $PAGE->navbar->add(
     get_string('navigatr_settings', 'local_navigatr'),

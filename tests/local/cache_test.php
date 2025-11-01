@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -50,7 +50,7 @@ final class cache_test extends advanced_testcase
     public function test_provider_caching(): void {
         $this->resetAfterTest();
 
-        // Test that provider caching method exists
+        // Test that provider caching method exists.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
 
         $reflection = new \ReflectionMethod(cache::class, 'get_providers');
@@ -64,7 +64,7 @@ final class cache_test extends advanced_testcase
     public function test_badge_caching(): void {
         $this->resetAfterTest();
 
-        // Test that badge caching method exists
+        // Test that badge caching method exists.
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
 
         $reflection = new \ReflectionMethod(cache::class, 'get_badges');
@@ -78,7 +78,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_clearing(): void {
         $this->resetAfterTest();
 
-        // Test that cache clearing method exists
+        // Test that cache clearing method exists.
         $this->assertTrue(method_exists(cache::class, 'clear_cache'));
 
         $reflection = new \ReflectionMethod(cache::class, 'clear_cache');
@@ -92,7 +92,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_ttl(): void {
         $this->resetAfterTest();
 
-        // Test that cache handles TTL correctly
+        // Test that cache handles TTL correctly.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -103,7 +103,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_key_generation(): void {
         $this->resetAfterTest();
 
-        // Test that cache generates proper keys
+        // Test that cache generates proper keys.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -114,7 +114,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_invalidation(): void {
         $this->resetAfterTest();
 
-        // Test that cache can be invalidated
+        // Test that cache can be invalidated.
         $this->assertTrue(method_exists(cache::class, 'clear_cache'));
     }
 
@@ -124,7 +124,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_performance(): void {
         $this->resetAfterTest();
 
-        // Test that cache improves performance
+        // Test that cache improves performance.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -135,7 +135,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_error_handling(): void {
         $this->resetAfterTest();
 
-        // Test that cache handles errors gracefully
+        // Test that cache handles errors gracefully.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -146,7 +146,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_concurrency(): void {
         $this->resetAfterTest();
 
-        // Test that cache handles concurrency
+        // Test that cache handles concurrency.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -157,7 +157,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_memory_usage(): void {
         $this->resetAfterTest();
 
-        // Test that cache manages memory efficiently
+        // Test that cache manages memory efficiently.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -168,7 +168,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_serialization(): void {
         $this->resetAfterTest();
 
-        // Test that cache can serialize data
+        // Test that cache can serialize data.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -179,7 +179,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_deserialization(): void {
         $this->resetAfterTest();
 
-        // Test that cache can deserialize data
+        // Test that cache can deserialize data.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -190,7 +190,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_compression(): void {
         $this->resetAfterTest();
 
-        // Test that cache can compress data
+        // Test that cache can compress data.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -201,7 +201,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_expiration(): void {
         $this->resetAfterTest();
 
-        // Test that cache handles expiration
+        // Test that cache handles expiration.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -212,7 +212,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_statistics(): void {
         $this->resetAfterTest();
 
-        // Test that cache provides statistics
+        // Test that cache provides statistics.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -223,7 +223,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_monitoring(): void {
         $this->resetAfterTest();
 
-        // Test that cache can be monitored
+        // Test that cache can be monitored.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }
@@ -234,7 +234,7 @@ final class cache_test extends advanced_testcase
     public function test_cache_debugging(): void {
         $this->resetAfterTest();
 
-        // Test that cache supports debugging
+        // Test that cache supports debugging.
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
     }

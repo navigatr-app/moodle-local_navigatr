@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -43,16 +43,16 @@ class provider_selection_form extends \moodleform
         $mform = $this->_form;
         $courseid = $this->_customdata['courseid'];
 
-        // Form action will be set automatically by Moodle
+        // Form action will be set automatically by Moodle.
 
-        // Add hidden field to preserve course ID
+        // Add hidden field to preserve course ID.
         $mform->addElement('hidden', 'id', $courseid);
         $mform->setType('id', PARAM_INT);
 
-        // Get existing mapping
+        // Get existing mapping.
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
 
-        // Provider selection
+        // Provider selection.
         $providers = $this->get_providers();
         $provideroptions = ['' => get_string('select_provider', 'local_navigatr')];
         foreach ($providers as $provider) {
@@ -64,7 +64,7 @@ class provider_selection_form extends \moodleform
         $mform->addHelpButton('provider_id', 'provider', 'local_navigatr');
         $mform->addRule('provider_id', get_string('required'), 'required', null, 'client');
 
-        // Add submit button for provider selection
+        // Add submit button for provider selection.
         $mform->addElement(
             'submit',
             'select_provider',
@@ -72,13 +72,13 @@ class provider_selection_form extends \moodleform
             ['class' => 'btn-primary mb-3']
         );
 
-        // Hidden fields for badge details
+        // Hidden fields for badge details.
         $mform->addElement('hidden', 'badge_name');
         $mform->setType('badge_name', PARAM_TEXT);
         $mform->addElement('hidden', 'badge_image_url');
         $mform->setType('badge_image_url', PARAM_URL);
 
-        // Set defaults
+        // Set defaults.
         if ($mapping) {
             $mform->setDefault('provider_id', $mapping->provider_id);
             $mform->setDefault('badge_id', $mapping->badge_id);
@@ -97,22 +97,22 @@ class provider_selection_form extends \moodleform
     private function get_providers()
     {
         try {
-            // Check cache first for user details
+            // Check cache first for user details.
             $cached_user = \local_navigatr\local\cache::get_user_detail();
             if ($cached_user !== null && isset($cached_user['providers'])) {
                 return $cached_user['providers'];
             }
 
-            // Fetch user details from API (this includes providers)
+            // Fetch user details from API (this includes providers).
             $client = new \local_navigatr\local\api_client();
             $api_path = "/user_detail/0";
             $response = $client->get($api_path);
 
             if ($response->ok && is_array($response->body) && isset($response->body['providers'])) {
-                // Cache the entire user detail response
+                // Cache the entire user detail response.
                 \local_navigatr\local\cache::set_user_detail($response->body);
 
-                // Store the user ID for future use
+                // Store the user ID for future use.
                 if (isset($response->body['id'])) {
                     set_config('nav_user_id', $response->body['id'], 'local_navigatr');
                 }
@@ -122,7 +122,7 @@ class provider_selection_form extends \moodleform
 
             return [];
         } catch (\Exception $e) {
-            // Trigger event for failed API request
+            // Trigger event for failed API request.
             $eventdata = \local_navigatr\event\api_request_failed::create([
                 'context' => \context_system::instance(),
                 'other' => [

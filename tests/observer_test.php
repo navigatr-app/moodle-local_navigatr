@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -53,7 +53,7 @@ final class observer_test extends advanced_testcase
     public function test_course_completed_method(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and is static
+        // Test that method exists and is static.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
 
         $reflection = new \ReflectionMethod(observer::class, 'course_completed');
@@ -71,10 +71,10 @@ final class observer_test extends advanced_testcase
         $reflection = new \ReflectionMethod(observer::class, 'course_completed');
         $parameters = $reflection->getParameters();
 
-        // Test that method has correct number of parameters
+        // Test that method has correct number of parameters.
         $this->assertCount(1, $parameters);
 
-        // Test parameter type
+        // Test parameter type.
         $parameter = $parameters[0];
         $this->assertEquals('event', $parameter->getName());
     }
@@ -86,7 +86,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_event_handling(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can handle events
+        // Test that method exists and can handle events.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -97,7 +97,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_error_handling(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can handle errors
+        // Test that method exists and can handle errors.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -108,7 +108,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_task_scheduling(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can schedule tasks
+        // Test that method exists and can schedule tasks.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -119,7 +119,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_database_operations(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can perform database operations
+        // Test that method exists and can perform database operations.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -130,7 +130,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_api_integration(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can integrate with API
+        // Test that method exists and can integrate with API.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -141,7 +141,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_logging(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can perform logging
+        // Test that method exists and can perform logging.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -152,7 +152,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_performance(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and is performant
+        // Test that method exists and is performant.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -163,7 +163,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_concurrency(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and handles concurrency
+        // Test that method exists and handles concurrency.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -174,7 +174,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_cleanup(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can perform cleanup
+        // Test that method exists and can perform cleanup.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -185,7 +185,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_monitoring(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can perform monitoring
+        // Test that method exists and can perform monitoring.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -196,7 +196,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_debugging(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can perform debugging
+        // Test that method exists and can perform debugging.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -207,7 +207,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_configuration(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can handle configuration
+        // Test that method exists and can handle configuration.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -218,7 +218,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_validation(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and can perform validation
+        // Test that method exists and can perform validation.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
@@ -229,7 +229,7 @@ final class observer_test extends advanced_testcase
     public function test_observer_security(): void {
         $this->resetAfterTest();
 
-        // Test that method exists and has security measures
+        // Test that method exists and has security measures.
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 }

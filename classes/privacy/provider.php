@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -76,7 +76,7 @@ class provider implements
     {
         $contextlist = new contextlist();
 
-        // Add course contexts where user has audit records
+        // Add course contexts where user has audit records.
         $sql = "SELECT DISTINCT c.id
                 FROM {context} c
                 JOIN {course} co ON co.id = c.instanceid
@@ -131,7 +131,7 @@ class provider implements
 
             $courseid = $context->instanceid;
 
-            // Get audit records for this user and course
+            // Get audit records for this user and course.
             $auditrecords = $DB->get_records('local_navigatr_audit', [
                 'userid' => $userid,
                 'courseid' => $courseid
@@ -167,7 +167,7 @@ class provider implements
 
             $courseid = $context->instanceid;
 
-            // Delete audit records for this user and course
+            // Delete audit records for this user and course.
             $DB->delete_records('local_navigatr_audit', [
                 'userid' => $userid,
                 'courseid' => $courseid
@@ -220,7 +220,7 @@ class provider implements
 
         $courseid = $context->instanceid;
 
-        // Delete all audit records for this course
+        // Delete all audit records for this course.
         $DB->delete_records('local_navigatr_audit', ['courseid' => $courseid]);
     }
 }

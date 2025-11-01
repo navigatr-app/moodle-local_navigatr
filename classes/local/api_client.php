@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -26,7 +26,7 @@ namespace local_navigatr\local;
 
 defined('MOODLE_INTERNAL') || die();
 
-// Include Moodle's cURL library
+// Include Moodle's cURL library.
 require_once($CFG->libdir . '/filelib.php');
 
 /**
@@ -87,29 +87,29 @@ class api_client
     {
         $url = $this->baseurl . '/' . ltrim($path, '/');
 
-        // Use Moodle cURL wrapper
+        // Use Moodle cURL wrapper.
         $curl = new \curl();
 
-        // Prepare JSON data
+        // Prepare JSON data.
         $json_data = null;
         if ($data !== null) {
             $json_data = json_encode($data);
         }
 
-        // Build headers
+        // Build headers.
         $http_headers = [
             'Accept: application/json',
             'Content-Type: application/json',
             'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
         ];
 
-        // Add Bearer token if authentication is required
+        // Add Bearer token if authentication is required.
         if ($require_auth) {
             try {
                 $token = token_manager::get_access_token();
                 $http_headers[] = 'Authorization: Bearer ' . $token;
             } catch (\moodle_exception $e) {
-                // If token retrieval fails, return error response
+                // If token retrieval fails, return error response.
                 return (object) [
                     'ok' => false,
                     'code' => 401,
@@ -119,12 +119,12 @@ class api_client
             }
         }
 
-        // Add any custom headers
+        // Add any custom headers.
         foreach ($headers as $header) {
             $http_headers[] = $header;
         }
 
-        // Set cURL options
+        // Set cURL options.
         $curloptions = [
             'CURLOPT_TIMEOUT' => $this->timeout,
             'CURLOPT_RETURNTRANSFER' => true,
@@ -146,22 +146,22 @@ class api_client
             throw new \moodle_exception(get_string('invalid_method', 'local_navigatr', $method));
         }
 
-        // Get response info
+        // Get response info.
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
         $curlerror = $curl->error;
 
-        // Handle various response formats from get_info
+        // Handle various response formats from get_info.
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } else if ($httpcode === false || $httpcode === null) {
             $httpcode = 0;
         }
 
-        // Check for cURL errors
+        // Check for cURL errors.
         $haserror = $error !== 0 || !empty($curlerror);
 
-        // Parse response
+        // Parse response.
         $body = null;
         if ($response !== false && !$haserror) {
             $body = json_decode($response, true);
@@ -193,7 +193,7 @@ class api_client
 
         $curl = new \curl();
 
-        // Set cURL options for form-encoded data
+        // Set cURL options for form-encoded data.
         $curloptions = [
             'CURLOPT_TIMEOUT' => $this->timeout,
             'CURLOPT_RETURNTRANSFER' => true,
@@ -207,31 +207,31 @@ class api_client
             ],
         ];
 
-        // Prepare form-encoded data
+        // Prepare form-encoded data.
         $form_data = http_build_query([
             'username' => $username,
             'password' => $password,
         ]);
 
-        // Make POST request with form data (no auth required for token endpoint)
+        // Make POST request with form data (no auth required for token endpoint).
         $response = $curl->post($url, $form_data, $curloptions);
 
-        // Get response info
+        // Get response info.
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
         $curlerror = $curl->error;
 
-        // Handle various response formats from get_info
+        // Handle various response formats from get_info.
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } else if ($httpcode === false || $httpcode === null) {
             $httpcode = 0;
         }
 
-        // Check for cURL errors
+        // Check for cURL errors.
         $haserror = $error !== 0 || !empty($curlerror);
 
-        // Parse response
+        // Parse response.
         $body = null;
         if ($response !== false && !$haserror) {
             $body = json_decode($response, true);
@@ -262,7 +262,7 @@ class api_client
 
         $curl = new \curl();
 
-        // Set cURL options for form-encoded data
+        // Set cURL options for form-encoded data.
         $curloptions = [
             'CURLOPT_TIMEOUT' => $this->timeout,
             'CURLOPT_RETURNTRANSFER' => true,
@@ -276,31 +276,31 @@ class api_client
             ],
         ];
 
-        // Prepare form-encoded data for refresh
+        // Prepare form-encoded data for refresh.
         $form_data = http_build_query([
             'grant_type' => 'refresh_token',
             'refresh_token' => $refresh_token,
         ]);
 
-        // Make POST request with form data
+        // Make POST request with form data.
         $response = $curl->post($url, $form_data, $curloptions);
 
-        // Get response info
+        // Get response info.
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
         $curlerror = $curl->error;
 
-        // Handle various response formats from get_info
+        // Handle various response formats from get_info.
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } else if ($httpcode === false || $httpcode === null) {
             $httpcode = 0;
         }
 
-        // Check for cURL errors
+        // Check for cURL errors.
         $haserror = $error !== 0 || !empty($curlerror);
 
-        // Parse response
+        // Parse response.
         $body = null;
         if ($response !== false && !$haserror) {
             $body = json_decode($response, true);
@@ -329,19 +329,19 @@ class api_client
      */
     public static function test_connection($username, $password, $environment = 'production')
     {
-        // Temporarily set environment for this test
+        // Temporarily set environment for this test.
         $original_env = get_config('local_navigatr', 'env');
         set_config('env', $environment, 'local_navigatr');
 
-        // Create API client (will use the environment we just set)
+        // Create API client (will use the environment we just set).
         $client = new self();
 
-        // Authenticate using form-encoded data
+        // Authenticate using form-encoded data.
         $authresponse = $client->get_token($username, $password);
 
-        // If authentication successful, store tokens for future use
+        // If authentication successful, store tokens for future use.
         if ($authresponse->ok && isset($authresponse->body['access_token'])) {
-            // Store tokens temporarily for this test
+            // Store tokens temporarily for this test.
             set_config('access_token', $authresponse->body['access_token'], 'local_navigatr');
             set_config('access_expires_at', time() + 300, 'local_navigatr'); // 5 minutes
 
@@ -351,12 +351,12 @@ class api_client
             }
         }
 
-        // Restore original environment
+        // Restore original environment.
         if ($original_env !== false) {
             set_config('env', $original_env, 'local_navigatr');
         }
 
-        // Trigger event for connection test
+        // Trigger event for connection test.
         $eventdata = \local_navigatr\event\api_connection_tested::create([
             'context' => \context_system::instance(),
             'other' => [

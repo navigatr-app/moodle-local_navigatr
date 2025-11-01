@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -41,15 +41,15 @@ final class api_client_test extends advanced_testcase
      */
     public function test_get_base_url(): void
     {
-        // Test production environment
+        // Test production environment.
         set_config('env', 'production', 'local_navigatr');
         $this->assertEquals('https://api.navigatr.app/v1', api_client::get_base_url());
 
-        // Test staging environment
+        // Test staging environment.
         set_config('env', 'staging', 'local_navigatr');
         $this->assertEquals('https://stagapi.navigatr.app/v1', api_client::get_base_url());
 
-        // Test default to production
+        // Test default to production.
         unset_config('env', 'local_navigatr');
         $this->assertEquals('https://api.navigatr.app/v1', api_client::get_base_url());
     }
@@ -74,7 +74,7 @@ final class api_client_test extends advanced_testcase
     {
         $this->resetAfterTest();
 
-        // Mock successful authentication response
+        // Mock successful authentication response.
         $mock_response = (object) [
             'ok' => true,
             'code' => 200,
@@ -86,11 +86,11 @@ final class api_client_test extends advanced_testcase
             ],
         ];
 
-        // We can't easily mock HTTP requests in unit tests,
-        // so we'll test the method structure and error handling
+        // We can't easily mock HTTP requests in unit tests,.
+        // so we'll test the method structure and error handling.
         $client = new api_client();
 
-        // Test that method exists and is callable
+        // Test that method exists and is callable.
         $this->assertTrue(method_exists($client, 'get_token'));
         $this->assertTrue(is_callable([$client, 'get_token']));
     }
@@ -106,8 +106,8 @@ final class api_client_test extends advanced_testcase
 
         $client = new api_client();
 
-        // Test with invalid credentials (this will fail in real scenario)
-        // We're testing the method structure, not the actual HTTP call
+        // Test with invalid credentials (this will fail in real scenario).
+        // We're testing the method structure, not the actual HTTP call.
         $this->assertTrue(method_exists($client, 'get_token'));
     }
 
@@ -122,7 +122,7 @@ final class api_client_test extends advanced_testcase
 
         $client = new api_client();
 
-        // Test method exists
+        // Test method exists.
         $this->assertTrue(method_exists($client, 'refresh_token'));
         $this->assertTrue(is_callable([$client, 'refresh_token']));
     }
@@ -136,10 +136,10 @@ final class api_client_test extends advanced_testcase
     {
         $this->resetAfterTest();
 
-        // Test method exists and is static
+        // Test method exists and is static.
         $this->assertTrue(method_exists(api_client::class, 'test_connection'));
 
-        // Test method signature
+        // Test method signature.
         $reflection = new \ReflectionMethod(api_client::class, 'test_connection');
         $this->assertTrue($reflection->isStatic());
         $this->assertCount(3, $reflection->getParameters());
@@ -159,7 +159,7 @@ final class api_client_test extends advanced_testcase
 
         $client = new api_client();
 
-        // Test that HTTP methods exist
+        // Test that HTTP methods exist.
         $this->assertTrue(method_exists($client, 'get'));
         $this->assertTrue(method_exists($client, 'post'));
         $this->assertTrue(method_exists($client, 'put'));
@@ -177,7 +177,7 @@ final class api_client_test extends advanced_testcase
 
         $client = new api_client();
 
-        // Test method exists
+        // Test method exists.
         $this->assertTrue(method_exists($client, 'get_providers'));
     }
 
@@ -192,7 +192,7 @@ final class api_client_test extends advanced_testcase
 
         $client = new api_client();
 
-        // Test method exists
+        // Test method exists.
         $this->assertTrue(method_exists($client, 'get_badges'));
     }
 
@@ -207,7 +207,7 @@ final class api_client_test extends advanced_testcase
 
         $client = new api_client();
 
-        // Test method exists
+        // Test method exists.
         $this->assertTrue(method_exists($client, 'issue_badge'));
     }
 
@@ -220,12 +220,12 @@ final class api_client_test extends advanced_testcase
     {
         $this->resetAfterTest();
 
-        // Test default timeout
+        // Test default timeout.
         set_config('timeout', 30, 'local_navigatr');
         $client = new api_client();
         $this->assertInstanceOf(api_client::class, $client);
 
-        // Test custom timeout
+        // Test custom timeout.
         set_config('timeout', 60, 'local_navigatr');
         $client2 = new api_client();
         $this->assertInstanceOf(api_client::class, $client2);
@@ -240,12 +240,12 @@ final class api_client_test extends advanced_testcase
     {
         $this->resetAfterTest();
 
-        // Test production
+        // Test production.
         set_config('env', 'production', 'local_navigatr');
         $prod_url = api_client::get_base_url();
         $this->assertEquals('https://api.navigatr.app/v1', $prod_url);
 
-        // Test staging
+        // Test staging.
         set_config('env', 'staging', 'local_navigatr');
         $staging_url = api_client::get_base_url();
         $this->assertEquals('https://stagapi.navigatr.app/v1', $staging_url);
@@ -260,7 +260,7 @@ final class api_client_test extends advanced_testcase
     {
         $this->resetAfterTest();
 
-        // Test with invalid environment (should default to production)
+        // Test with invalid environment (should default to production).
         set_config('env', 'invalid', 'local_navigatr');
         $url = api_client::get_base_url();
         $this->assertEquals('https://api.navigatr.app/v1', $url);

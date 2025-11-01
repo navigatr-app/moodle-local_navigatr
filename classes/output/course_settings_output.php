@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -48,12 +48,12 @@ class course_settings_output
             return '';
         }
 
-        // Additional safety check
+        // Additional safety check.
         if (!is_object($existing_mapping) || !isset($existing_mapping->provider_id)) {
             return '';
         }
 
-        // Build URLs first to avoid object access issues
+        // Build URLs first to avoid object access issues.
         $change_url = new \moodle_url('/local/navigatr/badge_selection.php', [
             'id' => $courseid,
             'provider_id' => $existing_mapping->provider_id
@@ -76,7 +76,7 @@ class course_settings_output
             'remove_url' => $remove_url->out()
         ];
 
-        // Ensure URLs are properly encoded
+        // Ensure URLs are properly encoded.
         $template_data['change_url'] = $change_url->out(false); // False = don't HTML encode
         $template_data['remove_url'] = $remove_url->out(false);
 

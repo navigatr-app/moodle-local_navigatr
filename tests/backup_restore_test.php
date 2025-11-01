@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -571,9 +571,9 @@ final class backup_restore_test extends advanced_testcase
         // Create new course.
         $newcourse = $this->getDataGenerator()->create_course();
 
-        // Note: We can't pre-insert a record with the exact same dedupe_key because
-        // the dedupe_key format is user_course_badge, and the courseid will be different
-        // in the new course. The restore process will skip if a record with that dedupe_key
+        // Note: We can't pre-insert a record with the exact same dedupe_key because.
+        // the dedupe_key format is user_course_badge, and the courseid will be different.
+        // in the new course. The restore process will skip if a record with that dedupe_key.
         // already exists, which won't happen in a normal restore scenario.
         // This test verifies the restore process handles the data correctly.
 

@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -67,7 +67,7 @@ class local_navigatr_test_helper
         $user->email = 'testuser@example.com';
         $user->id = $DB->insert_record('user', $user);
 
-        // Assign capabilities
+        // Assign capabilities.
         foreach ($capabilities as $capability) {
             $context = context_system::instance();
             assign_capability($capability, CAP_ALLOW, $user->id, $context->id);
@@ -202,19 +202,19 @@ class local_navigatr_test_helper
     {
         global $DB;
 
-        // Clean up audit records
+        // Clean up audit records.
         $DB->delete_records('local_navigatr_audit');
 
-        // Clean up course badge mappings
+        // Clean up course badge mappings.
         $DB->delete_records('local_navigatr_course_badges');
 
-        // Clean up badges
+        // Clean up badges.
         $DB->delete_records('local_navigatr_badges');
 
-        // Clean up providers
+        // Clean up providers.
         $DB->delete_records('local_navigatr_providers');
 
-        // Clean up configuration
+        // Clean up configuration.
         $DB->delete_records('config_plugins', ['plugin' => 'local_navigatr']);
     }
 

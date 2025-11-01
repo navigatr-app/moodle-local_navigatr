@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -165,28 +165,28 @@ class local_navigatr_generator extends component_generator_base
 
         $setup = new stdClass();
 
-        // Create user if not provided
+        // Create user if not provided.
         if (!$data['user']) {
             $setup->user = $this->getDataGenerator()->create_user();
         } else {
             $setup->user = $data['user'];
         }
 
-        // Create course if not provided
+        // Create course if not provided.
         if (!$data['course']) {
             $setup->course = $this->getDataGenerator()->create_course();
         } else {
             $setup->course = $data['course'];
         }
 
-        // Create provider if not provided
+        // Create provider if not provided.
         if (!$data['provider']) {
             $setup->provider = $this->create_provider();
         } else {
             $setup->provider = $data['provider'];
         }
 
-        // Create badge if not provided
+        // Create badge if not provided.
         if (!$data['badge']) {
             $setup->badge = $this->create_badge([
                 'provider_id' => $setup->provider->id
@@ -195,7 +195,7 @@ class local_navigatr_generator extends component_generator_base
             $setup->badge = $data['badge'];
         }
 
-        // Create mapping if not provided
+        // Create mapping if not provided.
         if (!$data['mapping']) {
             $setup->mapping = $this->create_course_badge_mapping([
                 'courseid' => $setup->course->id,

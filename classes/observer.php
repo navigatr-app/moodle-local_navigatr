@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -41,13 +41,13 @@ class observer
         $courseid = $event->courseid;
         $userid = $event->userid;
 
-        // Check if there's a mapping for this course
+        // Check if there's a mapping for this course.
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
         if (!$mapping) {
             return; // No badge mapping for this course
         }
 
-        // Enqueue badge issuance task
+        // Enqueue badge issuance task.
         $task = new \local_navigatr\task\issue_badge_task();
         $task->set_custom_data([
             'userid' => $userid,
@@ -55,7 +55,7 @@ class observer
         ]);
         \core\task\manager::queue_adhoc_task($task);
 
-        // Trigger event for badge issuance being queued
+        // Trigger event for badge issuance being queued.
         $eventdata = \local_navigatr\event\badge_issuance_queued::create([
             'context' => \context_course::instance($courseid),
             'userid' => $userid,
@@ -84,30 +84,30 @@ class observer
 
         $courseid = $event->courseid;
 
-        // The restore event doesn't provide direct access to the backup directory,
-        // but we can search for recent restore directories in the temp folder
+        // The restore event doesn't provide direct access to the backup directory,.
+        // but we can search for recent restore directories in the temp folder.
         debugging('local_navigatr: Looking for recent backup directories', DEBUG_DEVELOPER);
 
-        // Get all backup directories
+        // Get all backup directories.
         $backupbasedir = $CFG->tempdir . '/backup';
         if (!is_dir($backupbasedir)) {
             debugging('local_navigatr: Backup base directory not found', DEBUG_DEVELOPER);
             return;
         }
 
-        // Find the most recent directory (this is a heuristic, but should work in most cases)
+        // Find the most recent directory (this is a heuristic, but should work in most cases).
         $dirs = glob($backupbasedir . '/*', GLOB_ONLYDIR);
         if (empty($dirs)) {
             debugging('local_navigatr: No backup directories found', DEBUG_DEVELOPER);
             return;
         }
 
-        // Sort by modification time, most recent first
+        // Sort by modification time, most recent first.
         usort($dirs, function ($a, $b) {
             return filemtime($b) - filemtime($a);
         });
 
-        // Try the most recent directories
+        // Try the most recent directories.
         $navigatrdata = null;
         foreach ($dirs as $backupdir) {
             $coursexml = $backupdir . '/course/course.xml';
@@ -116,13 +116,13 @@ class observer
                 continue; // Try next directory
             }
 
-            // Load and parse the course XML
+            // Load and parse the course XML.
             $xml = simplexml_load_file($coursexml);
             if ($xml === false) {
                 continue; // Try next directory
             }
 
-            // Find the navigatr plugin data
+            // Find the navigatr plugin data.
             $plugindata = $xml->xpath('//plugin_local_navigatr_course');
             if (!empty($plugindata)) {
                 $navigatrdata = $plugindata[0];
@@ -136,10 +136,10 @@ class observer
             return;
         }
 
-        // Check if a mapping already exists for this course
+        // Check if a mapping already exists for this course.
         $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
         if ($existing) {
-            // Trigger event for skipped mapping
+            // Trigger event for skipped mapping.
             $eventdata = \local_navigatr\event\course_mapping_skipped::create([
                 'context' => \context_course::instance($courseid),
                 'courseid' => $courseid,
@@ -151,7 +151,7 @@ class observer
             return;
         }
 
-        // Process badge mappings
+        // Process badge mappings.
         if (isset($navigatrdata->mappings->mapping)) {
             foreach ($navigatrdata->mappings->mapping as $mapping) {
                 $record = new \stdClass();
@@ -165,7 +165,7 @@ class observer
                 try {
                     $newid = $DB->insert_record('local_navigatr_map', $record);
 
-                    // Trigger event for successful restore
+                    // Trigger event for successful restore.
                     $eventdata = \local_navigatr\event\course_mapping_restored::create([
                         'context' => \context_course::instance($courseid),
                         'courseid' => $courseid,
@@ -180,13 +180,13 @@ class observer
                     debugging('local_navigatr: Failed to restore mapping - ' . $e->getMessage(), DEBUG_NORMAL);
                 }
 
-                // Only restore the first mapping (there should only be one per course)
+                // Only restore the first mapping (there should only be one per course).
                 break;
             }
         }
 
-        // Note: Audit records are not restored here as they contain user-specific data
-        // and are typically excluded when restoring to different systems
+        // Note: Audit records are not restored here as they contain user-specific data.
+        // and are typically excluded when restoring to different systems.
         debugging('local_navigatr: Restore processing complete for course ' . $courseid, DEBUG_DEVELOPER);
     }
 }

@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -45,26 +45,26 @@ class badge_selection_form extends \moodleform
         $provider_id = $this->_customdata['provider_id'];
         $provider_name = $this->_customdata['provider_name'];
 
-        // Add hidden course ID
+        // Add hidden course ID.
         $mform->addElement('hidden', 'id', $courseid);
         $mform->setType('id', PARAM_INT);
 
-        // Add hidden provider ID
+        // Add hidden provider ID.
         $mform->addElement('hidden', 'provider_id', $provider_id);
         $mform->setType('provider_id', PARAM_INT);
 
-        // Show selected provider
+        // Show selected provider.
         $provider_info = \html_writer::div(
             get_string('selected_provider', 'local_navigatr') . ': ' . s($provider_name),
             'alert alert-info'
         );
         $mform->addElement('html', $provider_info);
 
-        // Get badges for the selected provider
+        // Get badges for the selected provider.
         $badges = $this->get_badges($provider_id);
         $badgeoptions = ['' => get_string('select_badge', 'local_navigatr')];
 
-        // Ensure badges is an array before iterating
+        // Ensure badges is an array before iterating.
         if (is_array($badges)) {
             foreach ($badges as $badge) {
                 if (isset($badge['id']) && isset($badge['name'])) {
@@ -78,7 +78,7 @@ class badge_selection_form extends \moodleform
         $mform->addHelpButton('badge_id', 'badge', 'local_navigatr');
         $mform->addRule('badge_id', get_string('required'), 'required', null, 'client');
 
-        // Add submit button
+        // Add submit button.
         $mform->addElement(
             'submit',
             'select_badge',
@@ -86,7 +86,7 @@ class badge_selection_form extends \moodleform
             ['class' => 'btn-primary mr-2']
         );
 
-        // Add cancel button
+        // Add cancel button.
         $mform->addElement('cancel', 'cancel', get_string('cancel'), ['class' => 'btn-secondary']);
     }
 
@@ -99,13 +99,13 @@ class badge_selection_form extends \moodleform
     private function get_badges($providerid)
     {
         try {
-            // Check cache first
+            // Check cache first.
             $cached = \local_navigatr\local\cache::get_badges($providerid, 1, 50);
             if ($cached !== null && $cached !== false && is_array($cached)) {
                 return $cached;
             }
 
-            // Fetch from API
+            // Fetch from API.
             $client = new \local_navigatr\local\api_client();
             $api_path = "/badge?provider_id={$providerid}&status=Published&source=Internal&page=1&size=50";
             $response = $client->get($api_path);
@@ -118,7 +118,7 @@ class badge_selection_form extends \moodleform
 
             return [];
         } catch (\Exception $e) {
-            // Trigger event for failed API request
+            // Trigger event for failed API request.
             $eventdata = \local_navigatr\event\api_request_failed::create([
                 'context' => \context_system::instance(),
                 'other' => [

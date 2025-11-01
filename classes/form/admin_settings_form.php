@@ -6,9 +6,9 @@
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 //
-// Moodle is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// Moodle is distributed in the hope that it will be useful,.
+// but WITHOUT ANY WARRANTY; without even the implied warranty of.
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the.
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
@@ -40,7 +40,7 @@ class admin_settings_form extends \moodleform
     {
         $mform = $this->_form;
 
-        // Credentials
+        // Credentials.
         $mform->addElement('text', 'username', get_string('username', 'local_navigatr'));
         $mform->setType('username', PARAM_TEXT);
         $mform->addHelpButton('username', 'username', 'local_navigatr');
@@ -51,14 +51,14 @@ class admin_settings_form extends \moodleform
         $mform->addHelpButton('password', 'password', 'local_navigatr');
         $mform->addRule('password', get_string('required'), 'required', null, 'client');
 
-        // Add security warning
+        // Add security warning.
         $security_warning = \html_writer::div(
             get_string('password_unmask_warning', 'local_navigatr'),
             'alert alert-info'
         );
         $mform->addElement('html', $security_warning);
 
-        // Test connection button - moved outside advanced settings for better visibility
+        // Test connection button - moved outside advanced settings for better visibility.
         $mform->addElement(
             'submit',
             'testconnection',
@@ -66,7 +66,7 @@ class admin_settings_form extends \moodleform
             ['class' => 'btn-secondary mb-3']
         );
 
-        // Advanced settings
+        // Advanced settings.
         $mform->addElement('header', 'advanced', get_string('advanced_settings', 'local_navigatr'));
 
         $mform->addElement('text', 'timeout', get_string('timeout', 'local_navigatr'));
@@ -74,7 +74,7 @@ class admin_settings_form extends \moodleform
         $mform->addHelpButton('timeout', 'timeout', 'local_navigatr');
         $mform->addRule('timeout', get_string('required'), 'required', null, 'client');
 
-        // Environment selection
+        // Environment selection.
         $mform->addElement('select', 'env', get_string('environment', 'local_navigatr'), [
             'production' => get_string('environment_production', 'local_navigatr'),
             'staging' => get_string('environment_staging', 'local_navigatr'),
@@ -82,7 +82,7 @@ class admin_settings_form extends \moodleform
         $mform->setType('env', PARAM_ALPHA);
         $mform->addHelpButton('env', 'environment', 'local_navigatr');
 
-        // Save button
+        // Save button.
         $this->add_action_buttons(true, get_string('savechanges'));
     }
 
