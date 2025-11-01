@@ -26,7 +26,8 @@ $string['advanced_settings'] = 'Advanced Settings';
 $string['api_unavailable'] = 'API unavailable';
 $string['auth_failed'] = 'Authentication failed';
 $string['badge'] = 'Badge';
-$string['badge_help'] = 'Select the badge to issue when learners complete this course. The badge will be automatically issued to students upon course completion.';
+$string['badge_help'] = 'Select the badge to issue when learners complete this course. ' .
+    'The badge will be automatically issued to students upon course completion.';
 $string['badge_issuance_queued'] = 'Badge issuance queued for retry';
 $string['badge_issued_successfully'] = 'Badge issued successfully';
 $string['badge_mapping_saved'] = 'Badge mapping saved successfully';
@@ -39,7 +40,8 @@ $string['cachedef_locks_desc'] = 'Caches lock information for Navigatr operation
 $string['cachedef_providers'] = 'Navigatr providers cache';
 $string['cachedef_providers_desc'] = 'Caches provider information from Navigatr API to improve performance';
 $string['cachedef_tokens'] = 'Navigatr tokens cache';
-$string['cachedef_tokens_desc'] = 'Caches authentication tokens from Navigatr API to improve performance and reduce authentication requests';
+$string['cachedef_tokens_desc'] = 'Caches authentication tokens from Navigatr API to improve performance ' .
+    'and reduce authentication requests';
 $string['cachedef_user_detail'] = 'Navigatr user detail cache';
 $string['cachedef_user_detail_desc'] = 'Caches user detail information from Navigatr API to improve performance';
 $string['change_mapping'] = 'Change Badge';
@@ -56,7 +58,9 @@ $string['decryption_failed'] = 'Password decryption failed. Please reconfigure y
 $string['duplicate_badge_prevented'] = 'Duplicate badge issuance prevented';
 $string['encryption_failed'] = 'Password encryption failed. Please try again.';
 $string['environment'] = 'Environment';
-$string['environment_help'] = 'Select the Navigatr environment to use for API calls. Production: Live environment for real badge issuance. Staging: Test environment for development and testing.';
+$string['environment_help'] = 'Select the Navigatr environment to use for API calls. ' .
+    'Production: Live environment for real badge issuance. ' .
+    'Staging: Test environment for development and testing.';
 $string['environment_production'] = 'Production';
 $string['environment_staging'] = 'Staging';
 $string['error_auth_failed'] = 'Authentication failed. Please check your username and password.';
@@ -116,13 +120,19 @@ $string['privacy:metadata:navigatr:recipient_email'] = 'Recipient email address'
 $string['privacy:metadata:navigatr:recipient_firstname'] = 'Recipient first name';
 $string['privacy:metadata:navigatr:recipient_lastname'] = 'Recipient last name';
 $string['provider'] = 'Provider';
-$string['provider_admin_notice'] = 'Please ensure that the configured Navigatr user is a provider admin on Navigatr to access and manage badge mappings.';
-$string['provider_config_notice'] = 'Please make sure a site administrator has added your Navigatr username and password in <a href="{$a}">Site Administration → Plugins → Navigatr</a>';
-$string['provider_help'] = 'Select the Navigatr provider that owns the badges you want to issue. You must be a provider admin to access and manage badges.';
+$string['provider_admin_notice'] = 'Please ensure that the configured Navigatr user is a provider admin on Navigatr ' .
+    'to access and manage badge mappings.';
+$string['provider_config_notice'] = 'Please make sure a site administrator has added your Navigatr username and password ' .
+    'in <a href="{$a}">Site Administration → Plugins → Navigatr</a>';
+$string['provider_help'] = 'Select the Navigatr provider that owns the badges you want to issue. ' .
+    'You must be a provider admin to access and manage badges.';
 $string['remove_connection'] = 'Remove Connection';
-$string['remove_connection_confirm'] = 'Are you sure you want to remove the current Navigatr connection? This will clear your stored username and password. All existing badge mappings will be disabled.';
+$string['remove_connection_confirm'] = 'Are you sure you want to remove the current Navigatr connection? ' .
+    'This will clear your stored username and password. ' .
+    'All existing badge mappings will be disabled.';
 $string['remove_mapping'] = 'Remove Badge';
-$string['remove_mapping_confirm'] = 'Are you sure you want to remove the badge mapping for this course? Removing the badge stops future issuances but preserves existing badges.';
+$string['remove_mapping_confirm'] = 'Are you sure you want to remove the badge mapping for this course? ' .
+    'Removing the badge stops future issuances but preserves existing badges.';
 $string['save_changes'] = 'Save changes';
 $string['save_mapping'] = 'Save Mapping';
 $string['security_note'] = 'All credentials are encrypted using AES-256-CBC encryption with site-specific keys.';
@@ -131,11 +141,13 @@ $string['select_badge_continue'] = 'Save Mapping';
 $string['select_provider'] = 'Select a provider';
 $string['select_provider_continue'] = 'Continue to Select Badge';
 $string['selected_provider'] = 'Selected Provider';
-$string['settings_description'] = 'Map this course to a Navigatr badge that will be automatically issued when learners complete the course.';
+$string['settings_description'] = 'Map this course to a Navigatr badge that will be automatically issued ' .
+    'when learners complete the course.';
 $string['settingssaved'] = 'Settings saved successfully';
 $string['test_connection'] = 'Test Connection';
 $string['timeout'] = 'HTTP Timeout (seconds)';
-$string['timeout_help'] = 'HTTP request timeout in seconds. Increase this if you experience timeout errors when communicating with the Navigatr API.';
+$string['timeout_help'] = 'HTTP request timeout in seconds. ' .
+    'Increase this if you experience timeout errors when communicating with the Navigatr API.';
 $string['timeout_invalid'] = 'Timeout must be between 1 and 300 seconds';
 $string['unknown_course'] = 'Unknown Course';
 $string['unknown_provider'] = 'Unknown Provider';
@@ -143,5 +155,6 @@ $string['user_agent'] = 'Moodle-Navigatr-Plugin/1.0';
 $string['user_data_deleted'] = 'User data deleted successfully';
 $string['user_not_found'] = 'User not found';
 $string['username'] = 'Navigatr Username';
-$string['username_help'] = 'Enter your Navigatr username. This should be a provider admin account that has access to manage badges.';
+$string['username_help'] = 'Enter your Navigatr username. ' .
+    'This should be a provider admin account that has access to manage badges.';
 $string['view_badge'] = 'View Badge';
