@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Replaced long list syntax with array destructuring
   - Sorted interfaces alphabetically
 - Removed empty IF/CATCH statements.
+- Sorted language file string keys alphabetically in `lang/en/local_navigatr.php` to comply with Moodle coding standards.
 - Added missing language strings.
 - Added the correct header and copyright/author notes to the files which were missing.
 
