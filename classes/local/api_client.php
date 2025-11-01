@@ -400,6 +400,7 @@ class api_client
      *
      * @param string $path API path
      * @param array $headers Additional headers
+     * @param bool $require_auth Whether authentication is required
      * @return object Response object
      */
     public function get($path, $headers = [], $require_auth = true)

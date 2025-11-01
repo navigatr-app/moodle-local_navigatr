@@ -5,6 +5,13 @@ All notable changes to the Navigatr plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] - 2024-10-31
+
+### Code Quality Improvements in 1.1.1
+
+- Fixed all 44 PHP files by removing the blank line after `<?php` so the copyright header starts on line 2. This resolves ~70 prechecker errors.
+- Fixed PHPDoc incomplete parameter lists.
+
 ## [1.1.0] - 2024-10-29
 
 ### Major Security & Quality Improvements

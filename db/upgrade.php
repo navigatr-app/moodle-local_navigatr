@@ -26,6 +26,9 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Post upgrade hook.
+ *
+ * @param int $oldversion The old version number
+ * @return bool True on success
  */
 function xmldb_local_navigatr_upgrade($oldversion)
 {
