@@ -28,6 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed empty IF/CATCH statements.
 - Sorted language file string keys alphabetically in `lang/en/local_navigatr.php` to comply with Moodle coding standards.
 - Added missing `@template` section to `templates/course/course_settings.mustache` with template context variable documentation.
+- Fixed test class issues: Added `final` keyword to all test classes, added `: void` return types to all test methods, and added `@covers` annotations for test coverage.
 - Added missing language strings.
 - Added the correct header and copyright/author notes to the files which were missing.
 

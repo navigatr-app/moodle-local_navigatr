@@ -30,14 +30,14 @@ use moodle_exception;
 
 /**
  * Unit tests for Navigatr Token Manager
+  * @covers \local_navigatr\local\token_manager
  */
-class token_manager_test extends advanced_testcase
+final class token_manager_test extends advanced_testcase
 {
     /**
      * Test token manager class structure
      */
-    public function test_class_structure()
-    {
+    public function test_class_structure(): void {
         $this->assertTrue(class_exists(token_manager::class));
         $this->assertTrue(method_exists(token_manager::class, 'get_access_token'));
         $this->assertTrue(method_exists(token_manager::class, 'clear_tokens'));
@@ -45,9 +45,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test token retrieval with no stored tokens
+          * @covers \local_navigatr\local\token_manager::get_access_token
      */
-    public function test_get_access_token_no_tokens()
-    {
+    public function test_get_access_token_no_tokens(): void {
         $this->resetAfterTest();
 
         // Clear any existing tokens
@@ -61,9 +61,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test token clearing functionality
+          * @covers \local_navigatr\local\token_manager::clear_tokens
      */
-    public function test_clear_tokens()
-    {
+    public function test_clear_tokens(): void {
         $this->resetAfterTest();
 
         // Set some mock tokens
@@ -88,9 +88,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test token expiration handling
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_token_expiration()
-    {
+    public function test_token_expiration(): void {
         $this->resetAfterTest();
 
         // Set expired token
@@ -103,9 +103,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test token refresh with valid refresh token
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_token_refresh_valid()
-    {
+    public function test_token_refresh_valid(): void {
         $this->resetAfterTest();
 
         // Set valid refresh token
@@ -118,9 +118,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test token refresh with expired refresh token
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_token_refresh_expired()
-    {
+    public function test_token_refresh_expired(): void {
         $this->resetAfterTest();
 
         // Set expired refresh token
@@ -133,9 +133,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test re-authentication when no valid tokens
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_reauth_no_credentials()
-    {
+    public function test_reauth_no_credentials(): void {
         $this->resetAfterTest();
 
         // Clear credentials
@@ -148,9 +148,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test re-authentication with credentials
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_reauth_with_credentials()
-    {
+    public function test_reauth_with_credentials(): void {
         $this->resetAfterTest();
 
         // Set credentials
@@ -163,9 +163,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test JWT token decoding
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_jwt_decoding()
-    {
+    public function test_jwt_decoding(): void {
         $this->resetAfterTest();
 
         // Test that JWT decoding method exists
@@ -178,9 +178,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test token storage
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_token_storage()
-    {
+    public function test_token_storage(): void {
         $this->resetAfterTest();
 
         // Test that token storage method exists
@@ -193,9 +193,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test lock-based concurrency control
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_lock_mechanism()
-    {
+    public function test_lock_mechanism(): void {
         $this->resetAfterTest();
 
         // Test that lock mechanism exists
@@ -208,9 +208,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test error handling for authentication failures
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_auth_failure_handling()
-    {
+    public function test_auth_failure_handling(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can handle failures
@@ -222,9 +222,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test token validation logic
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_token_validation()
-    {
+    public function test_token_validation(): void {
         $this->resetAfterTest();
 
         // Test with valid token
@@ -241,9 +241,9 @@ class token_manager_test extends advanced_testcase
 
     /**
      * Test concurrent access handling
+          * @covers \local_navigatr\local\token_manager
      */
-    public function test_concurrent_access()
-    {
+    public function test_concurrent_access(): void {
         $this->resetAfterTest();
 
         // Test that lock mechanism exists for concurrent access

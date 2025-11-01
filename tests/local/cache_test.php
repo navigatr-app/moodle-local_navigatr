@@ -29,14 +29,15 @@ use local_navigatr\local\cache;
 
 /**
  * Unit tests for Navigatr Cache
+ *
+ * @covers \local_navigatr\local\cache
  */
-class cache_test extends advanced_testcase
+final class cache_test extends advanced_testcase
 {
     /**
      * Test cache class structure
      */
-    public function test_class_structure()
-    {
+    public function test_class_structure(): void {
         $this->assertTrue(class_exists(cache::class));
         $this->assertTrue(method_exists(cache::class, 'get_providers'));
         $this->assertTrue(method_exists(cache::class, 'get_badges'));
@@ -46,8 +47,7 @@ class cache_test extends advanced_testcase
     /**
      * Test provider caching
      */
-    public function test_provider_caching()
-    {
+    public function test_provider_caching(): void {
         $this->resetAfterTest();
 
         // Test that provider caching method exists
@@ -61,8 +61,7 @@ class cache_test extends advanced_testcase
     /**
      * Test badge caching
      */
-    public function test_badge_caching()
-    {
+    public function test_badge_caching(): void {
         $this->resetAfterTest();
 
         // Test that badge caching method exists
@@ -76,8 +75,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache clearing
      */
-    public function test_cache_clearing()
-    {
+    public function test_cache_clearing(): void {
         $this->resetAfterTest();
 
         // Test that cache clearing method exists
@@ -91,8 +89,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache TTL handling
      */
-    public function test_cache_ttl()
-    {
+    public function test_cache_ttl(): void {
         $this->resetAfterTest();
 
         // Test that cache handles TTL correctly
@@ -103,8 +100,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache key generation
      */
-    public function test_cache_key_generation()
-    {
+    public function test_cache_key_generation(): void {
         $this->resetAfterTest();
 
         // Test that cache generates proper keys
@@ -115,8 +111,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache invalidation
      */
-    public function test_cache_invalidation()
-    {
+    public function test_cache_invalidation(): void {
         $this->resetAfterTest();
 
         // Test that cache can be invalidated
@@ -126,8 +121,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache performance
      */
-    public function test_cache_performance()
-    {
+    public function test_cache_performance(): void {
         $this->resetAfterTest();
 
         // Test that cache improves performance
@@ -138,8 +132,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache error handling
      */
-    public function test_cache_error_handling()
-    {
+    public function test_cache_error_handling(): void {
         $this->resetAfterTest();
 
         // Test that cache handles errors gracefully
@@ -150,8 +143,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache concurrency
      */
-    public function test_cache_concurrency()
-    {
+    public function test_cache_concurrency(): void {
         $this->resetAfterTest();
 
         // Test that cache handles concurrency
@@ -162,8 +154,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache memory usage
      */
-    public function test_cache_memory_usage()
-    {
+    public function test_cache_memory_usage(): void {
         $this->resetAfterTest();
 
         // Test that cache manages memory efficiently
@@ -174,8 +165,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache serialization
      */
-    public function test_cache_serialization()
-    {
+    public function test_cache_serialization(): void {
         $this->resetAfterTest();
 
         // Test that cache can serialize data
@@ -186,8 +176,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache deserialization
      */
-    public function test_cache_deserialization()
-    {
+    public function test_cache_deserialization(): void {
         $this->resetAfterTest();
 
         // Test that cache can deserialize data
@@ -198,8 +187,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache compression
      */
-    public function test_cache_compression()
-    {
+    public function test_cache_compression(): void {
         $this->resetAfterTest();
 
         // Test that cache can compress data
@@ -210,8 +198,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache expiration
      */
-    public function test_cache_expiration()
-    {
+    public function test_cache_expiration(): void {
         $this->resetAfterTest();
 
         // Test that cache handles expiration
@@ -222,8 +209,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache statistics
      */
-    public function test_cache_statistics()
-    {
+    public function test_cache_statistics(): void {
         $this->resetAfterTest();
 
         // Test that cache provides statistics
@@ -234,8 +220,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache monitoring
      */
-    public function test_cache_monitoring()
-    {
+    public function test_cache_monitoring(): void {
         $this->resetAfterTest();
 
         // Test that cache can be monitored
@@ -246,8 +231,7 @@ class cache_test extends advanced_testcase
     /**
      * Test cache debugging
      */
-    public function test_cache_debugging()
-    {
+    public function test_cache_debugging(): void {
         $this->resetAfterTest();
 
         // Test that cache supports debugging

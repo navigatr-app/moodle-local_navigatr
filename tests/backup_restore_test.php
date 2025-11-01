@@ -43,14 +43,15 @@ use restore_controller;
  * @package    local_navigatr
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @covers \backup_local_navigatr_plugin
+ * @covers \restore_local_navigatr_plugin
  */
-class backup_restore_test extends advanced_testcase
+final class backup_restore_test extends advanced_testcase
 {
     /**
      * Test backup class exists and has required methods
      */
-    public function test_backup_class_structure()
-    {
+    public function test_backup_class_structure(): void {
         global $CFG;
 
         // Load the backup class.
@@ -63,8 +64,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test restore class exists and has required methods
      */
-    public function test_restore_class_structure()
-    {
+    public function test_restore_class_structure(): void {
         global $CFG;
 
         // Load the restore class.
@@ -79,8 +79,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test full backup and restore cycle with badge mapping
      */
-    public function test_backup_and_restore_mapping()
-    {
+    public function test_backup_and_restore_mapping(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;
@@ -150,8 +149,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test backup and restore with audit records (user data included)
      */
-    public function test_backup_and_restore_with_audit_records()
-    {
+    public function test_backup_and_restore_with_audit_records(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;
@@ -241,8 +239,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test backup and restore without user data (audit records excluded)
      */
-    public function test_backup_without_user_data()
-    {
+    public function test_backup_without_user_data(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;
@@ -324,8 +321,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test that existing mappings are not overwritten during restore
      */
-    public function test_restore_does_not_overwrite_existing_mapping()
-    {
+    public function test_restore_does_not_overwrite_existing_mapping(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;
@@ -394,8 +390,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test user ID mapping during restore
      */
-    public function test_user_id_mapping()
-    {
+    public function test_user_id_mapping(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;
@@ -471,8 +466,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test backup and restore with empty course (no mappings)
      */
-    public function test_backup_restore_empty_course()
-    {
+    public function test_backup_restore_empty_course(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;
@@ -522,8 +516,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test duplicate dedupe_key handling during restore
      */
-    public function test_duplicate_dedupe_key_handling()
-    {
+    public function test_duplicate_dedupe_key_handling(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;
@@ -612,8 +605,7 @@ class backup_restore_test extends advanced_testcase
     /**
      * Test handling of audit records for users that don't exist in target system
      */
-    public function test_missing_user_handling()
-    {
+    public function test_missing_user_handling(): void {
         $this->markTestIncomplete('Backup/restore controller workflow needs Moodle-specific configuration. Manual testing recommended.');
 
         global $DB, $USER;

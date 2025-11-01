@@ -29,13 +29,17 @@ use local_navigatr\local\api_client;
 
 /**
  * Unit tests for Navigatr API Client
+ *
+ * @covers \local_navigatr\local\api_client
  */
-class api_client_test extends advanced_testcase
+final class api_client_test extends advanced_testcase
 {
     /**
      * Test environment URL configuration
+     *
+     * @covers \local_navigatr\local\api_client::get_base_url
      */
-    public function test_get_base_url()
+    public function test_get_base_url(): void
     {
         // Test production environment
         set_config('env', 'production', 'local_navigatr');
@@ -52,8 +56,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test API client initialization
+     *
+     * @covers \local_navigatr\local\api_client::__construct
      */
-    public function test_constructor()
+    public function test_constructor(): void
     {
         $client = new api_client();
         $this->assertInstanceOf(api_client::class, $client);
@@ -61,8 +67,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test authentication with valid credentials
+     *
+     * @covers \local_navigatr\local\api_client::get_token
      */
-    public function test_get_token_success()
+    public function test_get_token_success(): void
     {
         $this->resetAfterTest();
 
@@ -89,8 +97,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test authentication failure handling
+     *
+     * @covers \local_navigatr\local\api_client::get_token
      */
-    public function test_get_token_failure()
+    public function test_get_token_failure(): void
     {
         $this->resetAfterTest();
 
@@ -103,8 +113,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test token refresh functionality
+     *
+     * @covers \local_navigatr\local\api_client::refresh_token
      */
-    public function test_refresh_token()
+    public function test_refresh_token(): void
     {
         $this->resetAfterTest();
 
@@ -117,8 +129,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test connection test method
+     *
+     * @covers \local_navigatr\local\api_client::test_connection
      */
-    public function test_test_connection()
+    public function test_test_connection(): void
     {
         $this->resetAfterTest();
 
@@ -133,8 +147,13 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test HTTP request methods
+     *
+     * @covers \local_navigatr\local\api_client::get
+     * @covers \local_navigatr\local\api_client::post
+     * @covers \local_navigatr\local\api_client::put
+     * @covers \local_navigatr\local\api_client::delete
      */
-    public function test_http_methods()
+    public function test_http_methods(): void
     {
         $this->resetAfterTest();
 
@@ -149,8 +168,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test provider listing
+     *
+     * @covers \local_navigatr\local\api_client::get_providers
      */
-    public function test_get_providers()
+    public function test_get_providers(): void
     {
         $this->resetAfterTest();
 
@@ -162,8 +183,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test badge listing
+     *
+     * @covers \local_navigatr\local\api_client::get_badges
      */
-    public function test_get_badges()
+    public function test_get_badges(): void
     {
         $this->resetAfterTest();
 
@@ -175,8 +198,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test badge issuance
+     *
+     * @covers \local_navigatr\local\api_client::issue_badge
      */
-    public function test_issue_badge()
+    public function test_issue_badge(): void
     {
         $this->resetAfterTest();
 
@@ -188,8 +213,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test timeout configuration
+     *
+     * @covers \local_navigatr\local\api_client::__construct
      */
-    public function test_timeout_configuration()
+    public function test_timeout_configuration(): void
     {
         $this->resetAfterTest();
 
@@ -206,8 +233,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test environment switching
+     *
+     * @covers \local_navigatr\local\api_client::get_base_url
      */
-    public function test_environment_switching()
+    public function test_environment_switching(): void
     {
         $this->resetAfterTest();
 
@@ -224,8 +253,10 @@ class api_client_test extends advanced_testcase
 
     /**
      * Test error handling for invalid environment
+     *
+     * @covers \local_navigatr\local\api_client::get_base_url
      */
-    public function test_invalid_environment()
+    public function test_invalid_environment(): void
     {
         $this->resetAfterTest();
 

@@ -30,14 +30,14 @@ use stdClass;
 
 /**
  * Unit tests for Navigatr Badge Issuance Task
+  * @covers \local_navigatr\task\issue_badge_task
  */
-class issue_badge_task_test extends advanced_testcase
+final class issue_badge_task_test extends advanced_testcase
 {
     /**
      * Test task class structure
      */
-    public function test_class_structure()
-    {
+    public function test_class_structure(): void {
         $this->assertTrue(class_exists(issue_badge_task::class));
         $this->assertTrue(method_exists(issue_badge_task::class, 'execute'));
         $this->assertTrue(method_exists(issue_badge_task::class, 'get_name'));
@@ -45,9 +45,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test task execution with valid data
+          * @covers \local_navigatr\task\issue_badge_task::execute
      */
-    public function test_execute_with_valid_data()
-    {
+    public function test_execute_with_valid_data(): void {
         $this->resetAfterTest();
 
         // Create test user and course
@@ -98,9 +98,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test task name
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_get_name()
-    {
+    public function test_get_name(): void {
         $task = new issue_badge_task();
         $name = $task->get_name();
 
@@ -110,9 +110,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test task execution method exists
+          * @covers \local_navigatr\task\issue_badge_task::execute
      */
-    public function test_execute_method()
-    {
+    public function test_execute_method(): void {
         $task = new issue_badge_task();
 
         $this->assertTrue(method_exists($task, 'execute'));
@@ -123,9 +123,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test audit record creation
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_audit_record_creation()
-    {
+    public function test_audit_record_creation(): void {
         $this->resetAfterTest();
 
         // Create test user and course
@@ -169,9 +169,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test deduplication key generation
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_deduplication_key()
-    {
+    public function test_deduplication_key(): void {
         $this->resetAfterTest();
 
         $task = new issue_badge_task();
@@ -189,9 +189,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test error handling for missing user
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_missing_user_handling()
-    {
+    public function test_missing_user_handling(): void {
         $this->resetAfterTest();
 
         // Create test course
@@ -231,9 +231,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test error handling for missing course
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_missing_course_handling()
-    {
+    public function test_missing_course_handling(): void {
         $this->resetAfterTest();
 
         $task = new issue_badge_task();
@@ -248,9 +248,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test API client integration
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_api_client_integration()
-    {
+    public function test_api_client_integration(): void {
         $this->resetAfterTest();
 
         // Test that task uses API client
@@ -264,9 +264,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test retry mechanism
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_retry_mechanism()
-    {
+    public function test_retry_mechanism(): void {
         $this->resetAfterTest();
 
         // Test that task can be retried
@@ -282,9 +282,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test task data validation
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_task_data_validation()
-    {
+    public function test_task_data_validation(): void {
         $this->resetAfterTest();
 
         $task = new issue_badge_task();
@@ -300,9 +300,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test HTTP error handling
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_http_error_handling()
-    {
+    public function test_http_error_handling(): void {
         $this->resetAfterTest();
 
         // Create test user and course
@@ -344,9 +344,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test authentication error handling
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_auth_error_handling()
-    {
+    public function test_auth_error_handling(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can handle auth errors
@@ -355,9 +355,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test task scheduling
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_task_scheduling()
-    {
+    public function test_task_scheduling(): void {
         $this->resetAfterTest();
 
         // Test that task can be scheduled
@@ -373,9 +373,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test task cleanup
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_task_cleanup()
-    {
+    public function test_task_cleanup(): void {
         $this->resetAfterTest();
 
         // Test that task can be cleaned up
@@ -385,9 +385,9 @@ class issue_badge_task_test extends advanced_testcase
 
     /**
      * Test task failure handling
+          * @covers \local_navigatr\task\issue_badge_task
      */
-    public function test_task_failure_handling()
-    {
+    public function test_task_failure_handling(): void {
         $this->resetAfterTest();
 
         // Test that task can handle failures gracefully

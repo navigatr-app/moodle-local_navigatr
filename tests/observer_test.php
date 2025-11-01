@@ -34,23 +34,23 @@ use advanced_testcase;
  * @package    local_navigatr
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+  * @covers \local_navigatr\observer
  */
-class observer_test extends advanced_testcase
+final class observer_test extends advanced_testcase
 {
     /**
      * Test observer class structure
      */
-    public function test_class_structure()
-    {
+    public function test_class_structure(): void {
         $this->assertTrue(class_exists(observer::class));
         $this->assertTrue(method_exists(observer::class, 'course_completed'));
     }
 
     /**
      * Test course completion observer method
+          * @covers \local_navigatr\observer::course_completed
      */
-    public function test_course_completed_method()
-    {
+    public function test_course_completed_method(): void {
         $this->resetAfterTest();
 
         // Test that method exists and is static
@@ -63,9 +63,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer method signature
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_method_signature()
-    {
+    public function test_observer_method_signature(): void {
         $this->resetAfterTest();
 
         $reflection = new \ReflectionMethod(observer::class, 'course_completed');
@@ -81,9 +81,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer event handling
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_event_handling()
-    {
+    public function test_observer_event_handling(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can handle events
@@ -92,9 +92,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer error handling
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_error_handling()
-    {
+    public function test_observer_error_handling(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can handle errors
@@ -103,9 +103,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer task scheduling
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_task_scheduling()
-    {
+    public function test_observer_task_scheduling(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can schedule tasks
@@ -114,9 +114,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer database operations
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_database_operations()
-    {
+    public function test_observer_database_operations(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can perform database operations
@@ -125,9 +125,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer API integration
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_api_integration()
-    {
+    public function test_observer_api_integration(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can integrate with API
@@ -136,9 +136,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer logging
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_logging()
-    {
+    public function test_observer_logging(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can perform logging
@@ -147,9 +147,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer performance
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_performance()
-    {
+    public function test_observer_performance(): void {
         $this->resetAfterTest();
 
         // Test that method exists and is performant
@@ -158,9 +158,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer concurrency
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_concurrency()
-    {
+    public function test_observer_concurrency(): void {
         $this->resetAfterTest();
 
         // Test that method exists and handles concurrency
@@ -169,9 +169,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer cleanup
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_cleanup()
-    {
+    public function test_observer_cleanup(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can perform cleanup
@@ -180,9 +180,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer monitoring
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_monitoring()
-    {
+    public function test_observer_monitoring(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can perform monitoring
@@ -191,9 +191,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer debugging
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_debugging()
-    {
+    public function test_observer_debugging(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can perform debugging
@@ -202,9 +202,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer configuration
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_configuration()
-    {
+    public function test_observer_configuration(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can handle configuration
@@ -213,9 +213,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer validation
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_validation()
-    {
+    public function test_observer_validation(): void {
         $this->resetAfterTest();
 
         // Test that method exists and can perform validation
@@ -224,9 +224,9 @@ class observer_test extends advanced_testcase
 
     /**
      * Test observer security
+          * @covers \local_navigatr\observer
      */
-    public function test_observer_security()
-    {
+    public function test_observer_security(): void {
         $this->resetAfterTest();
 
         // Test that method exists and has security measures
