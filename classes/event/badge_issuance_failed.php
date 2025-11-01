@@ -62,7 +62,9 @@ class badge_issuance_failed extends \core\event\base
         $httpcode = isset($this->other['http_code']) ? $this->other['http_code'] : 'unknown';
         $error = isset($this->other['error']) ? $this->other['error'] : 'Unknown error';
 
-        return "Failed to issue badge '{$badgeid}' from provider '{$providerid}' to user {$this->userid} for course {$this->courseid} (HTTP {$httpcode}): {$error}";
+        return "Failed to issue badge '{$badgeid}' from provider '{$providerid}' " .
+            "to user {$this->userid} for course {$this->courseid} " .
+            "(HTTP {$httpcode}): {$error}";
     }
 
     /**

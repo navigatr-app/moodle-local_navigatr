@@ -61,7 +61,8 @@ class badge_issuance_retry extends \core\event\base
         $providerid = isset($this->other['provider_id']) ? $this->other['provider_id'] : 'unknown';
         $reason = isset($this->other['reason']) ? $this->other['reason'] : 'API unavailable';
 
-        return "Badge '{$badgeid}' from provider '{$providerid}' issuance queued for retry for user {$this->userid} in course {$this->courseid} (Reason: {$reason})";
+        return "Badge '{$badgeid}' from provider '{$providerid}' issuance queued for retry " .
+            "for user {$this->userid} in course {$this->courseid} (Reason: {$reason})";
     }
 
     /**

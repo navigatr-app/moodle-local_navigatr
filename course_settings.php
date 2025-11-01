@@ -154,7 +154,9 @@ try {
 
 // Display provider configuration notice if no providers available
 if (empty($providers)) {
-    echo \core\notification::info(get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php')));
+    echo \core\notification::info(
+        get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php'))
+    );
 }
 
 // Display existing mapping if it exists using template

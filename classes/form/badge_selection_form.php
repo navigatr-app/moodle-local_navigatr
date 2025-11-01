@@ -79,7 +79,12 @@ class badge_selection_form extends \moodleform
         $mform->addRule('badge_id', get_string('required'), 'required', null, 'client');
 
         // Add submit button
-        $mform->addElement('submit', 'select_badge', get_string('select_badge_continue', 'local_navigatr'), ['class' => 'btn-primary mr-2']);
+        $mform->addElement(
+            'submit',
+            'select_badge',
+            get_string('select_badge_continue', 'local_navigatr'),
+            ['class' => 'btn-primary mr-2']
+        );
 
         // Add cancel button
         $mform->addElement('cancel', 'cancel', get_string('cancel'), ['class' => 'btn-secondary']);

@@ -59,7 +59,12 @@ class admin_settings_form extends \moodleform
         $mform->addElement('html', $security_warning);
 
         // Test connection button - moved outside advanced settings for better visibility
-        $mform->addElement('submit', 'testconnection', get_string('test_connection', 'local_navigatr'), ['class' => 'btn-secondary mb-3']);
+        $mform->addElement(
+            'submit',
+            'testconnection',
+            get_string('test_connection', 'local_navigatr'),
+            ['class' => 'btn-secondary mb-3']
+        );
 
         // Advanced settings
         $mform->addElement('header', 'advanced', get_string('advanced_settings', 'local_navigatr'));

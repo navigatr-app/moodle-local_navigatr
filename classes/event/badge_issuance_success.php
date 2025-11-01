@@ -61,7 +61,8 @@ class badge_issuance_success extends \core\event\base
         $providerid = isset($this->other['provider_id']) ? $this->other['provider_id'] : 'unknown';
         $httpcode = isset($this->other['http_code']) ? $this->other['http_code'] : 'unknown';
 
-        return "User {$this->userid} successfully received badge '{$badgeid}' from provider '{$providerid}' for course {$this->courseid} (HTTP {$httpcode})";
+        return "User {$this->userid} successfully received badge '{$badgeid}' " .
+            "from provider '{$providerid}' for course {$this->courseid} (HTTP {$httpcode})";
     }
 
     /**

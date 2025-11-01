@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Replaced `error_log()` with `debugging()` in `badge_selection.php` to comply with Moodle coding standards.
 - Fixed MOODLE_INTERNAL checks. Added `MOODLE_INTERNAL` check to `api_client.php` (has require_once side effect). Removed unnecessary `MOODLE_INTERNAL` checks from class-only files
 - Replaced `elseif` with `else if` (two words) in all files to comply with Moodle coding standards
+- Fixed line length violations by breaking long lines to stay under Moodle's 132 character limit
 - Removed empty IF/CATCH statements.
 - Added missing language strings.
 - Added the correct header and copyright/author notes to the files which were missing.

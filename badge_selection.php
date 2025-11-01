@@ -119,7 +119,10 @@ echo $OUTPUT->heading(get_string('select_badge', 'local_navigatr'));
 
 // Show navigation breadcrumb
 $PAGE->navbar->add($course->shortname, new \moodle_url('/course/view.php', ['id' => $courseid]));
-$PAGE->navbar->add(get_string('navigatr_settings', 'local_navigatr'), new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
+$PAGE->navbar->add(
+    get_string('navigatr_settings', 'local_navigatr'),
+    new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid])
+);
 $PAGE->navbar->add(get_string('select_badge', 'local_navigatr'));
 
 $form->display();
