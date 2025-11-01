@@ -148,7 +148,8 @@ try {
         $providers = $user_response->body['providers'];
     }
 } catch (Exception $e) {
-    // API call failed, providers will be empty
+    // API call failed, providers will be empty.
+    debugging('Failed to fetch providers for course settings: ' . $e->getMessage(), DEBUG_NORMAL);
 }
 
 // Display provider configuration notice if no providers available

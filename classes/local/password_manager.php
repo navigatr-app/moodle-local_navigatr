@@ -43,13 +43,9 @@ class password_manager
             return '';
         }
 
-        // Use Moodle's built-in encryption if available (Moodle 3.9+)
-        if (function_exists('encrypt_user_password')) {
-            // For Moodle 3.9+, we can use the built-in encryption
-            // However, this is designed for user passwords, so we'll use our own method
-        }
-
         // Use OpenSSL encryption with a site-specific key
+        // Note: We use our own encryption method rather than Moodle's encrypt_user_password()
+        // as that function is designed for user passwords and may not be suitable for API credentials.
         $key = self::get_encryption_key();
         $iv = openssl_random_pseudo_bytes(16);
         $encrypted = openssl_encrypt($password, 'AES-256-CBC', $key, 0, $iv);
