@@ -32,8 +32,7 @@ use stdClass;
  * Unit tests for Navigatr Badge Issuance Task
   * @covers \local_navigatr\task\issue_badge_task
  */
-final class issue_badge_task_test extends advanced_testcase
-{
+final class issue_badge_task_test extends advanced_testcase {
     /**
      * Test task class structure
      */

@@ -25,16 +25,14 @@
 /**
  * Navigatr plugin test data generator
  */
-class local_navigatr_generator extends component_generator_base
-{
+class local_navigatr_generator extends component_generator_base {
     /**
      * Create a Navigatr provider
      *
      * @param array $data Provider data
      * @return stdClass Created provider
      */
-    public function create_provider($data = [])
-    {
+    public function create_provider($data = []) {
         global $DB;
 
         $defaults = [
@@ -61,8 +59,7 @@ class local_navigatr_generator extends component_generator_base
      * @param array $data Badge data
      * @return stdClass Created badge
      */
-    public function create_badge($data = [])
-    {
+    public function create_badge($data = []) {
         global $DB;
 
         $defaults = [
@@ -90,8 +87,7 @@ class local_navigatr_generator extends component_generator_base
      * @param array $data Mapping data
      * @return stdClass Created mapping
      */
-    public function create_course_badge_mapping($data = [])
-    {
+    public function create_course_badge_mapping($data = []) {
         global $DB;
 
         $defaults = [
@@ -119,8 +115,7 @@ class local_navigatr_generator extends component_generator_base
      * @param array $data Audit data
      * @return stdClass Created audit record
      */
-    public function create_audit_record($data = [])
-    {
+    public function create_audit_record($data = []) {
         global $DB;
 
         $defaults = [
@@ -151,8 +146,7 @@ class local_navigatr_generator extends component_generator_base
      * @param array $data Setup data
      * @return stdClass Complete test setup
      */
-    public function create_test_setup($data = [])
-    {
+    public function create_test_setup($data = []) {
         $defaults = [
             'user' => null,
             'course' => null,

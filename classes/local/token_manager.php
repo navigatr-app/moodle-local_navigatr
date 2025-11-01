@@ -27,16 +27,14 @@ namespace local_navigatr\local;
 /**
  * Token manager class for handling Navigatr API authentication.
  */
-class token_manager
-{
+class token_manager {
     /**
      * Get a valid access token, refreshing if necessary.
      *
      * @return string Access token
      * @throws \moodle_exception If authentication fails
      */
-    public static function get_access_token()
-    {
+    public static function get_access_token() {
         $cache = \cache::make('local_navigatr', 'tokens');
         $accesstoken = $cache->get('access_token');
 
@@ -60,8 +58,7 @@ class token_manager
      *
      * @throws \moodle_exception If authentication fails
      */
-    private static function refresh_or_reauth_with_lock()
-    {
+    private static function refresh_or_reauth_with_lock() {
         $lockfactory = \core\lock\lock_config::get_lock_factory('cachelock');
         $lock = $lockfactory->get_lock('local_navigatr_token_refresh', 30);
 
@@ -92,8 +89,7 @@ class token_manager
      *
      * @return bool True if refresh successful, false otherwise
      */
-    private static function refresh()
-    {
+    private static function refresh() {
         $refreshtoken = get_config('local_navigatr', 'refresh_token');
         $refreshexpires = get_config('local_navigatr', 'refresh_expires_at');
 
@@ -129,8 +125,7 @@ class token_manager
      *
      * @throws \moodle_exception If authentication fails
      */
-    public static function reauth()
-    {
+    public static function reauth() {
         $username = get_config('local_navigatr', 'username');
         $password = \local_navigatr\local\password_manager::get_password();
 
@@ -161,8 +156,7 @@ class token_manager
      *
      * @param array $tokens Token response from API
      */
-    private static function store_tokens($tokens)
-    {
+    private static function store_tokens($tokens) {
         $accesstoken = $tokens['access_token'] ?? '';
         $refreshtoken = $tokens['refresh_token'] ?? '';
         $idtoken = $tokens['id_token'] ?? '';
@@ -187,8 +181,7 @@ class token_manager
      * @param string $jwt JWT token
      * @return string|null User ID from sub claim
      */
-    private static function decode_jwt_sub($jwt)
-    {
+    private static function decode_jwt_sub($jwt) {
         if (empty($jwt)) {
             return null;
         }

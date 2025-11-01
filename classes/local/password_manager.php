@@ -27,16 +27,14 @@ namespace local_navigatr\local;
 /**
  * Password manager class for handling encrypted password storage.
  */
-class password_manager
-{
+class password_manager {
     /**
      * Encrypt a password for secure storage.
      *
      * @param string $password Plain text password
      * @return string Encrypted password
      */
-    public static function encrypt_password($password)
-    {
+    public static function encrypt_password($password) {
         if (empty($password)) {
             return '';
         }
@@ -62,8 +60,7 @@ class password_manager
      * @param string $encrypted_password Encrypted password
      * @return string Plain text password
      */
-    public static function decrypt_password($encrypted_password)
-    {
+    public static function decrypt_password($encrypted_password) {
         if (empty($encrypted_password)) {
             return '';
         }
@@ -92,8 +89,7 @@ class password_manager
      *
      * @return string Encryption key
      */
-    private static function get_encryption_key()
-    {
+    private static function get_encryption_key() {
         global $CFG;
 
         // Use a site-specific key stored in config.
@@ -129,8 +125,7 @@ class password_manager
      *
      * @param string $password Plain text password
      */
-    public static function store_password($password)
-    {
+    public static function store_password($password) {
         if (empty($password)) {
             unset_config('password', 'local_navigatr');
             return;
@@ -145,8 +140,7 @@ class password_manager
      *
      * @return string Plain text password
      */
-    public static function get_password()
-    {
+    public static function get_password() {
         $encrypted = get_config('local_navigatr', 'password');
 
         if (empty($encrypted)) {
@@ -159,8 +153,7 @@ class password_manager
     /**
      * Clear stored password.
      */
-    public static function clear_password()
-    {
+    public static function clear_password() {
         unset_config('password', 'local_navigatr');
     }
 }

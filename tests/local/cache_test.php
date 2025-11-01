@@ -32,8 +32,7 @@ use local_navigatr\local\cache;
  *
  * @covers \local_navigatr\local\cache
  */
-final class cache_test extends advanced_testcase
-{
+final class cache_test extends advanced_testcase {
     /**
      * Test cache class structure
      */

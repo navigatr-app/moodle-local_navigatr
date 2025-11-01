@@ -31,15 +31,13 @@ require_once($CFG->dirroot . '/backup/moodle2/backup_local_plugin.class.php');
  *
  * Provides backup functionality for course badge mappings and audit records.
  */
-class backup_local_navigatr_plugin extends backup_local_plugin
-{
+class backup_local_navigatr_plugin extends backup_local_plugin {
     /**
      * Define the course plugin structure for backup
      *
      * @return backup_plugin_element
      */
-    protected function define_course_plugin_structure()
-    {
+    protected function define_course_plugin_structure() {
 
         // Get the user info setting to determine if we should backup audit records.
         $userinfo = $this->get_setting_value('users');

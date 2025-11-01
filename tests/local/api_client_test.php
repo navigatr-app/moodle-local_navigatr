@@ -32,15 +32,13 @@ use local_navigatr\local\api_client;
  *
  * @covers \local_navigatr\local\api_client
  */
-final class api_client_test extends advanced_testcase
-{
+final class api_client_test extends advanced_testcase {
     /**
      * Test environment URL configuration
      *
      * @covers \local_navigatr\local\api_client::get_base_url
      */
-    public function test_get_base_url(): void
-    {
+    public function test_get_base_url(): void {
         // Test production environment.
         set_config('env', 'production', 'local_navigatr');
         $this->assertEquals('https://api.navigatr.app/v1', api_client::get_base_url());
@@ -59,8 +57,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::__construct
      */
-    public function test_constructor(): void
-    {
+    public function test_constructor(): void {
         $client = new api_client();
         $this->assertInstanceOf(api_client::class, $client);
     }
@@ -70,8 +67,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::get_token
      */
-    public function test_get_token_success(): void
-    {
+    public function test_get_token_success(): void {
         $this->resetAfterTest();
 
         // Mock successful authentication response.
@@ -100,8 +96,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::get_token
      */
-    public function test_get_token_failure(): void
-    {
+    public function test_get_token_failure(): void {
         $this->resetAfterTest();
 
         $client = new api_client();
@@ -116,8 +111,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::refresh_token
      */
-    public function test_refresh_token(): void
-    {
+    public function test_refresh_token(): void {
         $this->resetAfterTest();
 
         $client = new api_client();
@@ -132,8 +126,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::test_connection
      */
-    public function test_test_connection(): void
-    {
+    public function test_test_connection(): void {
         $this->resetAfterTest();
 
         // Test method exists and is static.
@@ -153,8 +146,7 @@ final class api_client_test extends advanced_testcase
      * @covers \local_navigatr\local\api_client::put
      * @covers \local_navigatr\local\api_client::delete
      */
-    public function test_http_methods(): void
-    {
+    public function test_http_methods(): void {
         $this->resetAfterTest();
 
         $client = new api_client();
@@ -171,8 +163,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::get_providers
      */
-    public function test_get_providers(): void
-    {
+    public function test_get_providers(): void {
         $this->resetAfterTest();
 
         $client = new api_client();
@@ -186,8 +177,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::get_badges
      */
-    public function test_get_badges(): void
-    {
+    public function test_get_badges(): void {
         $this->resetAfterTest();
 
         $client = new api_client();
@@ -201,8 +191,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::issue_badge
      */
-    public function test_issue_badge(): void
-    {
+    public function test_issue_badge(): void {
         $this->resetAfterTest();
 
         $client = new api_client();
@@ -216,8 +205,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::__construct
      */
-    public function test_timeout_configuration(): void
-    {
+    public function test_timeout_configuration(): void {
         $this->resetAfterTest();
 
         // Test default timeout.
@@ -236,8 +224,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::get_base_url
      */
-    public function test_environment_switching(): void
-    {
+    public function test_environment_switching(): void {
         $this->resetAfterTest();
 
         // Test production.
@@ -256,8 +243,7 @@ final class api_client_test extends advanced_testcase
      *
      * @covers \local_navigatr\local\api_client::get_base_url
      */
-    public function test_invalid_environment(): void
-    {
+    public function test_invalid_environment(): void {
         $this->resetAfterTest();
 
         // Test with invalid environment (should default to production).

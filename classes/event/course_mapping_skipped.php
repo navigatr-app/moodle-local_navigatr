@@ -31,15 +31,13 @@ namespace local_navigatr\event;
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class course_mapping_skipped extends \core\event\base
-{
+class course_mapping_skipped extends \core\event\base {
     /**
      * Init method.
      *
      * @return void
      */
-    protected function init()
-    {
+    protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'local_navigatr_map';
@@ -50,8 +48,7 @@ class course_mapping_skipped extends \core\event\base
      *
      * @return string
      */
-    public function get_description()
-    {
+    public function get_description() {
         $reason = isset($this->other['reason']) ? $this->other['reason'] : 'unknown reason';
 
         return "Badge mapping restore skipped for course {$this->courseid}. Reason: {$reason}.";
@@ -62,8 +59,7 @@ class course_mapping_skipped extends \core\event\base
      *
      * @return string
      */
-    public static function get_name()
-    {
+    public static function get_name() {
         return get_string('eventcoursemappingskipped', 'local_navigatr');
     }
 
@@ -72,8 +68,7 @@ class course_mapping_skipped extends \core\event\base
      *
      * @return \moodle_url
      */
-    public function get_url()
-    {
+    public function get_url() {
         return new \moodle_url('/course/view.php', ['id' => $this->courseid]);
     }
 
@@ -83,8 +78,7 @@ class course_mapping_skipped extends \core\event\base
      * @throws \coding_exception
      * @return void
      */
-    protected function validate_data()
-    {
+    protected function validate_data() {
         parent::validate_data();
 
         if (!isset($this->other['reason'])) {

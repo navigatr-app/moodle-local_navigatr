@@ -32,8 +32,7 @@ use local_navigatr\form\admin_settings_form;
  *
  * @covers \local_navigatr\form\admin_settings_form
  */
-final class admin_settings_form_test extends advanced_testcase
-{
+final class admin_settings_form_test extends advanced_testcase {
     /**
      * Test form class structure
           * @covers \local_navigatr\form\admin_settings_form

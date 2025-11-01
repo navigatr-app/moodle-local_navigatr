@@ -27,8 +27,7 @@ namespace local_navigatr\local;
 /**
  * Cache helper class for Navigatr API data.
  */
-class cache
-{
+class cache {
     /**
      * Get badges for a provider.
      *
@@ -37,8 +36,7 @@ class cache
      * @param int $size Page size
      * @return array|null Badges array or null if not cached
      */
-    public static function get_badges($providerid, $page = 1, $size = 50)
-    {
+    public static function get_badges($providerid, $page = 1, $size = 50) {
         $cache = \cache::make('local_navigatr', 'badges');
         $key = "{$providerid}:{$page}:{$size}";
         return $cache->get($key);
@@ -52,8 +50,7 @@ class cache
      * @param int $size Page size
      * @param array $badges Badges array
      */
-    public static function set_badges($providerid, $page, $size, $badges)
-    {
+    public static function set_badges($providerid, $page, $size, $badges) {
         $cache = \cache::make('local_navigatr', 'badges');
         $key = "{$providerid}:{$page}:{$size}";
         $cache->set($key, $badges);
@@ -65,8 +62,7 @@ class cache
      *
      * @return array|null User detail array or null if not cached
      */
-    public static function get_user_detail()
-    {
+    public static function get_user_detail() {
         $cache = \cache::make('local_navigatr', 'user_detail');
         return $cache->get('current_user');
     }
@@ -76,8 +72,7 @@ class cache
      *
      * @param array $userdetail User detail array
      */
-    public static function set_user_detail($userdetail)
-    {
+    public static function set_user_detail($userdetail) {
         $cache = \cache::make('local_navigatr', 'user_detail');
         $cache->set('current_user', $userdetail);
     }

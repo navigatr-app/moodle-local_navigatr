@@ -46,8 +46,7 @@ use restore_controller;
  * @covers \backup_local_navigatr_plugin
  * @covers \restore_local_navigatr_plugin
  */
-final class backup_restore_test extends advanced_testcase
-{
+final class backup_restore_test extends advanced_testcase {
     /**
      * Test backup class exists and has required methods
      */

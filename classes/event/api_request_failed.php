@@ -31,15 +31,13 @@ namespace local_navigatr\event;
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class api_request_failed extends \core\event\base
-{
+class api_request_failed extends \core\event\base {
     /**
      * Init method.
      *
      * @return void
      */
-    protected function init()
-    {
+    protected function init() {
         $this->data['crud'] = 'r';
         $this->data['edulevel'] = self::LEVEL_OTHER;
     }
@@ -49,8 +47,7 @@ class api_request_failed extends \core\event\base
      *
      * @return string
      */
-    public function get_description()
-    {
+    public function get_description() {
         $operation = isset($this->other['operation']) ? $this->other['operation'] : 'unknown operation';
         $error = isset($this->other['error']) ? $this->other['error'] : 'unknown error';
 
@@ -62,8 +59,7 @@ class api_request_failed extends \core\event\base
      *
      * @return string
      */
-    public static function get_name()
-    {
+    public static function get_name() {
         return get_string('eventapirequestfailed', 'local_navigatr');
     }
 
@@ -72,8 +68,7 @@ class api_request_failed extends \core\event\base
      *
      * @return \moodle_url
      */
-    public function get_url()
-    {
+    public function get_url() {
         return new \moodle_url('/admin/settings.php', ['section' => 'local_navigatr']);
     }
 
@@ -83,8 +78,7 @@ class api_request_failed extends \core\event\base
      * @throws \coding_exception
      * @return void
      */
-    protected function validate_data()
-    {
+    protected function validate_data() {
         parent::validate_data();
 
         if (!isset($this->other['operation'])) {

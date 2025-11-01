@@ -27,7 +27,6 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Post installation hook.
  */
-function xmldb_local_navigatr_install()
-{
+function xmldb_local_navigatr_install() {
     return true;
 }

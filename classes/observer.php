@@ -27,15 +27,13 @@ namespace local_navigatr;
 /**
  * Event observer class.
  */
-class observer
-{
+class observer {
     /**
      * Handle course completion event.
      *
      * @param \core\event\course_completed $event Course completion event
      */
-    public static function course_completed(\core\event\course_completed $event)
-    {
+    public static function course_completed(\core\event\course_completed $event) {
         global $DB;
 
         $courseid = $event->courseid;
@@ -78,8 +76,7 @@ class observer
      *
      * @param \core\event\course_restored $event Course restored event
      */
-    public static function course_restored(\core\event\course_restored $event)
-    {
+    public static function course_restored(\core\event\course_restored $event) {
         global $DB, $CFG;
 
         $courseid = $event->courseid;

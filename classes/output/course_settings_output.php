@@ -29,8 +29,7 @@ defined('MOODLE_INTERNAL') || die();
 /**
  * Course settings output class.
  */
-class course_settings_output
-{
+class course_settings_output {
     /**
      * Render the current mapping display.
      *
@@ -40,8 +39,7 @@ class course_settings_output
      * @param int $courseid The course ID
      * @return string Rendered HTML
      */
-    public static function render_current_mapping($existing_mapping, $existing_provider, $existing_badge, $courseid)
-    {
+    public static function render_current_mapping($existing_mapping, $existing_provider, $existing_badge, $courseid) {
         global $OUTPUT;
 
         if (!$existing_mapping || !$existing_provider || !$existing_badge) {

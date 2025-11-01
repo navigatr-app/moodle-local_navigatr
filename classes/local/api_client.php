@@ -36,8 +36,7 @@ require_once($CFG->libdir . '/filelib.php');
  * @copyright  2024 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class api_client
-{
+class api_client {
     /** @var string Base URL for Navigatr API */
     private $baseurl;
 
@@ -49,8 +48,7 @@ class api_client
      *
      * @return string Base URL for Navigatr API
      */
-    public static function get_base_url()
-    {
+    public static function get_base_url() {
         $env = get_config('local_navigatr', 'env') ?: 'production';
 
         $baseurls = [
@@ -67,8 +65,7 @@ class api_client
      * @param string|null $baseurl Base URL for Navigatr API (optional, will use config if null)
      * @param int $timeout Request timeout in seconds
      */
-    public function __construct($baseurl = null, $timeout = null)
-    {
+    public function __construct($baseurl = null, $timeout = null) {
         $this->baseurl = $baseurl ? rtrim($baseurl, '/') : self::get_base_url();
         $this->timeout = $timeout ?? get_config('local_navigatr', 'timeout') ?: 30;
     }
@@ -83,8 +80,7 @@ class api_client
      * @param bool $require_auth Whether to include Bearer token (default: true)
      * @return object Response object with ok, code, body properties
      */
-    private function make_request($method, $path, $data = null, $headers = [], $require_auth = true)
-    {
+    private function make_request($method, $path, $data = null, $headers = [], $require_auth = true) {
         $url = $this->baseurl . '/' . ltrim($path, '/');
 
         // Use Moodle cURL wrapper.
@@ -187,8 +183,7 @@ class api_client
      * @param string $password Navigatr password
      * @return object Response object
      */
-    public function get_token($username, $password)
-    {
+    public function get_token($username, $password) {
         $url = $this->baseurl . '/token';
 
         $curl = new \curl();
@@ -256,8 +251,7 @@ class api_client
      * @param string $refresh_token Navigatr refresh token
      * @return object Response object
      */
-    public function refresh_token($refresh_token)
-    {
+    public function refresh_token($refresh_token) {
         $url = $this->baseurl . '/token';
 
         $curl = new \curl();
@@ -327,8 +321,7 @@ class api_client
      * @param string $environment Environment (staging, production)
      * @return object Response object
      */
-    public static function test_connection($username, $password, $environment = 'production')
-    {
+    public static function test_connection($username, $password, $environment = 'production') {
         // Temporarily set environment for this test.
         $original_env = get_config('local_navigatr', 'env');
         set_config('env', $environment, 'local_navigatr');
@@ -378,8 +371,7 @@ class api_client
      * @param array $headers Additional headers
      * @return object Response object
      */
-    public function post($path, $data = null, $headers = [])
-    {
+    public function post($path, $data = null, $headers = []) {
         return $this->make_request('POST', $path, $data, $headers);
     }
 
@@ -391,8 +383,7 @@ class api_client
      * @param array $headers Additional headers
      * @return object Response object
      */
-    public function put($path, $data = null, $headers = [])
-    {
+    public function put($path, $data = null, $headers = []) {
         return $this->make_request('PUT', $path, $data, $headers);
     }
 
@@ -404,8 +395,7 @@ class api_client
      * @param bool $require_auth Whether authentication is required
      * @return object Response object
      */
-    public function get($path, $headers = [], $require_auth = true)
-    {
+    public function get($path, $headers = [], $require_auth = true) {
         return $this->make_request('GET', $path, null, $headers, $require_auth);
     }
 }

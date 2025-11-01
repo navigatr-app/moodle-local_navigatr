@@ -32,13 +32,11 @@ require_once(__DIR__ . '/../../classes/local/api_client.php');
 /**
  * Adhoc task for issuing Navigatr badges.
  */
-class issue_badge_task extends \core\task\adhoc_task
-{
+class issue_badge_task extends \core\task\adhoc_task {
     /**
      * Execute the task.
      */
-    public function execute()
-    {
+    public function execute() {
         global $DB;
 
         $data = $this->get_custom_data();
@@ -153,8 +151,7 @@ class issue_badge_task extends \core\task\adhoc_task
      * @param int $courseid Course ID
      * @return int|null Course score (0-100) or null if not available
      */
-    private function get_course_score($userid, $courseid)
-    {
+    private function get_course_score($userid, $courseid) {
         global $DB;
 
         // Try to get final grade from gradebook.
@@ -206,8 +203,7 @@ class issue_badge_task extends \core\task\adhoc_task
      * @param int $httpcode HTTP response code
      * @param string $responsejson Response JSON
      */
-    private function write_audit($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson)
-    {
+    private function write_audit($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson) {
         global $DB;
 
         $dedupekey = "{$userid}:{$courseid}:{$badgeid}";
@@ -248,8 +244,7 @@ class issue_badge_task extends \core\task\adhoc_task
      * @param int $httpcode HTTP response code
      * @param string $responsejson Response JSON
      */
-    private function trigger_audit_event($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson)
-    {
+    private function trigger_audit_event($userid, $courseid, $providerid, $badgeid, $status, $httpcode, $responsejson) {
         $context = \context_course::instance($courseid);
         $other = [
             'badge_id' => $badgeid,

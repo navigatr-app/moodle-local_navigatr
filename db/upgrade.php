@@ -30,7 +30,6 @@ defined('MOODLE_INTERNAL') || die();
  * @param int $oldversion The old version number
  * @return bool True on success
  */
-function xmldb_local_navigatr_upgrade($oldversion)
-{
+function xmldb_local_navigatr_upgrade($oldversion) {
     return true;
 }

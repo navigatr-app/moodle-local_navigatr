@@ -31,13 +31,11 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * Provider selection form class.
  */
-class provider_selection_form extends \moodleform
-{
+class provider_selection_form extends \moodleform {
     /**
      * Form definition.
      */
-    public function definition()
-    {
+    public function definition() {
         global $DB;
 
         $mform = $this->_form;
@@ -94,8 +92,7 @@ class provider_selection_form extends \moodleform
      *
      * @return array Providers array
      */
-    private function get_providers()
-    {
+    private function get_providers() {
         try {
             // Check cache first for user details.
             $cached_user = \local_navigatr\local\cache::get_user_detail();

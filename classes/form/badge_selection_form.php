@@ -31,13 +31,11 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * Badge selection form class.
  */
-class badge_selection_form extends \moodleform
-{
+class badge_selection_form extends \moodleform {
     /**
      * Form definition.
      */
-    protected function definition()
-    {
+    protected function definition() {
         global $DB;
 
         $mform = $this->_form;
@@ -96,8 +94,7 @@ class badge_selection_form extends \moodleform
      * @param int $providerid Provider ID
      * @return array Badges array
      */
-    private function get_badges($providerid)
-    {
+    private function get_badges($providerid) {
         try {
             // Check cache first.
             $cached = \local_navigatr\local\cache::get_badges($providerid, 1, 50);

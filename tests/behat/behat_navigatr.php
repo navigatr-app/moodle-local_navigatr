@@ -29,15 +29,13 @@ use Behat\Mink\Exception\ExpectationException;
 /**
  * Navigatr plugin Behat context
  */
-class behat_navigatr extends \behat_base implements Context
-{
+class behat_navigatr extends \behat_base implements Context {
     /**
      * Navigate to Navigatr admin settings
      *
      * @Given I navigate to Navigatr admin settings
      */
-    public function i_navigate_to_navigatr_admin_settings()
-    {
+    public function i_navigate_to_navigatr_admin_settings() {
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Site administration',
             'Plugins',
@@ -52,8 +50,7 @@ class behat_navigatr extends \behat_base implements Context
      * @Given I configure Navigatr credentials
      * @param TableNode $table
      */
-    public function i_configure_navigatr_credentials(TableNode $table)
-    {
+    public function i_configure_navigatr_credentials(TableNode $table) {
         $data = $table->getRowsHash();
 
         // Set username.
@@ -78,8 +75,7 @@ class behat_navigatr extends \behat_base implements Context
      *
      * @When I test the Navigatr connection
      */
-    public function i_test_the_navigatr_connection()
-    {
+    public function i_test_the_navigatr_connection() {
         $this->execute('behat_general::i_click_on', [
             'Test Connection',
             'button'
@@ -92,8 +88,7 @@ class behat_navigatr extends \behat_base implements Context
      * @Given I map course to Navigatr badge
      * @param TableNode $table
      */
-    public function i_map_course_to_navigatr_badge(TableNode $table)
-    {
+    public function i_map_course_to_navigatr_badge(TableNode $table) {
         $data = $table->getRowsHash();
 
         // Set provider.
@@ -118,8 +113,7 @@ class behat_navigatr extends \behat_base implements Context
      *
      * @When I complete the course
      */
-    public function i_complete_the_course()
-    {
+    public function i_complete_the_course() {
         // Navigate to course completion.
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Course administration',
@@ -138,8 +132,7 @@ class behat_navigatr extends \behat_base implements Context
      *
      * @Then I should see badge issuance in audit log
      */
-    public function i_should_see_badge_issuance_in_audit_log()
-    {
+    public function i_should_see_badge_issuance_in_audit_log() {
         $this->execute('behat_general::i_should_see', [
             'Badge issued successfully'
         ]);
@@ -150,8 +143,7 @@ class behat_navigatr extends \behat_base implements Context
      *
      * @Given the Navigatr API is unavailable
      */
-    public function the_navigatr_api_is_unavailable()
-    {
+    public function the_navigatr_api_is_unavailable() {
         // Set a configuration to simulate API unavailability.
         set_config('api_unavailable', 1, 'local_navigatr');
     }
@@ -161,8 +153,7 @@ class behat_navigatr extends \behat_base implements Context
      *
      * @Then the badge issuance should be queued for retry
      */
-    public function the_badge_issuance_should_be_queued_for_retry()
-    {
+    public function the_badge_issuance_should_be_queued_for_retry() {
         $this->execute('behat_general::i_should_see', [
             'Badge issuance queued for retry'
         ]);
@@ -173,8 +164,7 @@ class behat_navigatr extends \behat_base implements Context
      *
      * @Then only one badge should be issued
      */
-    public function only_one_badge_should_be_issued()
-    {
+    public function only_one_badge_should_be_issued() {
         $this->execute('behat_general::i_should_see', [
             'Duplicate badge issuance prevented'
         ]);
@@ -186,8 +176,7 @@ class behat_navigatr extends \behat_base implements Context
      * @When I create a data export request for :username
      * @param string $username
      */
-    public function i_create_a_data_export_request_for($username)
-    {
+    public function i_create_a_data_export_request_for($username) {
         // Navigate to privacy settings.
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Site administration',
@@ -220,8 +209,7 @@ class behat_navigatr extends \behat_base implements Context
      * @Then I should see :text in the export
      * @param string $text
      */
-    public function i_should_see_in_the_export($text)
-    {
+    public function i_should_see_in_the_export($text) {
         $this->execute('behat_general::i_should_see', [$text]);
     }
 
@@ -231,8 +219,7 @@ class behat_navigatr extends \behat_base implements Context
      * @When I create a data deletion request for :username
      * @param string $username
      */
-    public function i_create_a_data_deletion_request_for($username)
-    {
+    public function i_create_a_data_deletion_request_for($username) {
         // Navigate to privacy settings.
         $this->execute('behat_navigation::i_navigate_to_node_in', [
             'Site administration',
@@ -264,8 +251,7 @@ class behat_navigatr extends \behat_base implements Context
      *
      * @Then the Navigatr audit records should be deleted
      */
-    public function the_navigatr_audit_records_should_be_deleted()
-    {
+    public function the_navigatr_audit_records_should_be_deleted() {
         $this->execute('behat_general::i_should_see', [
             'User data deleted successfully'
         ]);

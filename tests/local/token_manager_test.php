@@ -32,8 +32,7 @@ use moodle_exception;
  * Unit tests for Navigatr Token Manager
   * @covers \local_navigatr\local\token_manager
  */
-final class token_manager_test extends advanced_testcase
-{
+final class token_manager_test extends advanced_testcase {
     /**
      * Test token manager class structure
      */

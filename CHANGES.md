@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added missing `@template` section to `templates/course/course_settings.mustache` with template context variable documentation.
 - Fixed test class issues: Added `final` keyword to all test classes, added `: void` return types to all test methods, and added `@covers` annotations for test coverage.
 - Fixed inline comment formatting by adding punctuation (periods) to all inline comments that were missing it across 45 PHP files.
+- Fixed opening brace placement by moving opening braces to the same line as their declarations across 35 PHP files.
 - Added missing language strings.
 - Added the correct header and copyright/author notes to the files which were missing.
 

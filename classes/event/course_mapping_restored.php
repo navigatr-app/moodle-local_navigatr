@@ -31,15 +31,13 @@ namespace local_navigatr\event;
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class course_mapping_restored extends \core\event\base
-{
+class course_mapping_restored extends \core\event\base {
     /**
      * Init method.
      *
      * @return void
      */
-    protected function init()
-    {
+    protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_OTHER;
         $this->data['objecttable'] = 'local_navigatr_map';
@@ -50,8 +48,7 @@ class course_mapping_restored extends \core\event\base
      *
      * @return string
      */
-    public function get_description()
-    {
+    public function get_description() {
         $badgeid = isset($this->other['badge_id']) ? $this->other['badge_id'] : 'unknown';
         $providerid = isset($this->other['provider_id']) ? $this->other['provider_id'] : 'unknown';
         $newid = isset($this->other['new_mapping_id']) ? $this->other['new_mapping_id'] : 'unknown';
@@ -65,8 +62,7 @@ class course_mapping_restored extends \core\event\base
      *
      * @return string
      */
-    public static function get_name()
-    {
+    public static function get_name() {
         return get_string('eventcoursemappingrestored', 'local_navigatr');
     }
 
@@ -75,8 +71,7 @@ class course_mapping_restored extends \core\event\base
      *
      * @return \moodle_url
      */
-    public function get_url()
-    {
+    public function get_url() {
         return new \moodle_url('/course/view.php', ['id' => $this->courseid]);
     }
 
@@ -86,8 +81,7 @@ class course_mapping_restored extends \core\event\base
      * @throws \coding_exception
      * @return void
      */
-    protected function validate_data()
-    {
+    protected function validate_data() {
         parent::validate_data();
 
         if (!isset($this->other['badge_id'])) {

@@ -31,13 +31,11 @@ require_once($CFG->libdir . '/formslib.php');
 /**
  * Admin settings form class.
  */
-class admin_settings_form extends \moodleform
-{
+class admin_settings_form extends \moodleform {
     /**
      * Form definition.
      */
-    public function definition()
-    {
+    public function definition() {
         $mform = $this->_form;
 
         // Credentials.
@@ -89,8 +87,7 @@ class admin_settings_form extends \moodleform
     /**
      * Set form data with current configuration values.
      */
-    public function set_form_data()
-    {
+    public function set_form_data() {
         $data = [
             'username' => get_config('local_navigatr', 'username'),
             'timeout' => get_config('local_navigatr', 'timeout') ?: 30,
@@ -106,8 +103,7 @@ class admin_settings_form extends \moodleform
      * @param array $files
      * @return array
      */
-    public function validation($data, $files)
-    {
+    public function validation($data, $files) {
         $errors = parent::validation($data, $files);
 
         if ($data['timeout'] < 1 || $data['timeout'] > 300) {

@@ -25,15 +25,13 @@
 /**
  * Navigatr plugin test helper
  */
-class local_navigatr_test_helper
-{
+class local_navigatr_test_helper {
     /**
      * Set up test configuration
      *
      * @param array $config Configuration data
      */
-    public static function setup_test_config($config = [])
-    {
+    public static function setup_test_config($config = []) {
         $defaults = [
             'username' => 'test_user',
             'password' => 'test_password',
@@ -56,8 +54,7 @@ class local_navigatr_test_helper
      * @param array $capabilities Capabilities to assign
      * @return stdClass Created user
      */
-    public static function create_user_with_capabilities($capabilities = [])
-    {
+    public static function create_user_with_capabilities($capabilities = []) {
         global $DB;
 
         $user = new stdClass();
@@ -82,8 +79,7 @@ class local_navigatr_test_helper
      * @param array $data Course data
      * @return stdClass Created course
      */
-    public static function create_course_with_completion($data = [])
-    {
+    public static function create_course_with_completion($data = []) {
         global $DB;
 
         $defaults = [
@@ -108,8 +104,7 @@ class local_navigatr_test_helper
      * @param array $data Response data
      * @return array API response
      */
-    public static function simulate_api_response($type = 'success', $data = [])
-    {
+    public static function simulate_api_response($type = 'success', $data = []) {
         switch ($type) {
             case 'success':
                 return [
@@ -169,8 +164,7 @@ class local_navigatr_test_helper
      * @param array $data Audit data
      * @return stdClass Created audit record
      */
-    public static function create_audit_record($data = [])
-    {
+    public static function create_audit_record($data = []) {
         global $DB;
 
         $defaults = [
@@ -198,8 +192,7 @@ class local_navigatr_test_helper
     /**
      * Clean up test data
      */
-    public static function cleanup_test_data()
-    {
+    public static function cleanup_test_data() {
         global $DB;
 
         // Clean up audit records.
@@ -224,8 +217,7 @@ class local_navigatr_test_helper
      * @param array $criteria Search criteria
      * @param string $message Assertion message
      */
-    public static function assert_audit_record_exists($criteria, $message = '')
-    {
+    public static function assert_audit_record_exists($criteria, $message = '') {
         global $DB;
 
         $records = $DB->get_records('local_navigatr_audit', $criteria);
@@ -240,8 +232,7 @@ class local_navigatr_test_helper
      * @param array $criteria Search criteria
      * @param string $message Assertion message
      */
-    public static function assert_audit_record_not_exists($criteria, $message = '')
-    {
+    public static function assert_audit_record_not_exists($criteria, $message = '') {
         global $DB;
 
         $records = $DB->get_records('local_navigatr_audit', $criteria);

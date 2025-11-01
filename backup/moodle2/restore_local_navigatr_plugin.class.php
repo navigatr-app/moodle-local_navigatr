@@ -31,15 +31,13 @@ require_once($CFG->dirroot . '/backup/moodle2/restore_local_plugin.class.php');
  *
  * Provides restore functionality for course badge mappings and audit records.
  */
-class restore_local_navigatr_plugin extends restore_local_plugin
-{
+class restore_local_navigatr_plugin extends restore_local_plugin {
     /**
      * Define the course plugin structure for restore
      *
      * @return array Array of restore_path_element objects
      */
-    protected function define_course_plugin_structure()
-    {
+    protected function define_course_plugin_structure() {
 
         $paths = [];
 
@@ -77,8 +75,7 @@ class restore_local_navigatr_plugin extends restore_local_plugin
      *
      * @param array|object $data The mapping data from backup
      */
-    public function process_local_navigatr_mapping($data)
-    {
+    public function process_local_navigatr_mapping($data) {
         global $DB;
 
         $data = (object)$data;
@@ -126,8 +123,7 @@ class restore_local_navigatr_plugin extends restore_local_plugin
      *
      * @param array|object $data The audit data from backup
      */
-    public function process_local_navigatr_audit($data)
-    {
+    public function process_local_navigatr_audit($data) {
         global $DB;
 
         $data = (object)$data;
