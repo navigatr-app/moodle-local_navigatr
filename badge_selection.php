@@ -77,7 +77,7 @@ $form = new \local_navigatr\form\badge_selection_form(null, [
 // Handle form submission
 if ($form->is_cancelled()) {
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
-} elseif ($data = $form->get_data()) {
+} else if ($data = $form->get_data()) {
     // Save the mapping
     global $DB;
 

@@ -48,7 +48,7 @@ if ($data && confirm_sesskey()) {
         unset_config('refresh_expires_at', 'local_navigatr');
         unset_config('nav_user_id', 'local_navigatr');
         \core\notification::success(get_string('connection_removed', 'local_navigatr'));
-    } elseif (isset($data->testconnection)) {
+    } else if (isset($data->testconnection)) {
         // Handle test connection
         $username = $data->username ?? '';
         $password = $data->password ?? '';
@@ -62,9 +62,9 @@ if ($data && confirm_sesskey()) {
             $errormsg = get_string('connection_failed', 'local_navigatr');
             if (!empty($result->error)) {
                 $errormsg .= ': ' . s($result->error);
-            } elseif (!empty($result->body) && is_array($result->body) && isset($result->body['error'])) {
+            } else if (!empty($result->body) && is_array($result->body) && isset($result->body['error'])) {
                 $errormsg .= ': ' . s($result->body['error']);
-            } elseif ($result->code > 0) {
+            } else if ($result->code > 0) {
                 $errormsg .= ' (HTTP ' . $result->code . ')';
             } else {
                 $errormsg .= ': ' . get_string('network_error_or_timeout', 'local_navigatr');

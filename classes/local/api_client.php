@@ -138,9 +138,9 @@ class api_client
         $response = false;
         if ($method === 'POST') {
             $response = $curl->post($url, $json_data, $curloptions);
-        } elseif ($method === 'PUT') {
+        } else if ($method === 'PUT') {
             $response = $curl->put($url, $json_data, $curloptions);
-        } elseif ($method === 'GET') {
+        } else if ($method === 'GET') {
             $response = $curl->get($url, null, $curloptions);
         } else {
             # Raise an error
@@ -155,7 +155,7 @@ class api_client
         // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
-        } elseif ($httpcode === false || $httpcode === null) {
+        } else if ($httpcode === false || $httpcode === null) {
             $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
 
@@ -169,7 +169,7 @@ class api_client
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $body = $response; // Return raw response if JSON decode fails
             }
-        } elseif ($haserror) {
+        } else if ($haserror) {
             $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
         }
 
@@ -225,7 +225,7 @@ class api_client
         // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
-        } elseif ($httpcode === false || $httpcode === null) {
+        } else if ($httpcode === false || $httpcode === null) {
             $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
 
@@ -239,7 +239,7 @@ class api_client
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $body = $response; // Return raw response if JSON decode fails
             }
-        } elseif ($haserror) {
+        } else if ($haserror) {
             $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
         }
 
@@ -294,7 +294,7 @@ class api_client
         // Handle various response formats from get_info
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
-        } elseif ($httpcode === false || $httpcode === null) {
+        } else if ($httpcode === false || $httpcode === null) {
             $httpcode = 0; // get_string('error_network', 'local_navigatr')
         }
 
@@ -308,7 +308,7 @@ class api_client
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $body = $response; // Return raw response if JSON decode fails
             }
-        } elseif ($haserror) {
+        } else if ($haserror) {
             $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
         }
 

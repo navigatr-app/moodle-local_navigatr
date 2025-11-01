@@ -106,7 +106,7 @@ class password_manager
             // Use available password salt properties (different versions have different names)
             if (isset($CFG->passwordsaltmain)) {
                 $site_key .= $CFG->passwordsaltmain;
-            } elseif (isset($CFG->passwordsalt)) {
+            } else if (isset($CFG->passwordsalt)) {
                 $site_key .= $CFG->passwordsalt;
             } else {
                 // Fallback to a combination of site-specific values
