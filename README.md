@@ -18,7 +18,7 @@ A Moodle local plugin that automatically issues Navigatr digital badges when lea
 
 ![Certificate](images/certificate.png)
 
-**Ready to get started?** You'll need a Navigatr provider account to use this plugin. [Register for a free trial](https://stag.navigatr.app/register/plan/launch) to create and manage your digital badges.
+**Ready to get started?** You'll need a Navigatr provider account to use this plugin. [Register for a free trial](https://navigatr.app/register/plan/launch) to create and manage your digital badges.
 
 ## Overview
 
@@ -58,7 +58,7 @@ This plugin integrates Moodle with the Navigatr badging platform, providing auto
 
 ## Installation
 
-1. You will first need a Navigatr provider account. If you don't have an account, you can sign up for a free trial at [https://stag.navigatr.app/register/plan/launch](https://stag.navigatr.app/register/plan/launch)
+1. You will first need a Navigatr provider account. If you don't have an account, you can sign up for a free trial at [https://navigatr.app/register/plan/launch](https://navigatr.app/register/plan/launch)
 2. Copy the plugin files to `local/navigatr/` in your Moodle installation. The following files and folders are optional and can be omitted:
    - `/.github` (CI/CD configuration)
    - `/.gitignore` (Git configuration)
