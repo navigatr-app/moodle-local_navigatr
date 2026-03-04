@@ -70,18 +70,4 @@ class badge_issuance_failed extends \core\event\base {
         return new \moodle_url('/course/view.php', ['id' => $this->courseid]);
     }
 
-    /**
-     * Return the legacy event log data.
-     *
-     * @return array
-     */
-    protected function get_legacy_logdata() {
-        return [
-            $this->courseid,
-            'local_navigatr',
-            'badge issuance failed',
-            '',
-            "Badge {$this->other['badge_id']} issuance failed for user {$this->userid}: {$this->other['error']}",
-        ];
-    }
 }
