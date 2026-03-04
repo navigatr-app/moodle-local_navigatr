@@ -57,16 +57,16 @@ class password_manager {
     /**
      * Decrypt a password from secure storage.
      *
-     * @param string $encrypted_password Encrypted password
+     * @param string $encryptedPassword Encrypted password
      * @return string Plain text password
      */
-    public static function decrypt_password($encrypted_password) {
-        if (empty($encrypted_password)) {
+    public static function decrypt_password($encryptedPassword) {
+        if (empty($encryptedPassword)) {
             return '';
         }
 
         $key = self::get_encryption_key();
-        $data = base64_decode($encrypted_password);
+        $data = base64_decode($encryptedPassword);
 
         if ($data === false || strlen($data) < 16) {
             throw new \moodle_exception('decryption_failed', 'local_navigatr');
@@ -97,19 +97,19 @@ class password_manager {
 
         if (empty($key)) {
             // Generate a new key based on site URL and available secrets.
-            $site_key = $CFG->wwwroot;
+            $siteKey = $CFG->wwwroot;
 
             // Use available password salt properties (different versions have different names).
             if (isset($CFG->passwordsaltmain)) {
-                $site_key .= $CFG->passwordsaltmain;
+                $siteKey .= $CFG->passwordsaltmain;
             } else if (isset($CFG->passwordsalt)) {
-                $site_key .= $CFG->passwordsalt;
+                $siteKey .= $CFG->passwordsalt;
             } else {
                 // Fallback to a combination of site-specific values.
-                $site_key .= $CFG->dataroot . $CFG->dbname;
+                $siteKey .= $CFG->dataroot . $CFG->dbname;
             }
 
-            $key = hash('sha256', $site_key . 'navigatr_plugin_key', true);
+            $key = hash('sha256', $siteKey . 'navigatr_plugin_key', true);
 
             // Store the key for future use.
             set_config('encryption_key', base64_encode($key), 'local_navigatr');

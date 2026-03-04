@@ -35,7 +35,7 @@ class badge_issuance_failed extends \core\event\base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'local_navigatr_audit';
-        $this->data['objectid'] = 0; // Set objectid when objecttable is defined
+        $this->data['objectid'] = 0; // Set objectid when objecttable is defined.
     }
 
     /**
@@ -83,7 +83,7 @@ class badge_issuance_failed extends \core\event\base {
             'local_navigatr',
             'badge issuance failed',
             '',
-            "Badge {$this->other['badge_id']} issuance failed for user {$this->userid}: {$this->other['error']}"
+            "Badge {$this->other['badge_id']} issuance failed for user {$this->userid}: {$this->other['error']}",
         ];
     }
 }

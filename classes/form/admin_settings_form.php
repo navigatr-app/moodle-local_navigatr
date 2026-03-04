@@ -24,8 +24,6 @@
 
 namespace local_navigatr\form;
 
-defined('MOODLE_INTERNAL') || die();
-
 require_once($CFG->libdir . '/formslib.php');
 
 /**
@@ -55,11 +53,11 @@ class admin_settings_form extends \moodleform {
         $mform->addRule('personal_access_token', get_string('required'), 'required', null, 'client');
 
         // Add PAT note with create link.
-        $pat_warning = \html_writer::div(
+        $patwarning = \html_writer::div(
             get_string('pat_unmask_warning', 'local_navigatr', $paturl),
             'alert alert-info'
         );
-        $mform->addElement('html', $pat_warning);
+        $mform->addElement('html', $patwarning);
 
         // Test connection button - moved outside advanced settings for better visibility.
         $mform->addElement(

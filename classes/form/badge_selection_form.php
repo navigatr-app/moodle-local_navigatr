@@ -24,8 +24,6 @@
 
 namespace local_navigatr\form;
 
-defined('MOODLE_INTERNAL') || die();
-
 require_once($CFG->libdir . '/formslib.php');
 
 /**
@@ -40,26 +38,26 @@ class badge_selection_form extends \moodleform {
 
         $mform = $this->_form;
         $courseid = $this->_customdata['courseid'];
-        $provider_id = $this->_customdata['provider_id'];
-        $provider_name = $this->_customdata['provider_name'];
+        $providerid = $this->_customdata['provider_id'];
+        $providername = $this->_customdata['provider_name'];
 
         // Add hidden course ID.
         $mform->addElement('hidden', 'id', $courseid);
         $mform->setType('id', PARAM_INT);
 
         // Add hidden provider ID.
-        $mform->addElement('hidden', 'provider_id', $provider_id);
+        $mform->addElement('hidden', 'provider_id', $providerid);
         $mform->setType('provider_id', PARAM_INT);
 
         // Show selected provider.
-        $provider_info = \html_writer::div(
-            get_string('selected_provider', 'local_navigatr') . ': ' . s($provider_name),
+        $providerinfo = \html_writer::div(
+            get_string('selected_provider', 'local_navigatr') . ': ' . s($providername),
             'alert alert-info'
         );
-        $mform->addElement('html', $provider_info);
+        $mform->addElement('html', $providerinfo);
 
         // Get badges for the selected provider.
-        $badges = $this->get_badges($provider_id);
+        $badges = $this->get_badges($providerid);
         $badgeoptions = ['' => get_string('select_badge', 'local_navigatr')];
 
         // Ensure badges is an array before iterating.
@@ -104,8 +102,8 @@ class badge_selection_form extends \moodleform {
 
             // Fetch from API.
             $client = new \local_navigatr\local\api_client();
-            $api_path = "/badge?provider_id={$providerid}&status=Published&source=Internal&page=1&size=50";
-            $response = $client->get($api_path);
+            $apipath = "/badge?provider_id={$providerid}&status=Published&source=Internal&page=1&size=50";
+            $response = $client->get($apipath);
 
             if ($response->ok && isset($response->body['items']) && is_array($response->body['items'])) {
                 $badges = $response->body['items'];

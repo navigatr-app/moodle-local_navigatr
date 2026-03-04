@@ -221,7 +221,7 @@ class local_navigatr_test_helper {
         global $DB;
 
         $records = $DB->get_records('local_navigatr_audit', $criteria);
-        $this->assertCount(1, $records, $message);
+        \PHPUnit\Framework\Assert::assertCount(1, $records, $message);
 
         return reset($records);
     }
@@ -236,6 +236,6 @@ class local_navigatr_test_helper {
         global $DB;
 
         $records = $DB->get_records('local_navigatr_audit', $criteria);
-        $this->assertCount(0, $records, $message);
+        \PHPUnit\Framework\Assert::assertCount(0, $records, $message);
     }
 }

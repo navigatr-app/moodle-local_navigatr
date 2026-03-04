@@ -24,8 +24,6 @@
 
 namespace local_navigatr\form;
 
-defined('MOODLE_INTERNAL') || die();
-
 require_once($CFG->libdir . '/formslib.php');
 
 /**
@@ -95,15 +93,15 @@ class provider_selection_form extends \moodleform {
     private function get_providers() {
         try {
             // Check cache first for user details.
-            $cached_user = \local_navigatr\local\cache::get_user_detail();
-            if ($cached_user !== null && isset($cached_user['providers'])) {
-                return $cached_user['providers'];
+            $cachedUser = \local_navigatr\local\cache::get_user_detail();
+            if ($cachedUser !== null && isset($cachedUser['providers'])) {
+                return $cachedUser['providers'];
             }
 
             // Fetch user details from API (this includes providers).
             $client = new \local_navigatr\local\api_client();
-            $api_path = "/user_detail/0";
-            $response = $client->get($api_path);
+            $apiPath = "/user_detail/0";
+            $response = $client->get($apiPath);
 
             if ($response->ok && is_array($response->body) && isset($response->body['providers'])) {
                 // Cache the entire user detail response.

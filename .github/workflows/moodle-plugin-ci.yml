@@ -38,7 +38,7 @@ jobs:
             database: pgsql
           # Latest stable (Moodle 4.5)
           - php: '8.3'
-            moodle-branch: 'MOODLE_45_STABLE'
+            moodle-branch: 'MOODLE_405_STABLE'
             database: pgsql
 
     steps:

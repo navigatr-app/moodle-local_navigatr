@@ -35,7 +35,7 @@ class badge_issuance_success extends \core\event\base {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
         $this->data['objecttable'] = 'local_navigatr_audit';
-        $this->data['objectid'] = 0; // Set objectid when objecttable is defined
+        $this->data['objectid'] = 0; // Set objectid when objecttable is defined.
     }
 
     /**
@@ -81,7 +81,7 @@ class badge_issuance_success extends \core\event\base {
             'local_navigatr',
             'badge issued',
             '',
-            "Badge {$this->other['badge_id']} issued to user {$this->userid}"
+            "Badge {$this->other['badge_id']} issued to user {$this->userid}",
         ];
     }
 }

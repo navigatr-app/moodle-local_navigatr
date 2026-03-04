@@ -35,7 +35,7 @@ use local_navigatr\form\admin_settings_form;
 final class admin_settings_form_test extends advanced_testcase {
     /**
      * Test form class structure
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_class_structure(): void {
         $this->assertTrue(class_exists(admin_settings_form::class));
@@ -45,7 +45,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form definition method
-          * @covers \local_navigatr\form\admin_settings_form::definition
+     * @covers \local_navigatr\form\admin_settings_form::definition
      */
     public function test_definition_method(): void {
         $this->resetAfterTest();
@@ -61,7 +61,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form validation method
-          * @covers \local_navigatr\form\admin_settings_form::validation
+     * @covers \local_navigatr\form\admin_settings_form::validation
      */
     public function test_validation_method(): void {
         $this->resetAfterTest();
@@ -77,7 +77,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form element creation
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_elements(): void {
         $this->resetAfterTest();
@@ -90,7 +90,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test username field
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_username_field(): void {
         $this->resetAfterTest();
@@ -103,7 +103,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test password field
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_password_field(): void {
         $this->resetAfterTest();
@@ -116,7 +116,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test timeout field
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_timeout_field(): void {
         $this->resetAfterTest();
@@ -129,7 +129,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form definition method exists
-          * @covers \local_navigatr\form\admin_settings_form::definition
+     * @covers \local_navigatr\form\admin_settings_form::definition
      */
     public function test_form_definition(): void {
         $this->resetAfterTest();
@@ -142,7 +142,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test environment field
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_environment_field(): void {
         $this->resetAfterTest();
@@ -155,7 +155,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test test connection button
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_test_connection_button(): void {
         $this->resetAfterTest();
@@ -168,7 +168,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form validation rules
-          * @covers \local_navigatr\form\admin_settings_form::validation
+     * @covers \local_navigatr\form\admin_settings_form::validation
      */
     public function test_validation_rules(): void {
         $this->resetAfterTest();
@@ -181,7 +181,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form submission handling
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_submission(): void {
         $this->resetAfterTest();
@@ -194,7 +194,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form cancellation
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_cancellation(): void {
         $this->resetAfterTest();
@@ -207,7 +207,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form data processing
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_data_processing(): void {
         $this->resetAfterTest();
@@ -220,7 +220,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form error handling
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_error_handling(): void {
         $this->resetAfterTest();
@@ -233,7 +233,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form security
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_security(): void {
         $this->resetAfterTest();
@@ -246,7 +246,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form accessibility
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_accessibility(): void {
         $this->resetAfterTest();
@@ -259,7 +259,7 @@ final class admin_settings_form_test extends advanced_testcase {
 
     /**
      * Test form internationalization
-          * @covers \local_navigatr\form\admin_settings_form
+     * @covers \local_navigatr\form\admin_settings_form
      */
     public function test_form_internationalization(): void {
         $this->resetAfterTest();

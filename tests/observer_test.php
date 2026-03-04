@@ -24,8 +24,6 @@
 
 namespace local_navigatr;
 
-defined('MOODLE_INTERNAL') || die();
-
 use advanced_testcase;
 
 /**
@@ -34,7 +32,7 @@ use advanced_testcase;
  * @package    local_navigatr
  * @copyright  2025 Navigatr
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
-  * @covers \local_navigatr\observer
+ * @covers \local_navigatr\observer
  */
 final class observer_test extends advanced_testcase {
     /**
@@ -47,7 +45,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test course completion observer method
-          * @covers \local_navigatr\observer::course_completed
+     * @covers \local_navigatr\observer::course_completed
      */
     public function test_course_completed_method(): void {
         $this->resetAfterTest();
@@ -62,7 +60,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer method signature
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_method_signature(): void {
         $this->resetAfterTest();
@@ -80,7 +78,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer event handling
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_event_handling(): void {
         $this->resetAfterTest();
@@ -91,7 +89,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer error handling
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_error_handling(): void {
         $this->resetAfterTest();
@@ -102,7 +100,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer task scheduling
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_task_scheduling(): void {
         $this->resetAfterTest();
@@ -113,7 +111,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer database operations
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_database_operations(): void {
         $this->resetAfterTest();
@@ -124,7 +122,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer API integration
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_api_integration(): void {
         $this->resetAfterTest();
@@ -135,7 +133,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer logging
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_logging(): void {
         $this->resetAfterTest();
@@ -146,7 +144,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer performance
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_performance(): void {
         $this->resetAfterTest();
@@ -157,7 +155,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer concurrency
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_concurrency(): void {
         $this->resetAfterTest();
@@ -168,7 +166,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer cleanup
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_cleanup(): void {
         $this->resetAfterTest();
@@ -179,7 +177,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer monitoring
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_monitoring(): void {
         $this->resetAfterTest();
@@ -190,7 +188,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer debugging
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_debugging(): void {
         $this->resetAfterTest();
@@ -201,7 +199,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer configuration
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_configuration(): void {
         $this->resetAfterTest();
@@ -212,7 +210,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer validation
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_validation(): void {
         $this->resetAfterTest();
@@ -223,7 +221,7 @@ final class observer_test extends advanced_testcase {
 
     /**
      * Test observer security
-          * @covers \local_navigatr\observer
+     * @covers \local_navigatr\observer
      */
     public function test_observer_security(): void {
         $this->resetAfterTest();

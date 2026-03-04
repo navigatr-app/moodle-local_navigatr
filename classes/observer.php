@@ -42,7 +42,7 @@ class observer {
         // Check if there's a mapping for this course.
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
         if (!$mapping) {
-            return; // No badge mapping for this course
+            return; // No badge mapping for this course.
         }
 
         // Enqueue badge issuance task.
@@ -110,13 +110,13 @@ class observer {
             $coursexml = $backupdir . '/course/course.xml';
 
             if (!file_exists($coursexml)) {
-                continue; // Try next directory
+                continue; // Try next directory.
             }
 
             // Load and parse the course XML.
             $xml = simplexml_load_file($coursexml);
             if ($xml === false) {
-                continue; // Try next directory
+                continue; // Try next directory.
             }
 
             // Find the navigatr plugin data.
@@ -152,7 +152,7 @@ class observer {
         if (isset($navigatrdata->mappings->mapping)) {
             foreach ($navigatrdata->mappings->mapping as $mapping) {
                 $record = new \stdClass();
-                $record->courseid = $courseid; // Use the NEW course ID
+                $record->courseid = $courseid; // Use the NEW course ID.
                 $record->provider_id = (int)$mapping->provider_id;
                 $record->badge_id = (int)$mapping->badge_id;
                 $record->badge_name = (string)$mapping->badge_name;
