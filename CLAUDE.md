@@ -140,6 +140,31 @@ tests/
 - **Forms:** Extend `\moodleform`, defined in `definition()`, validated in `validation()`
 - **Tests:** Extend `advanced_testcase`, call `$this->resetAfterTest()` for any test that modifies DB or config
 
+### PHPCS Rules (moodle-plugin-ci with `--max-warnings 0`)
+
+**Variable naming — `moodle.NamingConventions.ValidVariableName.VariableNameLowerCase`:**
+- Variables must NOT contain underscores — actual CI error: `Variable "foo_bar" must not contain underscores.`
+- lowerCamelCase is **correct** (`$existingMapping`, `$providerName`, `$badgeResponse`)
+- snake_case is **WRONG** (`$existing_mapping`) — do NOT use underscores in local variables or parameters
+- This applies to ALL local variables and function parameters across the entire codebase
+
+**MOODLE_INTERNAL guard — two opposing rules:**
+- `MoodleInternalGlobalState` (ERROR): Fires when a file has `require_once` (or other global state) at file scope **without** a `defined('MOODLE_INTERNAL') || die();` guard → must **add** the guard
+- `MoodleInternalNotNeeded` (WARNING): Fires when a file has the guard but has **no** file-scope side effects → must **remove** the guard
+- Files that only define functions/classes with no `require_once` at file scope: **do NOT need** MOODLE_INTERNAL
+- Files with `require_once` at file scope: **must have** MOODLE_INTERNAL guard
+
+**MOODLE_INTERNAL placement in namespaced files:**
+```php
+namespace local_navigatr\form;  // namespace first
+
+defined('MOODLE_INTERNAL') || die();  // then guard
+
+require_once($CFG->libdir . '/formslib.php');  // then require_once
+```
+
+**Inline comments:** Must end with a period (`.`)
+
 ---
 
 ## Testing
