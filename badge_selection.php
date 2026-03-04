@@ -29,8 +29,8 @@ require_once($CFG->dirroot . '/local/navigatr/classes/form/badge_selection_form.
 $courseid = required_param('id', PARAM_INT);
 
 // Get provider ID from URL parameter or form data.
-$providerId = optional_param('provider_id', 0, PARAM_INT);
-if (empty($providerId)) {
+$provider_id = optional_param('provider_id', 0, PARAM_INT);
+if (empty($provider_id)) {
     throw new \moodle_exception('missingparam', 'error', '', 'provider_id');
 }
 
@@ -51,18 +51,18 @@ try {
     $response = $client->get('/user_detail/0');
     if ($response->ok && isset($response->body['providers'])) {
         foreach ($response->body['providers'] as $provider) {
-            if ($provider['id'] == $providerId) {
-                $providerName = $provider['name'];
+            if ($provider['id'] == $provider_id) {
+                $provider_name = $provider['name'];
                 break;
             }
         }
     }
 } catch (Exception $e) {
-    $providerName = get_string('unknown_provider', 'local_navigatr');
+    $provider_name = get_string('unknown_provider', 'local_navigatr');
 }
 
 // Set up page.
-$PAGE->set_url('/local/navigatr/badge_selection.php', ['id' => $courseid, 'provider_id' => $providerId]);
+$PAGE->set_url('/local/navigatr/badge_selection.php', ['id' => $courseid, 'provider_id' => $provider_id]);
 $PAGE->set_context($context);
 $PAGE->set_title(get_string('select_badge', 'local_navigatr'));
 $PAGE->set_heading(get_string('select_badge', 'local_navigatr'));
@@ -70,8 +70,8 @@ $PAGE->set_heading(get_string('select_badge', 'local_navigatr'));
 // Create form.
 $form = new \local_navigatr\form\badge_selection_form(null, [
     'courseid' => $courseid,
-    'provider_id' => $providerId,
-    'provider_name' => $providerName ?? get_string('unknown_provider', 'local_navigatr'),
+    'provider_id' => $provider_id,
+    'provider_name' => $provider_name ?? get_string('unknown_provider', 'local_navigatr'),
 ]);
 
 // Handle form submission.
@@ -91,10 +91,10 @@ if ($form->is_cancelled()) {
     // Fetch badge metadata from API.
     try {
         $client = new \local_navigatr\local\api_client();
-        $badgeResponse = $client->get("/badge/{$data->badge_id}");
-        if ($badgeResponse->ok && isset($badgeResponse->body)) {
-            $mapping->badge_name = $badgeResponse->body['name'] ?? null;
-            $mapping->badge_image_url = $badgeResponse->body['image_url'] ?? null;
+        $badge_response = $client->get("/badge/{$data->badge_id}");
+        if ($badge_response->ok && isset($badge_response->body)) {
+            $mapping->badge_name = $badge_response->body['name'] ?? null;
+            $mapping->badge_image_url = $badge_response->body['image_url'] ?? null;
         }
     } catch (Exception $e) {
         // If API call fails, leave fields as null - will be populated later.

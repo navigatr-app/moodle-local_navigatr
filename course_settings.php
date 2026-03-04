@@ -57,53 +57,53 @@ if (optional_param('action', '', PARAM_ALPHA) === 'removemapping') {
 }
 
 // Check for existing mapping.
-$existingMapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
-$existingProvider = null;
-$existingBadge = null;
+$existing_mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
+$existing_provider = null;
+$existing_badge = null;
 
-if ($existingMapping) {
+if ($existing_mapping) {
     try {
         // Fetch provider details.
         $client = new \local_navigatr\local\api_client();
-        $providerResponse = $client->get("/provider/{$existingMapping->provider_id}");
-        if ($providerResponse->ok) {
-            $existingProvider = $providerResponse->body;
+        $provider_response = $client->get("/provider/{$existing_mapping->provider_id}");
+        if ($provider_response->ok) {
+            $existing_provider = $provider_response->body;
         }
 
         // Fetch badge details.
-        $badgeResponse = $client->get("/badge/{$existingMapping->badge_id}");
-        if ($badgeResponse->ok) {
-            $existingBadge = $badgeResponse->body;
+        $badge_response = $client->get("/badge/{$existing_mapping->badge_id}");
+        if ($badge_response->ok) {
+            $existing_badge = $badge_response->body;
 
             // Update cached badge metadata if it has changed.
-            $needsUpdate = false;
-            if ($existingMapping->badge_name !== ($existingBadge['name'] ?? null)) {
-                $existingMapping->badge_name = $existingBadge['name'] ?? null;
-                $needsUpdate = true;
+            $needs_update = false;
+            if ($existing_mapping->badge_name !== ($existing_badge['name'] ?? null)) {
+                $existing_mapping->badge_name = $existing_badge['name'] ?? null;
+                $needs_update = true;
             }
-            if ($existingMapping->badge_image_url !== ($existingBadge['image_url'] ?? null)) {
-                $existingMapping->badge_image_url = $existingBadge['image_url'] ?? null;
-                $needsUpdate = true;
+            if ($existing_mapping->badge_image_url !== ($existing_badge['image_url'] ?? null)) {
+                $existing_mapping->badge_image_url = $existing_badge['image_url'] ?? null;
+                $needs_update = true;
             }
 
-            if ($needsUpdate) {
-                $existingMapping->timemodified = time();
-                $DB->update_record('local_navigatr_map', $existingMapping);
+            if ($needs_update) {
+                $existing_mapping->timemodified = time();
+                $DB->update_record('local_navigatr_map', $existing_mapping);
             }
         } else {
             // API call failed, use cached data.
-            $existingBadge = [
-                'name' => $existingMapping->badge_name ?? 'Unknown Badge',
-                'image_url' => $existingMapping->badge_image_url ?? null,
+            $existing_badge = [
+                'name' => $existing_mapping->badge_name ?? 'Unknown Badge',
+                'image_url' => $existing_mapping->badge_image_url ?? null,
                 'description' => null,
                 'url' => null,
             ];
         }
     } catch (Exception $e) {
         // If API calls fail, use cached data.
-        $existingBadge = [
-            'name' => $existingMapping->badge_name ?? 'Unknown Badge',
-            'image_url' => $existingMapping->badge_image_url ?? null,
+        $existing_badge = [
+            'name' => $existing_mapping->badge_name ?? 'Unknown Badge',
+            'image_url' => $existing_mapping->badge_image_url ?? null,
             'description' => null,
             'url' => null,
         ];
@@ -131,21 +131,21 @@ if ($data = $form->get_data()) {
 echo $OUTPUT->header();
 
 // Display help documentation link.
-$helpUrl = get_string('help_center_url', 'local_navigatr');
-$helpLink = \html_writer::link($helpUrl, get_string('help_center_link', 'local_navigatr'), [
+$help_url = get_string('help_center_url', 'local_navigatr');
+$help_link = \html_writer::link($help_url, get_string('help_center_link', 'local_navigatr'), [
     'target' => '_blank',
     'class' => 'btn btn-outline-info btn-sm',
 ]);
-$helpText = get_string('help_badge_config', 'local_navigatr') . ' ' . $helpLink;
-echo \core\notification::info($helpText);
+$help_text = get_string('help_badge_config', 'local_navigatr') . ' ' . $help_link;
+echo \core\notification::info($help_text);
 
 // Check if providers are available.
 $providers = [];
 try {
     $client = new \local_navigatr\local\api_client();
-    $userResponse = $client->get("/user_detail/0");
-    if ($userResponse->ok && isset($userResponse->body['providers'])) {
-        $providers = $userResponse->body['providers'];
+    $user_response = $client->get("/user_detail/0");
+    if ($user_response->ok && isset($user_response->body['providers'])) {
+        $providers = $user_response->body['providers'];
     }
 } catch (Exception $e) {
     // API call failed, providers will be empty.
@@ -161,9 +161,9 @@ if (empty($providers)) {
 
 // Display existing mapping if it exists using template.
 echo \local_navigatr\output\course_settings_output::render_current_mapping(
-    $existingMapping,
-    $existingProvider,
-    $existingBadge,
+    $existing_mapping,
+    $existing_provider,
+    $existing_badge,
     $courseid
 );
 

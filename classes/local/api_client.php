@@ -24,6 +24,8 @@
 
 namespace local_navigatr\local;
 
+defined('MOODLE_INTERNAL') || die();
+
 // Include Moodle's cURL library.
 require_once($CFG->libdir . '/filelib.php');
 
@@ -100,9 +102,9 @@ class api_client {
         $curl = new \curl();
 
         // Prepare JSON data.
-        $jsonData = null;
+        $json_data = null;
         if ($data !== null) {
-            $jsonData = json_encode($data);
+            $json_data = json_encode($data);
         }
 
         // Get PAT and validate it is configured.
@@ -117,7 +119,7 @@ class api_client {
         }
 
         // Build headers.
-        $httpHeaders = [
+        $http_headers = [
             'Accept: application/json',
             'Content-Type: application/json',
             'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
@@ -126,7 +128,7 @@ class api_client {
 
         // Add any custom headers.
         foreach ($headers as $header) {
-            $httpHeaders[] = $header;
+            $http_headers[] = $header;
         }
 
         // Set cURL options.
@@ -136,14 +138,14 @@ class api_client {
             'CURLOPT_FOLLOWLOCATION' => true,
             'CURLOPT_SSL_VERIFYPEER' => true,
             'CURLOPT_SSL_VERIFYHOST' => 2,
-            'CURLOPT_HTTPHEADER' => $httpHeaders,
+            'CURLOPT_HTTPHEADER' => $http_headers,
         ];
 
         $response = false;
         if ($method === 'POST') {
-            $response = $curl->post($url, $jsonData, $curloptions);
+            $response = $curl->post($url, $json_data, $curloptions);
         } else if ($method === 'PUT') {
-            $response = $curl->put($url, $jsonData, $curloptions);
+            $response = $curl->put($url, $json_data, $curloptions);
         } else if ($method === 'GET') {
             $response = $curl->get($url, null, $curloptions);
         } else {
@@ -250,7 +252,7 @@ class api_client {
      */
     public static function test_connection($pat, $environment = 'production') {
         // Temporarily set environment for this test.
-        $originalEnv = get_config('local_navigatr', 'env');
+        $original_env = get_config('local_navigatr', 'env');
         set_config('env', $environment, 'local_navigatr');
 
         // Create API client (will use the environment we just set).
@@ -260,8 +262,8 @@ class api_client {
         $response = $client->verify_pat($pat);
 
         // Restore original environment.
-        if ($originalEnv !== false) {
-            set_config('env', $originalEnv, 'local_navigatr');
+        if ($original_env !== false) {
+            set_config('env', $original_env, 'local_navigatr');
         }
 
         // Trigger event for connection test.

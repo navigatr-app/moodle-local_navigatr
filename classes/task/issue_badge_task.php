@@ -24,6 +24,8 @@
 
 namespace local_navigatr\task;
 
+defined('MOODLE_INTERNAL') || die();
+
 require_once(__DIR__ . '/../../classes/local/api_client.php');
 
 /**
@@ -80,14 +82,14 @@ class issue_badge_task extends \core\task\adhoc_task {
 
             // Get course name for evidence text.
             $course = $DB->get_record('course', ['id' => $courseid], 'fullname');
-            $courseName = $course ? $course->fullname : get_string('unknown_course', 'local_navigatr');
+            $course_name = $course ? $course->fullname : get_string('unknown_course', 'local_navigatr');
 
             // Get course completion score if available.
             $score = $this->get_course_score($userid, $courseid);
 
             // Prepare badge issuance payload.
             $payload = [
-                'evidence_text' => "Recipient completed course {$courseName}",
+                'evidence_text' => "Recipient completed course {$course_name}",
                 'provider_id' => $mapping->provider_id,
                 'recipient_email' => $user->email,
                 'recipient_firstname' => $user->firstname,
