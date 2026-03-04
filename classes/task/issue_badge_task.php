@@ -26,7 +26,6 @@ namespace local_navigatr\task;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . '/../../classes/local/token_manager.php');
 require_once(__DIR__ . '/../../classes/local/api_client.php');
 
 /**
@@ -70,10 +69,10 @@ class issue_badge_task extends \core\task\adhoc_task {
         $dedupekey = "{$userid}:{$courseid}:{$mapping->badge_id}";
         $existing = $DB->get_record('local_navigatr_audit', [
             'dedupe_key' => $dedupekey,
-            'status' => 'success'
+            'status' => 'success',
         ]);
         if ($existing) {
-            return; // Already successfully issued
+            return; // Already successfully issued.
         }
 
         try {
@@ -83,18 +82,18 @@ class issue_badge_task extends \core\task\adhoc_task {
 
             // Get course name for evidence text.
             $course = $DB->get_record('course', ['id' => $courseid], 'fullname');
-            $course_name = $course ? $course->fullname : get_string('unknown_course', 'local_navigatr');
+            $coursename = $course ? $course->fullname : get_string('unknown_course', 'local_navigatr');
 
             // Get course completion score if available.
             $score = $this->get_course_score($userid, $courseid);
 
             // Prepare badge issuance payload.
             $payload = [
-                'evidence_text' => "Recipient completed course {$course_name}",
+                'evidence_text' => "Recipient completed course {$coursename}",
                 'provider_id' => $mapping->provider_id,
                 'recipient_email' => $user->email,
                 'recipient_firstname' => $user->firstname,
-                'recipient_lastname' => $user->lastname
+                'recipient_lastname' => $user->lastname,
             ];
 
             // Add score to payload only if available.
@@ -104,13 +103,6 @@ class issue_badge_task extends \core\task\adhoc_task {
 
             // Issue badge.
             $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
-
-            // Handle 401 - try re-authentication once.
-            if ($response->code === 401) {
-                \local_navigatr\local\token_manager::reauth();
-
-                $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
-            }
 
             // Write audit record.
             $this->write_audit(
@@ -181,7 +173,7 @@ class issue_badge_task extends \core\task\adhoc_task {
         // Try course completion criteria.
         $completion = $DB->get_record('course_completions', [
             'userid' => $userid,
-            'course' => $courseid
+            'course' => $courseid,
         ]);
 
         if ($completion && $completion->timecompleted) {
@@ -256,7 +248,7 @@ class issue_badge_task extends \core\task\adhoc_task {
             $event = \local_navigatr\event\badge_issuance_success::create([
                 'context' => $context,
                 'userid' => $userid,
-                'other' => $other
+                'other' => $other,
             ]);
         } else {
             // Add error details for failed attempts.
@@ -264,7 +256,7 @@ class issue_badge_task extends \core\task\adhoc_task {
             $event = \local_navigatr\event\badge_issuance_failed::create([
                 'context' => $context,
                 'userid' => $userid,
-                'other' => $other
+                'other' => $other,
             ]);
         }
 

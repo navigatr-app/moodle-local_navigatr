@@ -24,8 +24,6 @@
 
 namespace local_navigatr\privacy;
 
-defined('MOODLE_INTERNAL') || die();
-
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\contextlist;
 use core_privacy\local\request\approved_contextlist;
@@ -84,7 +82,7 @@ class provider implements
 
         $contextlist->add_from_sql($sql, [
             'contextlevel' => CONTEXT_COURSE,
-            'userid' => $userid
+            'userid' => $userid,
         ]);
 
         return $contextlist;
@@ -130,12 +128,12 @@ class provider implements
             // Get audit records for this user and course.
             $auditrecords = $DB->get_records('local_navigatr_audit', [
                 'userid' => $userid,
-                'courseid' => $courseid
+                'courseid' => $courseid,
             ]);
 
             if (!empty($auditrecords)) {
                 $data = (object) [
-                    'audit_records' => array_values($auditrecords)
+                    'audit_records' => array_values($auditrecords),
                 ];
 
                 \core_privacy\local\request\writer::with_context($context)
@@ -165,7 +163,7 @@ class provider implements
             // Delete audit records for this user and course.
             $DB->delete_records('local_navigatr_audit', [
                 'userid' => $userid,
-                'courseid' => $courseid
+                'courseid' => $courseid,
             ]);
         }
     }

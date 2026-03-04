@@ -24,8 +24,6 @@
 
 namespace local_navigatr\output;
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Course settings output class.
  */
@@ -33,51 +31,51 @@ class course_settings_output {
     /**
      * Render the current mapping display.
      *
-     * @param object $existing_mapping The existing mapping data
-     * @param object $existing_provider The provider data
-     * @param object $existing_badge The badge data
+     * @param object $existingmapping The existing mapping data
+     * @param object $existingprovider The provider data
+     * @param object $existingbadge The badge data
      * @param int $courseid The course ID
      * @return string Rendered HTML
      */
-    public static function render_current_mapping($existing_mapping, $existing_provider, $existing_badge, $courseid) {
+    public static function render_current_mapping($existingmapping, $existingprovider, $existingbadge, $courseid) {
         global $OUTPUT;
 
-        if (!$existing_mapping || !$existing_provider || !$existing_badge) {
+        if (!$existingmapping || !$existingprovider || !$existingbadge) {
             return '';
         }
 
         // Additional safety check.
-        if (!is_object($existing_mapping) || !isset($existing_mapping->provider_id)) {
+        if (!is_object($existingmapping) || !isset($existingmapping->provider_id)) {
             return '';
         }
 
         // Build URLs first to avoid object access issues.
-        $change_url = new \moodle_url('/local/navigatr/badge_selection.php', [
+        $changeurl = new \moodle_url('/local/navigatr/badge_selection.php', [
             'id' => $courseid,
-            'provider_id' => $existing_mapping->provider_id
+            'provider_id' => $existingmapping->provider_id,
         ]);
 
-        $remove_url = new \moodle_url('/local/navigatr/course_settings.php', [
+        $removeurl = new \moodle_url('/local/navigatr/course_settings.php', [
             'id' => $courseid,
             'action' => 'removemapping',
-            'sesskey' => sesskey()
+            'sesskey' => sesskey(),
         ]);
 
-        $template_data = [
+        $templatedata = [
             'existing_mapping' => true,
-            'provider_name' => $existing_provider['name'],
-            'badge_name' => $existing_badge['name'],
-            'badge_description' => isset($existing_badge['description']) ? $existing_badge['description'] : '',
-            'badge_image_url' => isset($existing_badge['image_url']) ? $existing_badge['image_url'] : '',
-            'badge_url' => isset($existing_badge['url']) ? $existing_badge['url'] : '',
-            'change_url' => $change_url->out(),
-            'remove_url' => $remove_url->out()
+            'provider_name' => $existingprovider['name'],
+            'badge_name' => $existingbadge['name'],
+            'badge_description' => isset($existingbadge['description']) ? $existingbadge['description'] : '',
+            'badge_image_url' => isset($existingbadge['image_url']) ? $existingbadge['image_url'] : '',
+            'badge_url' => isset($existingbadge['url']) ? $existingbadge['url'] : '',
+            'change_url' => $changeurl->out(),
+            'remove_url' => $removeurl->out(),
         ];
 
         // Ensure URLs are properly encoded.
-        $template_data['change_url'] = $change_url->out(false); // False = don't HTML encode
-        $template_data['remove_url'] = $remove_url->out(false);
+        $templatedata['change_url'] = $changeurl->out(false); // False = don't HTML encode.
+        $templatedata['remove_url'] = $removeurl->out(false);
 
-        return $OUTPUT->render_from_template('local_navigatr/course/course_settings', $template_data);
+        return $OUTPUT->render_from_template('local_navigatr/course/course_settings', $templatedata);
     }
 }

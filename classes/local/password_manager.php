@@ -40,7 +40,7 @@ class password_manager {
         }
 
         // Use OpenSSL encryption with a site-specific key.
-        // Note: We use our own encryption method rather than Moodle's encrypt_user_password().
+        // Note: We use our own encryption method rather than Moodle's encrypt_user_password()
         // as that function is designed for user passwords and may not be suitable for API credentials.
         $key = self::get_encryption_key();
         $iv = openssl_random_pseudo_bytes(16);
@@ -57,16 +57,16 @@ class password_manager {
     /**
      * Decrypt a password from secure storage.
      *
-     * @param string $encrypted_password Encrypted password
+     * @param string $encryptedpassword Encrypted password
      * @return string Plain text password
      */
-    public static function decrypt_password($encrypted_password) {
-        if (empty($encrypted_password)) {
+    public static function decrypt_password($encryptedpassword) {
+        if (empty($encryptedpassword)) {
             return '';
         }
 
         $key = self::get_encryption_key();
-        $data = base64_decode($encrypted_password);
+        $data = base64_decode($encryptedpassword);
 
         if ($data === false || strlen($data) < 16) {
             throw new \moodle_exception('decryption_failed', 'local_navigatr');
@@ -97,19 +97,19 @@ class password_manager {
 
         if (empty($key)) {
             // Generate a new key based on site URL and available secrets.
-            $site_key = $CFG->wwwroot;
+            $sitekey = $CFG->wwwroot;
 
             // Use available password salt properties (different versions have different names).
             if (isset($CFG->passwordsaltmain)) {
-                $site_key .= $CFG->passwordsaltmain;
+                $sitekey .= $CFG->passwordsaltmain;
             } else if (isset($CFG->passwordsalt)) {
-                $site_key .= $CFG->passwordsalt;
+                $sitekey .= $CFG->passwordsalt;
             } else {
                 // Fallback to a combination of site-specific values.
-                $site_key .= $CFG->dataroot . $CFG->dbname;
+                $sitekey .= $CFG->dataroot . $CFG->dbname;
             }
 
-            $key = hash('sha256', $site_key . 'navigatr_plugin_key', true);
+            $key = hash('sha256', $sitekey . 'navigatr_plugin_key', true);
 
             // Store the key for future use.
             set_config('encryption_key', base64_encode($key), 'local_navigatr');
@@ -155,5 +155,42 @@ class password_manager {
      */
     public static function clear_password() {
         unset_config('password', 'local_navigatr');
+    }
+
+    /**
+     * Store personal access token securely.
+     *
+     * @param string $pat Plain text personal access token
+     */
+    public static function store_pat($pat) {
+        if (empty($pat)) {
+            unset_config('personal_access_token', 'local_navigatr');
+            return;
+        }
+
+        $encrypted = self::encrypt_password($pat);
+        set_config('personal_access_token', $encrypted, 'local_navigatr');
+    }
+
+    /**
+     * Retrieve and decrypt personal access token.
+     *
+     * @return string Plain text personal access token
+     */
+    public static function get_pat() {
+        $encrypted = get_config('local_navigatr', 'personal_access_token');
+
+        if (empty($encrypted)) {
+            return '';
+        }
+
+        return self::decrypt_password($encrypted);
+    }
+
+    /**
+     * Clear stored personal access token.
+     */
+    public static function clear_pat() {
+        unset_config('personal_access_token', 'local_navigatr');
     }
 }

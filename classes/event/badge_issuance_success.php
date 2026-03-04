@@ -34,8 +34,6 @@ class badge_issuance_success extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_PARTICIPATING;
-        $this->data['objecttable'] = 'local_navigatr_audit';
-        $this->data['objectid'] = 0; // Set objectid when objecttable is defined
     }
 
     /**
@@ -68,20 +66,5 @@ class badge_issuance_success extends \core\event\base {
      */
     public function get_url() {
         return new \moodle_url('/course/view.php', ['id' => $this->courseid]);
-    }
-
-    /**
-     * Return the legacy event log data.
-     *
-     * @return array
-     */
-    protected function get_legacy_logdata() {
-        return [
-            $this->courseid,
-            'local_navigatr',
-            'badge issued',
-            '',
-            "Badge {$this->other['badge_id']} issued to user {$this->userid}"
-        ];
     }
 }

@@ -25,8 +25,8 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_navigatr';
-$plugin->requires  = 2022112800; // Moodle 4.1
-$plugin->version   = 2025110101; // YYYYMMDDXX
-$plugin->release   = '1.1.1';
+$plugin->requires  = 2022112800; // Moodle 4.1.
+$plugin->version   = 2026030401; // YYYYMMDDXX.
+$plugin->release   = '1.2.0';
 $plugin->maturity  = MATURITY_STABLE;
 $plugin->dependencies = [];

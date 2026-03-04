@@ -40,21 +40,17 @@ $data = data_submitted();
 if ($data && confirm_sesskey()) {
     if (isset($data->removeconnection)) {
         // Handle remove connection.
-        unset_config('username', 'local_navigatr');
-        \local_navigatr\local\password_manager::clear_password();
-        unset_config('access_token', 'local_navigatr');
-        unset_config('access_expires_at', 'local_navigatr');
-        unset_config('refresh_token', 'local_navigatr');
-        unset_config('refresh_expires_at', 'local_navigatr');
-        unset_config('nav_user_id', 'local_navigatr');
+        \local_navigatr\local\password_manager::clear_pat();
         \core\notification::success(get_string('connection_removed', 'local_navigatr'));
     } else if (isset($data->testconnection)) {
         // Handle test connection.
-        $username = $data->username ?? '';
-        $password = $data->password ?? '';
+        $pat = $data->personal_access_token ?? '';
+        if (empty($pat)) {
+            $pat = \local_navigatr\local\password_manager::get_pat();
+        }
         $environment = $data->env ?? 'production';
 
-        $result = \local_navigatr\local\api_client::test_connection($username, $password, $environment);
+        $result = \local_navigatr\local\api_client::test_connection($pat, $environment);
         if ($result->ok) {
             \core\notification::success(get_string('connection_success_simple', 'local_navigatr'));
         } else {
@@ -84,8 +80,7 @@ if ($form->is_cancelled()) {
 if ($data = $form->get_data()) {
     // Form was submitted and validated.
     set_config('env', $data->env, 'local_navigatr');
-    set_config('username', $data->username, 'local_navigatr');
-    \local_navigatr\local\password_manager::store_password($data->password);
+    \local_navigatr\local\password_manager::store_pat($data->personal_access_token);
     set_config('timeout', $data->timeout, 'local_navigatr');
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));
 } else {
@@ -99,30 +94,29 @@ echo $OUTPUT->header();
 echo \core\notification::info(get_string('provider_admin_notice', 'local_navigatr'));
 
 // Display help documentation link.
-$help_url = get_string('help_center_url', 'local_navigatr');
-$help_link = \html_writer::link($help_url, get_string('help_center_link', 'local_navigatr'), [
+$helpurl = get_string('help_center_url', 'local_navigatr');
+$helplink = \html_writer::link($helpurl, get_string('help_center_link', 'local_navigatr'), [
     'target' => '_blank',
-    'class' => 'btn btn-outline-info btn-sm'
+    'class' => 'btn btn-outline-info btn-sm',
 ]);
-$help_text = get_string('help_setup_guide', 'local_navigatr', $help_link);
-echo \core\notification::info($help_text);
+$helptext = get_string('help_setup_guide', 'local_navigatr', $helplink);
+echo \core\notification::info($helptext);
 
-// Check if credentials are configured.
-$current_username = get_config('local_navigatr', 'username');
-$current_password = \local_navigatr\local\password_manager::get_password();
+// Check if a PAT is configured.
+$currentpat = \local_navigatr\local\password_manager::get_pat();
 
-// Display Remove Connection button if credentials are configured.
-if (!empty($current_username) && !empty($current_password)) {
+// Display Remove Connection button if a PAT is configured.
+if (!empty($currentpat)) {
     echo \html_writer::start_div('mb-4');
-    $remove_url = new \moodle_url('/local/navigatr/settings_page.php', [
+    $removeurl = new \moodle_url('/local/navigatr/settings_page.php', [
         'removeconnection' => 1,
-        'sesskey' => sesskey()
+        'sesskey' => sesskey(),
     ]);
-    $remove_button = $OUTPUT->single_button($remove_url, get_string('remove_connection', 'local_navigatr'), 'post', [
+    $removebutton = $OUTPUT->single_button($removeurl, get_string('remove_connection', 'local_navigatr'), 'post', [
         'class' => 'btn-danger',
-        'onclick' => 'return confirm(\'' . get_string('remove_connection_confirm', 'local_navigatr') . '\')'
+        'onclick' => 'return confirm(\'' . get_string('remove_connection_confirm', 'local_navigatr') . '\')',
     ]);
-    echo $remove_button;
+    echo $removebutton;
     echo \html_writer::end_div();
 }
 

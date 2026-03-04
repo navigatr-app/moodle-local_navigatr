@@ -22,8 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Post upgrade hook.
  *
@@ -31,5 +29,20 @@ defined('MOODLE_INTERNAL') || die();
  * @return bool True on success
  */
 function xmldb_local_navigatr_upgrade($oldversion) {
+    if ($oldversion < 2026030401) {
+        // Migrating from username/password authentication to Personal Access Tokens.
+        // Clear all stale authentication config keys from the old auth system.
+        unset_config('username', 'local_navigatr');
+        unset_config('password', 'local_navigatr');
+        unset_config('encryption_key', 'local_navigatr');
+        unset_config('access_token', 'local_navigatr');
+        unset_config('access_expires_at', 'local_navigatr');
+        unset_config('refresh_token', 'local_navigatr');
+        unset_config('refresh_expires_at', 'local_navigatr');
+        unset_config('nav_user_id', 'local_navigatr');
+
+        upgrade_plugin_savepoint(true, 2026030401, 'local', 'navigatr');
+    }
+
     return true;
 }

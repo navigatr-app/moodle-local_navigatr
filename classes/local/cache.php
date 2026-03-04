@@ -58,6 +58,27 @@ class cache {
 
 
     /**
+     * Get providers from cache (extracted from cached user detail).
+     *
+     * @return array|null Providers array or null if not cached
+     */
+    public static function get_providers() {
+        $userdetail = self::get_user_detail();
+        if ($userdetail !== false && isset($userdetail['providers'])) {
+            return $userdetail['providers'];
+        }
+        return null;
+    }
+
+    /**
+     * Clear all plugin caches.
+     */
+    public static function clear_cache() {
+        \cache::make('local_navigatr', 'badges')->purge();
+        \cache::make('local_navigatr', 'user_detail')->purge();
+    }
+
+    /**
      * Get user detail from cache.
      *
      * @return array|null User detail array or null if not cached
