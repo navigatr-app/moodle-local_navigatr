@@ -24,10 +24,6 @@
 
 namespace local_navigatr\task;
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once(__DIR__ . '/../../classes/local/api_client.php');
-
 /**
  * Adhoc task for issuing Navigatr badges.
  */
