@@ -42,8 +42,11 @@ class issue_badge_task extends \core\task\adhoc_task {
         $userid = $data->userid;
         $courseid = $data->courseid;
 
-        // Get mapping for this course (guaranteed to exist as observer already checked).
+        // Get mapping for this course (may have been deleted since the task was queued).
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
+        if (!$mapping) {
+            return; // Mapping was removed after the task was queued; nothing to do.
+        }
 
         // Get user details.
         $user = \core_user::get_user($userid, 'id,email,firstname,lastname', MUST_EXIST);
