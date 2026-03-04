@@ -59,11 +59,11 @@ This plugin integrates Moodle with the Navigatr badging platform, providing auto
 ## Installation
 
 1. You will first need a Navigatr provider account. If you don't have an account, you can sign up for a free trial at [https://navigatr.app/register/plan/launch](https://navigatr.app/register/plan/launch)
-2. Copy the plugin files to `local/navigatr/` in your Moodle installation. The following files and folders are optional and can be omitted:
+1. Copy the plugin files to `local/navigatr/` in your Moodle installation. The following files and folders are optional and can be omitted:
    - `/.github` (CI/CD configuration)
    - `/.gitignore` (Git configuration)
-3. Visit the Moodle admin notifications page to install the plugin
-4. Configure Navigatr credentials in Site Administration → Plugins → Local plugins → Navigatr
+1. Visit the Moodle admin notifications page to install the plugin
+1. Configure Navigatr credentials in Site Administration → Plugins → Local plugins → Navigatr
 
 ## Configuration
 
@@ -87,19 +87,19 @@ You can remove connection by clicking the "Remove Connection" button that appear
 For each course where you want to issue badges on completion:
 
 1. Go to the course
-2. Navigate to **Course settings → Navigatr Badge**
+1. Navigate to **Course settings → Navigatr Badge**
 
 ![Course Settings Menu](images/course-settings-menu.png)
 
-3. Select a provider from the dropdown and click "Continue to Select Badge"
+1. Select a provider from the dropdown and click "Continue to Select Badge"
 
 ![Provider Selection](images/provider-selection.png)
 
-4. Choose a badge from the provider's available badges and click "Save Mapping"
+1. Choose a badge from the provider's available badges and click "Save Mapping"
 
 ![Badge Selection](images/badge-selection.png)
 
-5. The badge mapping is now configured. You can:
+1. The badge mapping is now configured. You can:
    - **View Badge**: Click the "View Badge" link (appears inline with the badge name) to open the badge in Navigatr
    - **Change Badge**: Click the "Change Badge" button to select a different badge
    - **Remove Badge**: Click the "Remove Badge" button to remove the mapping
@@ -128,10 +128,10 @@ The plugin integrates with the following Navigatr API endpoints:
 
 ## Environments
 
-| Environment | Base URL |
-|-------------|----------|
-| Production | [https://api.navigatr.app/v1/](https://api.navigatr.app/v1/) |
-| Staging | [https://stagapi.navigatr.app/v1/](https://stagapi.navigatr.app/v1/) |
+| Environment | Base URL                                                              |
+|-------------|-----------------------------------------------------------------------|
+| Production  | [https://api.navigatr.app/v1/](https://api.navigatr.app/v1/)          |
+| Staging     | [https://stagapi.navigatr.app/v1/](https://stagapi.navigatr.app/v1/)  |
 
 ## Database Schema
 
@@ -225,23 +225,23 @@ The plugin implements Moodle's privacy API:
    - Ensure Navigatr API is accessible from your Moodle server
    - Check the detailed error message for specific guidance
 
-2. **No Providers Available**
+1. **No Providers Available**
    - Run "Test Connection" in admin settings
    - Verify your Navigatr account has access to providers
    - Ensure your Navigatr user is a provider admin
 
-3. **Badge Issuance Fails**
+1. **Badge Issuance Fails**
    - Check audit records in database for error details
    - Verify user has required fields (email, firstname, lastname)
    - Check Navigatr API status
    - Review error messages for specific troubleshooting steps
 
-4. **Help and Support**
+1. **Help and Support**
    - Use the help documentation links provided in the plugin interface
    - Visit the Navigatr Help Centre for detailed guides
    - Check form field help buttons for contextual guidance
 
-5. **Observer Not Registered (Badge Issuance Not Triggered)**
+1. **Observer Not Registered (Badge Issuance Not Triggered)**
    - Run Moodle upgrade to force observer registration:
 
      ```bash
@@ -250,7 +250,7 @@ The plugin implements Moodle's privacy API:
 
    - Or reinstall the plugin to ensure proper observer registration
 
-5. **API Outages and Retry Mechanism**
+1. **API Outages and Retry Mechanism**
    - **Automatic Retries**: Failed badge issuance attempts are automatically retried by Moodle's task system
    - **Retry Schedule**: Tasks retry at increasing intervals (1min, 5min, 15min, 1hr, 6hr, 24hr)
    - **No Data Loss**: All course completions during API outages are queued and will be processed when API is restored
@@ -262,8 +262,8 @@ The plugin implements Moodle's privacy API:
 The plugin uses Moodle's built-in debug system for logging. To see detailed API interactions:
 
 1. **Enable Moodle Debugging**: Go to **Site Administration → Development → Debugging**
-2. **Set Debug Level**: Choose "DEVELOPER" for detailed logging or "NORMAL" for error logging
-3. **View Logs**: Check **Site Administration → Reports → Logs** for debug information
+1. **Set Debug Level**: Choose "DEVELOPER" for detailed logging or "NORMAL" for error logging
+1. **View Logs**: Check **Site Administration → Reports → Logs** for debug information
 
 The plugin logs important events using Moodle's event system, which are visible in the standard Moodle logs.
 
@@ -285,14 +285,14 @@ The plugin logs important events using Moodle's event system, which are visible 
    - Click "Save Changes" to save settings
    - Verify providers are loaded
 
-2. **Course Mapping Test**
+1. **Course Mapping Test**
    - Create a test course
    - Navigate to Course settings → Navigatr Badge
    - Select a provider using the "Continue to Select Badge" button
    - Choose a badge and click "Save Mapping"
    - Verify mapping is saved and buttons appear correctly
 
-3. **Badge Issuance Test**
+1. **Badge Issuance Test**
    - Enrol a test user in the course
    - Mark the course as complete
    - Check audit records for successful issuance
@@ -351,21 +351,21 @@ We welcome contributions to improve this plugin! Here's how you can help:
 If you encounter any problems with this plugin:
 
 1. **Create a GitHub Issue**: Please create a detailed issue on our GitHub repository
-2. **Include Information**:
+1. **Include Information**:
    - Moodle version
    - Plugin version
    - Error messages from logs
    - Steps to reproduce the issue
-3. **Check Existing Issues**: Search existing issues before creating a new one
+1. **Check Existing Issues**: Search existing issues before creating a new one
 
 ### Contributing Code
 
 If you'd like to contribute code improvements:
 
 1. **Fork the Repository**: Create your own fork of the repository
-2. **Create a Pull Request**: Submit your changes via a pull request
-3. **Code Review**: All pull requests will be reviewed by the Navigatr team
-4. **Merge Process**: Approved contributions will be merged by the Navigatr team
+1. **Create a Pull Request**: Submit your changes via a pull request
+1. **Code Review**: All pull requests will be reviewed by the Navigatr team
+1. **Merge Process**: Approved contributions will be merged by the Navigatr team
 
 ### Development Guidelines
 
