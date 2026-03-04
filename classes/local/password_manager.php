@@ -156,4 +156,41 @@ class password_manager {
     public static function clear_password() {
         unset_config('password', 'local_navigatr');
     }
+
+    /**
+     * Store personal access token securely.
+     *
+     * @param string $pat Plain text personal access token
+     */
+    public static function store_pat($pat) {
+        if (empty($pat)) {
+            unset_config('personal_access_token', 'local_navigatr');
+            return;
+        }
+
+        $encrypted = self::encrypt_password($pat);
+        set_config('personal_access_token', $encrypted, 'local_navigatr');
+    }
+
+    /**
+     * Retrieve and decrypt personal access token.
+     *
+     * @return string Plain text personal access token
+     */
+    public static function get_pat() {
+        $encrypted = get_config('local_navigatr', 'personal_access_token');
+
+        if (empty($encrypted)) {
+            return '';
+        }
+
+        return self::decrypt_password($encrypted);
+    }
+
+    /**
+     * Clear stored personal access token.
+     */
+    public static function clear_pat() {
+        unset_config('personal_access_token', 'local_navigatr');
+    }
 }

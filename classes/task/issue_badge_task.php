@@ -26,7 +26,6 @@ namespace local_navigatr\task;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once(__DIR__ . '/../../classes/local/token_manager.php');
 require_once(__DIR__ . '/../../classes/local/api_client.php');
 
 /**
@@ -104,13 +103,6 @@ class issue_badge_task extends \core\task\adhoc_task {
 
             // Issue badge.
             $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
-
-            // Handle 401 - try re-authentication once.
-            if ($response->code === 401) {
-                \local_navigatr\local\token_manager::reauth();
-
-                $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
-            }
 
             // Write audit record.
             $this->write_audit(

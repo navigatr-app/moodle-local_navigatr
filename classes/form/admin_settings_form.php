@@ -38,23 +38,28 @@ class admin_settings_form extends \moodleform {
     public function definition() {
         $mform = $this->_form;
 
-        // Credentials.
-        $mform->addElement('text', 'username', get_string('username', 'local_navigatr'));
-        $mform->setType('username', PARAM_TEXT);
-        $mform->addHelpButton('username', 'username', 'local_navigatr');
-        $mform->addRule('username', get_string('required'), 'required', null, 'client');
+        // Resolve PAT creation URL based on current environment.
+        $env = get_config('local_navigatr', 'env') ?: 'production';
+        $paturl = ($env === 'staging')
+            ? 'https://stag.navigatr.app/settings/personal-access-tokens/'
+            : 'https://navigatr.app/settings/personal-access-tokens/';
 
-        $mform->addElement('passwordunmask', 'password', get_string('password', 'local_navigatr'));
-        $mform->setType('password', PARAM_TEXT);
-        $mform->addHelpButton('password', 'password', 'local_navigatr');
-        $mform->addRule('password', get_string('required'), 'required', null, 'client');
+        // Personal Access Token.
+        $mform->addElement(
+            'passwordunmask',
+            'personal_access_token',
+            get_string('personal_access_token', 'local_navigatr')
+        );
+        $mform->setType('personal_access_token', PARAM_TEXT);
+        $mform->addHelpButton('personal_access_token', 'personal_access_token', 'local_navigatr');
+        $mform->addRule('personal_access_token', get_string('required'), 'required', null, 'client');
 
-        // Add security warning.
-        $security_warning = \html_writer::div(
-            get_string('password_unmask_warning', 'local_navigatr'),
+        // Add PAT note with create link.
+        $pat_warning = \html_writer::div(
+            get_string('pat_unmask_warning', 'local_navigatr', $paturl),
             'alert alert-info'
         );
-        $mform->addElement('html', $security_warning);
+        $mform->addElement('html', $pat_warning);
 
         // Test connection button - moved outside advanced settings for better visibility.
         $mform->addElement(
@@ -89,7 +94,6 @@ class admin_settings_form extends \moodleform {
      */
     public function set_form_data() {
         $data = [
-            'username' => get_config('local_navigatr', 'username'),
             'timeout' => get_config('local_navigatr', 'timeout') ?: 30,
             'env' => get_config('local_navigatr', 'env') ?: 'production',
         ];

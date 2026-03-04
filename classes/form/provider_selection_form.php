@@ -109,11 +109,6 @@ class provider_selection_form extends \moodleform {
                 // Cache the entire user detail response.
                 \local_navigatr\local\cache::set_user_detail($response->body);
 
-                // Store the user ID for future use.
-                if (isset($response->body['id'])) {
-                    set_config('nav_user_id', $response->body['id'], 'local_navigatr');
-                }
-
                 return $response->body['providers'];
             }
 

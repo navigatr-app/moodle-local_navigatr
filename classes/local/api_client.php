@@ -60,6 +60,22 @@ class api_client {
     }
 
     /**
+     * Get advanced base URL based on environment configuration
+     *
+     * @return string Advanced base URL for Navigatr API
+     */
+    public static function get_advanced_base_url() {
+        $env = get_config('local_navigatr', 'env') ?: 'production';
+
+        $urls = [
+            'production' => 'https://api.navigatr.app/advanced/v1',
+            'staging' => 'https://stagapi.navigatr.app/advanced/v1',
+        ];
+
+        return $urls[$env] ?? $urls['production'];
+    }
+
+    /**
      * Constructor
      *
      * @param string|null $baseurl Base URL for Navigatr API (optional, will use config if null)
@@ -77,10 +93,9 @@ class api_client {
      * @param string $path API path
      * @param mixed $data JSON data to send
      * @param array $headers Additional headers
-     * @param bool $require_auth Whether to include Bearer token (default: true)
      * @return object Response object with ok, code, body properties
      */
-    private function make_request($method, $path, $data = null, $headers = [], $require_auth = true) {
+    private function make_request($method, $path, $data = null, $headers = []) {
         $url = $this->baseurl . '/' . ltrim($path, '/');
 
         // Use Moodle cURL wrapper.
@@ -92,28 +107,24 @@ class api_client {
             $json_data = json_encode($data);
         }
 
+        // Get PAT and validate it is configured.
+        $pat = password_manager::get_pat();
+        if (empty($pat)) {
+            return (object) [
+                'ok' => false,
+                'code' => 401,
+                'body' => ['error' => get_string('error_auth_failed', 'local_navigatr')],
+                'error' => get_string('error_auth_failed', 'local_navigatr'),
+            ];
+        }
+
         // Build headers.
         $http_headers = [
             'Accept: application/json',
             'Content-Type: application/json',
             'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
+            'X-Access-Token: ' . $pat,
         ];
-
-        // Add Bearer token if authentication is required.
-        if ($require_auth) {
-            try {
-                $token = token_manager::get_access_token();
-                $http_headers[] = 'Authorization: Bearer ' . $token;
-            } catch (\moodle_exception $e) {
-                // If token retrieval fails, return error response.
-                return (object) [
-                    'ok' => false,
-                    'code' => 401,
-                    'body' => ['error' => get_string('error_auth_failed', 'local_navigatr') . ': ' . $e->getMessage()],
-                    'error' => get_string('error_auth_failed', 'local_navigatr'),
-                ];
-            }
-        }
 
         // Add any custom headers.
         foreach ($headers as $header) {
@@ -177,18 +188,16 @@ class api_client {
     }
 
     /**
-     * Get authentication token using form-encoded data
+     * Verify a personal access token against the Navigatr API
      *
-     * @param string $username Navigatr username
-     * @param string $password Navigatr password
+     * @param string $pat Personal access token to verify
      * @return object Response object
      */
-    public function get_token($username, $password) {
-        $url = $this->baseurl . '/token';
+    private function verify_pat($pat) {
+        $url = self::get_advanced_base_url() . '/personal_access_token/verify';
 
         $curl = new \curl();
 
-        // Set cURL options for form-encoded data.
         $curloptions = [
             'CURLOPT_TIMEOUT' => $this->timeout,
             'CURLOPT_RETURNTRANSFER' => true,
@@ -197,41 +206,30 @@ class api_client {
             'CURLOPT_SSL_VERIFYHOST' => 2,
             'CURLOPT_HTTPHEADER' => [
                 'Accept: application/json',
-                'Content-Type: application/x-www-form-urlencoded',
+                'X-Access-Token: ' . $pat,
                 'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
             ],
         ];
 
-        // Prepare form-encoded data.
-        $form_data = http_build_query([
-            'username' => $username,
-            'password' => $password,
-        ]);
+        $response = $curl->get($url, null, $curloptions);
 
-        // Make POST request with form data (no auth required for token endpoint).
-        $response = $curl->post($url, $form_data, $curloptions);
-
-        // Get response info.
         $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
         $error = $curl->get_errno();
         $curlerror = $curl->error;
 
-        // Handle various response formats from get_info.
         if (is_array($httpcode) && isset($httpcode['http_code'])) {
             $httpcode = $httpcode['http_code'];
         } else if ($httpcode === false || $httpcode === null) {
             $httpcode = 0;
         }
 
-        // Check for cURL errors.
         $haserror = $error !== 0 || !empty($curlerror);
 
-        // Parse response.
         $body = null;
         if ($response !== false && !$haserror) {
             $body = json_decode($response, true);
             if (json_last_error() !== JSON_ERROR_NONE) {
-                $body = $response; // Return raw response if JSON decode fails
+                $body = $response;
             }
         } else if ($haserror) {
             $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
@@ -246,82 +244,13 @@ class api_client {
     }
 
     /**
-     * Refresh authentication token using refresh token
+     * Test connection to Navigatr API using a personal access token
      *
-     * @param string $refresh_token Navigatr refresh token
-     * @return object Response object
-     */
-    public function refresh_token($refresh_token) {
-        $url = $this->baseurl . '/token';
-
-        $curl = new \curl();
-
-        // Set cURL options for form-encoded data.
-        $curloptions = [
-            'CURLOPT_TIMEOUT' => $this->timeout,
-            'CURLOPT_RETURNTRANSFER' => true,
-            'CURLOPT_FOLLOWLOCATION' => true,
-            'CURLOPT_SSL_VERIFYPEER' => true,
-            'CURLOPT_SSL_VERIFYHOST' => 2,
-            'CURLOPT_HTTPHEADER' => [
-                'Accept: application/json',
-                'Content-Type: application/x-www-form-urlencoded',
-                'User-Agent: ' . get_string('user_agent', 'local_navigatr'),
-            ],
-        ];
-
-        // Prepare form-encoded data for refresh.
-        $form_data = http_build_query([
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $refresh_token,
-        ]);
-
-        // Make POST request with form data.
-        $response = $curl->post($url, $form_data, $curloptions);
-
-        // Get response info.
-        $httpcode = $curl->get_info(CURLINFO_HTTP_CODE);
-        $error = $curl->get_errno();
-        $curlerror = $curl->error;
-
-        // Handle various response formats from get_info.
-        if (is_array($httpcode) && isset($httpcode['http_code'])) {
-            $httpcode = $httpcode['http_code'];
-        } else if ($httpcode === false || $httpcode === null) {
-            $httpcode = 0;
-        }
-
-        // Check for cURL errors.
-        $haserror = $error !== 0 || !empty($curlerror);
-
-        // Parse response.
-        $body = null;
-        if ($response !== false && !$haserror) {
-            $body = json_decode($response, true);
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                $body = $response; // Return raw response if JSON decode fails
-            }
-        } else if ($haserror) {
-            $body = ['error' => $curlerror ?: get_string('error_network', 'local_navigatr')];
-        }
-
-        return (object) [
-            'ok' => !$haserror && $httpcode >= 200 && $httpcode < 300,
-            'code' => $httpcode,
-            'body' => $body,
-            'error' => $haserror ? ($curlerror ?: get_string('error_network', 'local_navigatr')) : null,
-        ];
-    }
-
-    /**
-     * Test connection to Navigatr API
-     *
-     * @param string $username Navigatr username
-     * @param string $password Navigatr password
+     * @param string $pat Personal access token
      * @param string $environment Environment (staging, production)
      * @return object Response object
      */
-    public static function test_connection($username, $password, $environment = 'production') {
+    public static function test_connection($pat, $environment = 'production') {
         // Temporarily set environment for this test.
         $original_env = get_config('local_navigatr', 'env');
         set_config('env', $environment, 'local_navigatr');
@@ -329,20 +258,8 @@ class api_client {
         // Create API client (will use the environment we just set).
         $client = new self();
 
-        // Authenticate using form-encoded data.
-        $authresponse = $client->get_token($username, $password);
-
-        // If authentication successful, store tokens for future use.
-        if ($authresponse->ok && isset($authresponse->body['access_token'])) {
-            // Store tokens temporarily for this test.
-            set_config('access_token', $authresponse->body['access_token'], 'local_navigatr');
-            set_config('access_expires_at', time() + 300, 'local_navigatr'); // 5 minutes
-
-            if (isset($authresponse->body['refresh_token'])) {
-                set_config('refresh_token', $authresponse->body['refresh_token'], 'local_navigatr');
-                set_config('refresh_expires_at', time() + 86400, 'local_navigatr'); // 1 day
-            }
-        }
+        // Verify the PAT against the API.
+        $response = $client->verify_pat($pat);
 
         // Restore original environment.
         if ($original_env !== false) {
@@ -354,13 +271,13 @@ class api_client {
             'context' => \context_system::instance(),
             'other' => [
                 'environment' => $environment,
-                'success' => $authresponse->ok,
-                'response_code' => $authresponse->code,
+                'success' => $response->ok,
+                'response_code' => $response->code,
             ],
         ]);
         $eventdata->trigger();
 
-        return $authresponse;
+        return $response;
     }
 
     /**
@@ -392,10 +309,9 @@ class api_client {
      *
      * @param string $path API path
      * @param array $headers Additional headers
-     * @param bool $require_auth Whether authentication is required
      * @return object Response object
      */
-    public function get($path, $headers = [], $require_auth = true) {
-        return $this->make_request('GET', $path, null, $headers, $require_auth);
+    public function get($path, $headers = []) {
+        return $this->make_request('GET', $path, null, $headers);
     }
 }
