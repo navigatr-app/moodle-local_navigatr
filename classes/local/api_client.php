@@ -264,6 +264,8 @@ class api_client {
         // Restore original environment.
         if ($originalenv !== false) {
             set_config('env', $originalenv, 'local_navigatr');
+        } else {
+            unset_config('env', 'local_navigatr');
         }
 
         // Trigger event for connection test.

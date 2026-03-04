@@ -1,4 +1,4 @@
-@local_navigatr
+@local
 Feature: Navigatr Badge Issuance
   As a Moodle administrator
   I want to configure Navigatr badge issuance

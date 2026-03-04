@@ -45,6 +45,9 @@ if ($data && confirm_sesskey()) {
     } else if (isset($data->testconnection)) {
         // Handle test connection.
         $pat = $data->personal_access_token ?? '';
+        if (empty($pat)) {
+            $pat = \local_navigatr\local\password_manager::get_pat();
+        }
         $environment = $data->env ?? 'production';
 
         $result = \local_navigatr\local\api_client::test_connection($pat, $environment);
