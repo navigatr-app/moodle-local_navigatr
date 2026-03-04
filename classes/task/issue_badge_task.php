@@ -75,8 +75,8 @@ class issue_badge_task extends \core\task\adhoc_task {
             return; // Already successfully issued.
         }
 
+        $auditwritten = false;
         try {
-            // Get access token.
             // Get API client.
             $client = new \local_navigatr\local\api_client();
 
@@ -104,7 +104,7 @@ class issue_badge_task extends \core\task\adhoc_task {
             // Issue badge.
             $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
 
-            // Write audit record.
+            // Write audit record (before any throw, so catch does not duplicate it).
             $this->write_audit(
                 $userid,
                 $courseid,
@@ -114,22 +114,25 @@ class issue_badge_task extends \core\task\adhoc_task {
                 $response->code,
                 json_encode($response->body)
             );
+            $auditwritten = true;
 
             // Throw exception for terminal failures to allow Moodle retries.
             if (!$response->ok && $response->code >= 500) {
                 throw new \moodle_exception('issue_failed', 'local_navigatr', '', $response->code);
             }
         } catch (\Exception $e) {
-            // Write error audit record.
-            $this->write_audit(
-                $userid,
-                $courseid,
-                $mapping->provider_id,
-                $mapping->badge_id,
-                'error',
-                500,
-                json_encode(['error' => $e->getMessage()])
-            );
+            // Only write audit for unexpected exceptions; API-response audits are written above.
+            if (!$auditwritten) {
+                $this->write_audit(
+                    $userid,
+                    $courseid,
+                    $mapping->provider_id,
+                    $mapping->badge_id,
+                    'error',
+                    500,
+                    json_encode(['error' => $e->getMessage()])
+                );
+            }
 
             // Re-throw to allow Moodle retry mechanism.
             throw $e;
