@@ -69,5 +69,4 @@ class badge_issuance_failed extends \core\event\base {
     public function get_url() {
         return new \moodle_url('/course/view.php', ['id' => $this->courseid]);
     }
-
 }
