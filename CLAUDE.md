@@ -165,7 +165,9 @@ find . -name "*.php" | xargs php -l
 
 ## Git
 
-Do not add `Co-Authored-By` tags to commit messages.
+- Default branch is `develop` (there is no `main`)
+- PRs target `develop`
+- Do not add `Co-Authored-By` tags to commit messages
 
 ## Release Process
 
@@ -179,8 +181,8 @@ Bumps `version.php` (both `$plugin->version` YYYYMMDDXX and `$plugin->release`),
 
 ## CI/CD
 
-`.github/workflows/test.yml` runs on push/PR to `main`/`develop`:
-- PHP syntax check (8.2 + 8.3)
-- Plugin structure validation
-- Security scan (eval, exec, shell_exec)
-- **Cannot run full PHPUnit/Behat** — requires a Moodle environment
+`.github/workflows/moodle-plugin-ci.yml` runs on push/PR to `develop`:
+- Matrix: PHP 8.1 + Moodle 4.1, PHP 8.2 + Moodle 4.4, PHP 8.3 + Moodle 4.5
+- Blocking checks: `phplint`, `phpcs --max-warnings 0`, `validate`, `savepoints`, `phpunit`
+- Advisory (non-blocking): `phpdoc`, `behat`
+- Uses `moodlehq/moodle-plugin-ci` with a real PostgreSQL-backed Moodle install
