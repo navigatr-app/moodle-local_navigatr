@@ -143,9 +143,10 @@ tests/
 ### PHPCS Rules (moodle-plugin-ci with `--max-warnings 0`)
 
 **Variable naming — `moodle.NamingConventions.ValidVariableName.VariableNameLowerCase`:**
-- Variables must NOT contain underscores — actual CI error: `Variable "foo_bar" must not contain underscores.`
-- lowerCamelCase is **correct** (`$existingMapping`, `$providerName`, `$badgeResponse`)
-- snake_case is **WRONG** (`$existing_mapping`) — do NOT use underscores in local variables or parameters
+- Variables must be **ALL LOWERCASE** — actual CI error: `Variable "existingMapping" must be all lower-case`
+- all-lowercase is **correct** (`$existingmapping`, `$providerid`, `$badgeresponse`)
+- camelCase is **WRONG** (`$existingMapping`) — do NOT use ANY uppercase letters in variable names
+- snake_case is also WRONG (`$existing_mapping`) — no underscores either
 - This applies to ALL local variables and function parameters across the entire codebase
 
 **MOODLE_INTERNAL guard — two opposing rules:**

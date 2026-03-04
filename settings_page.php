@@ -91,29 +91,29 @@ echo $OUTPUT->header();
 echo \core\notification::info(get_string('provider_admin_notice', 'local_navigatr'));
 
 // Display help documentation link.
-$helpUrl = get_string('help_center_url', 'local_navigatr');
-$helpLink = \html_writer::link($helpUrl, get_string('help_center_link', 'local_navigatr'), [
+$helpurl = get_string('help_center_url', 'local_navigatr');
+$helplink = \html_writer::link($helpurl, get_string('help_center_link', 'local_navigatr'), [
     'target' => '_blank',
     'class' => 'btn btn-outline-info btn-sm',
 ]);
-$helpText = get_string('help_setup_guide', 'local_navigatr', $helpLink);
-echo \core\notification::info($helpText);
+$helptext = get_string('help_setup_guide', 'local_navigatr', $helplink);
+echo \core\notification::info($helptext);
 
 // Check if a PAT is configured.
-$currentPat = \local_navigatr\local\password_manager::get_pat();
+$currentpat = \local_navigatr\local\password_manager::get_pat();
 
 // Display Remove Connection button if a PAT is configured.
-if (!empty($currentPat)) {
+if (!empty($currentpat)) {
     echo \html_writer::start_div('mb-4');
-    $removeUrl = new \moodle_url('/local/navigatr/settings_page.php', [
+    $removeurl = new \moodle_url('/local/navigatr/settings_page.php', [
         'removeconnection' => 1,
         'sesskey' => sesskey(),
     ]);
-    $removeButton = $OUTPUT->single_button($removeUrl, get_string('remove_connection', 'local_navigatr'), 'post', [
+    $removebutton = $OUTPUT->single_button($removeurl, get_string('remove_connection', 'local_navigatr'), 'post', [
         'class' => 'btn-danger',
         'onclick' => 'return confirm(\'' . get_string('remove_connection_confirm', 'local_navigatr') . '\')',
     ]);
-    echo $removeButton;
+    echo $removebutton;
     echo \html_writer::end_div();
 }
 

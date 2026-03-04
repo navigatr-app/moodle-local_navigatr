@@ -95,15 +95,15 @@ class provider_selection_form extends \moodleform {
     private function get_providers() {
         try {
             // Check cache first for user details.
-            $cachedUser = \local_navigatr\local\cache::get_user_detail();
-            if ($cachedUser !== null && isset($cachedUser['providers'])) {
-                return $cachedUser['providers'];
+            $cacheduser = \local_navigatr\local\cache::get_user_detail();
+            if ($cacheduser !== null && isset($cacheduser['providers'])) {
+                return $cacheduser['providers'];
             }
 
             // Fetch user details from API (this includes providers).
             $client = new \local_navigatr\local\api_client();
-            $apiPath = "/user_detail/0";
-            $response = $client->get($apiPath);
+            $apipath = "/user_detail/0";
+            $response = $client->get($apipath);
 
             if ($response->ok && is_array($response->body) && isset($response->body['providers'])) {
                 // Cache the entire user detail response.
