@@ -30,11 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/filelib.php');
 
 /**
- * Navigatr API Client
- *
- * @package    local_navigatr
- * @copyright  2024 Navigatr
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Navigatr API client.
  */
 class api_client {
     /** @var string Base URL for Navigatr API */
