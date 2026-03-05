@@ -6,11 +6,11 @@ A Moodle local plugin that automatically issues Navigatr digital badges when lea
 
 Navigatr is a digital badge pathways platform. We help organisations recognise skills, connect learning to work, and make achievements visible and verifiable. Badges issued through Navigatr are portable, shareable credentials that learners can display on LinkedIn and other platforms. Each badge contains data about what was achieved, when it was achieved, and acts as built-in recognition from your organisation.
 
+![Issued Badge](images/issued-badge.png)
+
 This plugin connects Moodle's course completion system to Navigatr. When a learner finishes a course, a badge is automatically issued — no manual steps required.
 
 **You'll need a Navigatr provider account to use this plugin.** [Register for a free trial](https://navigatr.app/register/plan/launch) to get started.
-
-![Issued Badge](images/issued-badge.png)
 
 ## Requirements
 
