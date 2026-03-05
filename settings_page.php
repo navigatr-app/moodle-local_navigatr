@@ -44,7 +44,8 @@ if ($data && confirm_sesskey()) {
         \core\notification::success(get_string('connection_removed', 'local_navigatr'));
     } else if (isset($data->testconnection)) {
         // Handle test connection.
-        $pat = $data->personal_access_token ?? '';
+        // Trim to remove accidental whitespace/newlines from copy-paste.
+        $pat = trim($data->personal_access_token ?? '');
         if (empty($pat)) {
             $pat = \local_navigatr\local\password_manager::get_pat();
         }
@@ -54,14 +55,14 @@ if ($data && confirm_sesskey()) {
         if ($result->ok) {
             \core\notification::success(get_string('connection_success_simple', 'local_navigatr'));
         } else {
-            // Build detailed error message.
+            // Build detailed error message including environment so the user can diagnose mismatches.
             $errormsg = get_string('connection_failed', 'local_navigatr');
             if (!empty($result->error)) {
                 $errormsg .= ': ' . s($result->error);
             } else if (!empty($result->body) && is_array($result->body) && isset($result->body['error'])) {
                 $errormsg .= ': ' . s($result->body['error']);
             } else if ($result->code > 0) {
-                $errormsg .= ' (HTTP ' . $result->code . ')';
+                $errormsg .= ' HTTP ' . $result->code;
             } else {
                 $errormsg .= ': ' . get_string('network_error_or_timeout', 'local_navigatr');
             }
@@ -80,7 +81,7 @@ if ($form->is_cancelled()) {
 if ($data = $form->get_data()) {
     // Form was submitted and validated.
     set_config('env', $data->env, 'local_navigatr');
-    \local_navigatr\local\password_manager::store_pat($data->personal_access_token);
+    \local_navigatr\local\password_manager::store_pat(trim($data->personal_access_token));
     set_config('timeout', $data->timeout, 'local_navigatr');
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));
 } else {

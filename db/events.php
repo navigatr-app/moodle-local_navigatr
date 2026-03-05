@@ -31,12 +31,6 @@ $observers = [
         'priority'    => 9999,
         'internal'    => false,
     ],
-    [
-        'eventname'   => '\core\event\course_restored',
-        'callback'    => '\local_navigatr\observer::course_restored',
-        'priority'    => 9999,
-        'internal'    => false,
-    ],
 ];
 
 // Define custom events for audit logging.

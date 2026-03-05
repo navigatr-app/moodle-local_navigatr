@@ -30,11 +30,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/filelib.php');
 
 /**
- * Navigatr API Client
- *
- * @package    local_navigatr
- * @copyright  2024 Navigatr
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * Navigatr API client.
  */
 class api_client {
     /** @var string Base URL for Navigatr API */
@@ -46,10 +42,13 @@ class api_client {
     /**
      * Get base URL based on environment configuration
      *
+     * @param string|null $env Environment override ('production' or 'staging'); reads config when null.
      * @return string Base URL for Navigatr API
      */
-    public static function get_base_url() {
-        $env = get_config('local_navigatr', 'env') ?: 'production';
+    public static function get_base_url($env = null) {
+        if ($env === null) {
+            $env = get_config('local_navigatr', 'env') ?: 'production';
+        }
 
         $baseurls = [
             'production' => 'https://api.navigatr.app/v1',
@@ -62,10 +61,13 @@ class api_client {
     /**
      * Get advanced base URL based on environment configuration
      *
+     * @param string|null $env Environment override ('production' or 'staging'); reads config when null.
      * @return string Advanced base URL for Navigatr API
      */
-    public static function get_advanced_base_url() {
-        $env = get_config('local_navigatr', 'env') ?: 'production';
+    public static function get_advanced_base_url($env = null) {
+        if ($env === null) {
+            $env = get_config('local_navigatr', 'env') ?: 'production';
+        }
 
         $urls = [
             'production' => 'https://api.navigatr.app/advanced/v1',
@@ -191,10 +193,13 @@ class api_client {
      * Verify a personal access token against the Navigatr API
      *
      * @param string $pat Personal access token to verify
+     * @param string|null $url Full verify endpoint URL; derived from config when null.
      * @return object Response object
      */
-    private function verify_pat($pat) {
-        $url = self::get_advanced_base_url() . '/personal_access_token/verify';
+    private function verify_pat($pat, $url = null) {
+        if ($url === null) {
+            $url = self::get_advanced_base_url() . '/personal_access_token/verify';
+        }
 
         $curl = new \curl();
 
@@ -251,22 +256,11 @@ class api_client {
      * @return object Response object
      */
     public static function test_connection($pat, $environment = 'production') {
-        // Temporarily set environment for this test.
-        $originalenv = get_config('local_navigatr', 'env');
-        set_config('env', $environment, 'local_navigatr');
+        // Use the public user_detail endpoint (ID 0 = current user) to verify the PAT without relying on the advanced API.
+        $verifyurl = self::get_base_url($environment) . '/user_detail/0';
 
-        // Create API client (will use the environment we just set).
         $client = new self();
-
-        // Verify the PAT against the API.
-        $response = $client->verify_pat($pat);
-
-        // Restore original environment.
-        if ($originalenv !== false) {
-            set_config('env', $originalenv, 'local_navigatr');
-        } else {
-            unset_config('env', 'local_navigatr');
-        }
+        $response = $client->verify_pat($pat, $verifyurl);
 
         // Trigger event for connection test.
         $eventdata = \local_navigatr\event\api_connection_tested::create([

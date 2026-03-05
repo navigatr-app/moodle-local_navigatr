@@ -141,22 +141,37 @@ echo \core\notification::info($helptext);
 
 // Check if providers are available.
 $providers = [];
+$providerapiok = true;
 try {
-    $client = new \local_navigatr\local\api_client();
-    $userresponse = $client->get("/user_detail/0");
-    if ($userresponse->ok && isset($userresponse->body['providers'])) {
-        $providers = $userresponse->body['providers'];
+    // Check cache first.
+    $cached = \local_navigatr\local\cache::get_providers();
+    if (is_array($cached)) {
+        $providers = $cached;
+    } else {
+        $client = new \local_navigatr\local\api_client();
+        $providerresponse = $client->get("/user_detail/0/providers");
+        if ($providerresponse->ok && is_array($providerresponse->body) && array_is_list($providerresponse->body)) {
+            $providers = $providerresponse->body;
+            \local_navigatr\local\cache::set_providers($providers);
+        } else {
+            // Mark as failed if response is not OK or body format is unexpected.
+            $providerapiok = false;
+        }
     }
 } catch (Exception $e) {
-    // API call failed, providers will be empty.
+    $providerapiok = false;
     debugging('Failed to fetch providers for course settings: ' . $e->getMessage(), DEBUG_NORMAL);
 }
 
-// Display provider configuration notice if no providers available.
-if (empty($providers)) {
+// Display appropriate notice based on outcome.
+if (!$providerapiok) {
+    // API unreachable or auth failed — direct to admin settings.
     echo \core\notification::info(
         get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php'))
     );
+} else if (empty($providers)) {
+    // Connected but no providers — account permissions issue.
+    echo \core\notification::warning(get_string('error_no_providers', 'local_navigatr'));
 }
 
 // Display existing mapping if it exists using template.

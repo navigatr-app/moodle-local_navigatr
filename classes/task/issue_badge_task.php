@@ -24,10 +24,6 @@
 
 namespace local_navigatr\task;
 
-defined('MOODLE_INTERNAL') || die();
-
-require_once(__DIR__ . '/../../classes/local/api_client.php');
-
 /**
  * Adhoc task for issuing Navigatr badges.
  */
@@ -42,8 +38,11 @@ class issue_badge_task extends \core\task\adhoc_task {
         $userid = $data->userid;
         $courseid = $data->courseid;
 
-        // Get mapping for this course (guaranteed to exist as observer already checked).
+        // Get mapping for this course (may have been deleted since the task was queued).
         $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
+        if (!$mapping) {
+            return; // Mapping was removed after the task was queued; nothing to do.
+        }
 
         // Get user details.
         $user = \core_user::get_user($userid, 'id,email,firstname,lastname', MUST_EXIST);
@@ -75,8 +74,8 @@ class issue_badge_task extends \core\task\adhoc_task {
             return; // Already successfully issued.
         }
 
+        $auditwritten = false;
         try {
-            // Get access token.
             // Get API client.
             $client = new \local_navigatr\local\api_client();
 
@@ -104,7 +103,7 @@ class issue_badge_task extends \core\task\adhoc_task {
             // Issue badge.
             $response = $client->put("/badge/{$mapping->badge_id}/issue", $payload);
 
-            // Write audit record.
+            // Write audit record (before any throw, so catch does not duplicate it).
             $this->write_audit(
                 $userid,
                 $courseid,
@@ -114,22 +113,25 @@ class issue_badge_task extends \core\task\adhoc_task {
                 $response->code,
                 json_encode($response->body)
             );
+            $auditwritten = true;
 
             // Throw exception for terminal failures to allow Moodle retries.
             if (!$response->ok && $response->code >= 500) {
                 throw new \moodle_exception('issue_failed', 'local_navigatr', '', $response->code);
             }
         } catch (\Exception $e) {
-            // Write error audit record.
-            $this->write_audit(
-                $userid,
-                $courseid,
-                $mapping->provider_id,
-                $mapping->badge_id,
-                'error',
-                500,
-                json_encode(['error' => $e->getMessage()])
-            );
+            // Only write audit for unexpected exceptions; API-response audits are written above.
+            if (!$auditwritten) {
+                $this->write_audit(
+                    $userid,
+                    $courseid,
+                    $mapping->provider_id,
+                    $mapping->badge_id,
+                    'error',
+                    500,
+                    json_encode(['error' => $e->getMessage()])
+                );
+            }
 
             // Re-throw to allow Moodle retry mechanism.
             throw $e;
