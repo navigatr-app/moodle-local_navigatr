@@ -47,18 +47,27 @@ require_capability('local/navigatr:configurecourse', $context);
 // Get provider name.
 $providers = [];
 try {
-    $client = new \local_navigatr\local\api_client();
-    $response = $client->get('/user_detail/0');
-    if ($response->ok && isset($response->body['providers'])) {
-        foreach ($response->body['providers'] as $provider) {
-            if ($provider['id'] == $providerid) {
-                $providername = $provider['name'];
-                break;
-            }
+    // Check cache first.
+    $cached = \local_navigatr\local\cache::get_providers();
+    if (is_array($cached)) {
+        $providers = $cached;
+    } else {
+        $client = new \local_navigatr\local\api_client();
+        $response = $client->get('/user_detail/0/providers');
+        if ($response->ok && is_array($response->body) && array_is_list($response->body)) {
+            $providers = $response->body;
+            \local_navigatr\local\cache::set_providers($providers);
         }
     }
 } catch (Exception $e) {
-    $providername = get_string('unknown_provider', 'local_navigatr');
+    debugging('Failed to fetch providers for badge selection: ' . $e->getMessage(), DEBUG_NORMAL);
+}
+$providername = null;
+foreach ($providers as $provider) {
+    if ($provider['id'] == $providerid) {
+        $providername = $provider['name'];
+        break;
+    }
 }
 
 // Set up page.
