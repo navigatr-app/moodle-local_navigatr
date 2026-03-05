@@ -104,7 +104,7 @@ class provider_selection_form extends \moodleform {
             $client = new \local_navigatr\local\api_client();
             $response = $client->get("/user_detail/0/providers");
 
-            if ($response->ok && is_array($response->body)) {
+            if ($response->ok && is_array($response->body) && array_is_list($response->body)) {
                 \local_navigatr\local\cache::set_providers($response->body);
                 return $response->body;
             }
