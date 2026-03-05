@@ -2,397 +2,237 @@
 
 A Moodle local plugin that automatically issues Navigatr digital badges when learners complete courses.
 
-## Why Choose Navigatr?
+## What is Navigatr?
 
-**Professional Digital Credentials**: Navigatr creates industry-standard digital badges that learners can proudly display on LinkedIn, resumes, and professional portfolios. [Navigatr Badge Framework](https://www.navigatr.org/navigatr-badge-framework) and [AI Badge Assistant](https://www.navigatr.org/badge-assistant) streamlines creating high quality badges in under a minute.
+Navigatr is a digital badge pathways platform. We help organisations recognise skills, connect learning to work, and make achievements visible and verifiable. Badges issued through Navigatr are portable, shareable credentials that learners can display on LinkedIn and other platforms. Each badge contains data about what was achieved, when it was achieved, and acts as built-in recognition from your organisation.
 
-**Instant Verification**: Every badge is verified and include a QR code, allowing employers and institutions to instantly verify authenticity and view detailed evidence of achievement.
+This plugin connects Moodle's course completion system to Navigatr. When a learner finishes a course, a badge is automatically issued — no manual steps required.
 
-**Rich Evidence**: Badges showcase not just completion, but the specific skills, competencies, and evidence that led to the credential.
-
-**Portable & Shareable**: Learners receive a permanent, shareable digital credential that travels with them throughout their career.
+**You'll need a Navigatr provider account to use this plugin.** [Register for a free trial](https://navigatr.app/register/plan/launch) to get started.
 
 ![Issued Badge](images/issued-badge.png)
 
-**Professional Certificates**: All badges can be exported as high-quality PDF certificates ready for printing and framing.
-
-![Certificate](images/certificate.png)
-
-**Ready to get started?** You'll need a Navigatr provider account to use this plugin. [Register for a free trial](https://navigatr.app/register/plan/launch) to create and manage your digital badges.
-
-## Overview
-
-This plugin integrates Moodle with the Navigatr badging platform, providing automatic badge issuance when learners complete courses.
-
-## Key Features
-
-### Core Functionality
-
-- **Automatic Badge Issuance**: Issues badges automatically when learners complete courses
-- **Course-to-Badge Mapping**: One-to-one mapping between courses and badges
-- **Multi-Environment Support**: Production and staging environments
-- **GDPR Compliance**: Full privacy API implementation
-- **Audit Trail**: Complete logging of badge issuance attempts
-
-### Enhanced User Experience
-
-- **Comprehensive Help System**: Help buttons on all form fields with detailed guidance
-- **Contextual Documentation**: Direct links to Navigatr Help Centre for additional support
-- **Improved Error Messages**: Specific, actionable error messages with troubleshooting steps
-- **Form Validation**: Enhanced form field validation with helpful error messages
-- **Security Warnings**: Clear information about credential storage and password visibility
-
-### Technical Features
-
-- **Token Management**: Automatic token refresh with lock-based concurrency control
-- **Caching**: Provider and badge caching (10-minute TTL) for improved performance
-- **Background Processing**: Adhoc task system with retry logic and exponential backoff
-- **API Integration**: Robust Navigatr API integration with comprehensive error handling
-- **Database Schema**: Optimized database tables for mappings and audit records
-
 ## Requirements
 
-- **Moodle**: 4.1 LTS or 5.x
-- **PHP**: 8.2 or 8.3
-- **Navigatr Account**: Valid Navigatr credentials
+- **Moodle**: 4.1 or later
+- **PHP**: 8.1, 8.2, or 8.3
+- **Navigatr account**: With provider admin access (see below)
+
+## What is a provider?
+
+In Navigatr, a **provider** is the organisation that owns and issues badges — a university, a training body, a local authority, and so on. Your Navigatr user account must have **provider admin** access to at least one provider before you can map courses to badges. If you are unsure whether you have this access, check in your Navigatr account settings or contact your Navigatr administrator.
 
 ## Installation
 
-1. You will first need a Navigatr provider account. If you don't have an account, you can sign up for a free trial at [https://navigatr.app/register/plan/launch](https://navigatr.app/register/plan/launch)
-1. Copy the plugin files to `local/navigatr/` in your Moodle installation. The following files and folders are optional and can be omitted:
+1. **Get a Navigatr account.** If you don't have one, [register for a free trial](https://navigatr.app/register/plan/launch).
+
+2. **Download the plugin.** Get the latest release from the repository's releases page, or clone the repository directly.
+
+3. **Copy files to Moodle.** Place the plugin folder at `local/navigatr/` inside your Moodle installation. These items are optional and can be omitted:
    - `/.github` (CI/CD configuration)
    - `/.gitignore` (Git configuration)
-1. Visit the Moodle admin notifications page to install the plugin
-1. Configure Navigatr credentials in Site Administration → Plugins → Local plugins → Navigatr
+
+4. **Run the Moodle upgrade.** Visit the admin notifications page (`/admin/index.php`) to complete installation.
+
+5. **Configure credentials.** Go to **Site Administration → Plugins → Local plugins → Navigatr** and add your Personal Access Token (see below).
 
 ## Configuration
 
-### Plugin Settings
+### Personal Access Token
 
-Navigate to **Site Administration → Plugins → Local plugins → Navigatr** to configure:
+The plugin authenticates with Navigatr using a **Personal Access Token (PAT)**. PATs give secure API access without sharing your account password.
 
-- **Credentials**: Enter your Navigatr username and password. This user should be a provider admin on Navigatr.
-- **HTTP Timeout (Advanced)**: Configure request timeout (default: 30 seconds). Increase if you experience timeout errors.
-- **Environment (Advanced)**: If you would like to test with your account on the Navigatr Staging platform choose `Staging`.
-- **Test Connection**: Check your username and password are correct and a connection can be made.
-- **Save Changes**: After saving your changes you are ready to configure your course mappings.
-- **Help Documentation**: Links to Navigatr Help Centre are provided for additional support.
+To create one:
+
+1. Log in to your Navigatr account
+2. Go to **Account Settings → Personal Access Tokens**
+3. Create a new token and copy it
+
+Then in Moodle:
+
+1. Go to **Site Administration → Plugins → Local plugins → Navigatr**
+2. Paste the token into the **Personal Access Token** field
+3. Click **Test Connection** to verify it works
+4. Click **Save Changes**
+
+Tokens are encrypted with AES-256-CBC before storage. They are never logged or exposed in plain text.
 
 ![Admin Settings Page](images/plugin-settings.png)
 
-You can remove connection by clicking the "Remove Connection" button that appears when credentials are configured. But be careful before removing the connection, because this will clear your stored username, password, and authentication tokens, and it will disable existing badge mappings on your courses.
+To disconnect, click **Remove Connection**. This clears the stored token and disables existing badge mappings on all courses.
+
+### Environment
+
+Choose **Production** for your live Moodle site. Choose **Staging** if you are testing with a Navigatr staging account. The default is Production.
 
 ### Course Badge Mapping
 
 For each course where you want to issue badges on completion:
 
-1. Go to the course
-1. Navigate to **Course settings → Navigatr Badge**
+1. Go to the course.
+2. Navigate to **Course settings → Navigatr Badge**.
 
 ![Course Settings Menu](images/course-settings-menu.png)
 
-1. Select a provider from the dropdown and click "Continue to Select Badge"
+3. Select a provider from the dropdown and click **Continue to Select Badge**.
 
 ![Provider Selection](images/provider-selection.png)
 
-1. Choose a badge from the provider's available badges and click "Save Mapping"
+4. Choose a badge and click **Save Mapping**.
 
 ![Badge Selection](images/badge-selection.png)
 
-1. The badge mapping is now configured. You can:
-   - **View Badge**: Click the "View Badge" link (appears inline with the badge name) to open the badge in Navigatr
-   - **Change Badge**: Click the "Change Badge" button to select a different badge
-   - **Remove Badge**: Click the "Remove Badge" button to remove the mapping
+5. The mapping is now active. From this page you can:
+   - **View Badge** — open the badge in Navigatr
+   - **Change Badge** — select a different badge
+   - **Remove Badge** — remove the mapping
 
 ![Current Badge Mapping](images/current-mapping.png)
 
-## API Endpoints
+## How badge issuance works
 
-The plugin integrates with the following Navigatr API endpoints:
+When a learner completes a course, Moodle fires a `course_completed` event. The plugin picks this up and queues a background task to issue the badge via the Navigatr API. This happens asynchronously — learners do not wait.
 
-### Authentication
+If the API is unavailable, the task retries automatically at increasing intervals (1 min, 5 min, 15 min, 1 hr, 6 hr, 24 hr). No completions are lost during outages.
 
-- `POST /v1/token` - Authenticate with username/password
-
-### Providers
-
-- `GET /v1/user_detail/{user_id}/providers` - List available providers
-
-### Badges
-
-- `GET /v1/badge?provider_id={id}&page={n}&size={m}` - List badges for a provider
-
-### Badge Issuance
-
-- `PUT /v1/badge/{badge_id}/issue` - Issue a badge to a recipient
-
-## Environments
-
-| Environment | Base URL                                                              |
-|-------------|-----------------------------------------------------------------------|
-| Production  | [https://api.navigatr.app/v1/](https://api.navigatr.app/v1/)          |
-| Staging     | [https://stagapi.navigatr.app/v1/](https://stagapi.navigatr.app/v1/)  |
-
-## Database Schema
-
-The plugin creates two database tables:
-
-### `local_navigatr_map`
-
-Stores course-to-badge mappings:
-
-- `courseid` - Course ID (unique)
-- `provider_id` - Navigatr provider ID
-- `badge_id` - Navigatr badge ID
-- `badge_name` - Badge name (cached)
-- `badge_image_url` - Badge image URL (cached)
-
-### `local_navigatr_audit`
-
-Stores badge issuance audit records:
-
-- `userid` - User ID
-- `courseid` - Course ID
-- `provider_id` - Provider ID
-- `badge_id` - Badge ID
-- `status` - Issuance status (success/error)
-- `http_code` - HTTP response code
-- `response_json` - Raw API response
-- `dedupe_key` - Unique key for idempotency
-
-## Course Backup & Restore
-
-The plugin implements Moodle's Backup/Restore API to ensure that Navigatr badge configurations and audit records are properly included in course backups and can be restored when courses are imported or restored.
-
-### What Gets Backed Up
-
-#### Course Badge Mappings (Always Included)
-
-- **Course-to-badge configuration**: Which badge is issued when users complete the course
-- **Provider and badge details**: Navigatr provider ID, badge ID, badge name, and image URL
-- **Timestamps**: When the mapping was created and last modified
-
-#### Badge Issuance Audit Records (Conditionally Included)
-
-- **Only when user data is included** in the backup
-- **Complete audit trail**: Records of all badge issuance attempts for users in the course
-- **API responses**: HTTP status codes and response details from Navigatr API calls
-- **User information**: Which users had badges issued and when
-
-### What Gets Restored
-
-#### Course Badge Mappings
-
-- **Restored automatically** when a course is restored
-- **Preserves configuration**: The restored course will issue the same badge when users complete it
-- **No duplicate mappings**: If a mapping already exists for the target course, it won't be overwritten
-
-#### Badge Issuance Audit Records
-
-- **Only restored when user data is included** in the restore operation
-- **Historical record**: Maintains the audit trail of what happened in the original course
-- **User ID mapping**: Automatically maps user IDs to the correct users in the target system
-- **No re-issuance**: Badges are not re-issued during restore (they already exist on Navigatr's platform)
-
-### Important Notes
-
-- **Badges are not re-issued**: The actual badges exist on Navigatr's platform and don't need to be re-created
-- **Audit trail preservation**: Restoring audit records maintains the historical record of badge issuances
-- **Privacy compliance**: Audit records are only backed up/restored when user data is included
-- **Course configuration**: Badge mappings are always backed up as they're part of the course structure
-- **Manual testing guide**: See `docs/backup-restore-manual-testing.md` for detailed testing instructions
+Duplicate issuance is prevented: a badge is only issued once per learner per course per badge.
 
 ## Capabilities
 
-- `local/navigatr:managecredentials` - Manage site-level Navigatr credentials (admin only)
-- `local/navigatr:configurecourse` - Configure course badge mappings (teachers/managers)
+| Capability | Who it's for |
+|-----------|-------------|
+| `local/navigatr:managecredentials` | Site admins — configure the PAT and plugin settings |
+| `local/navigatr:configurecourse` | Teachers and course managers — map courses to badges |
 
 ## Privacy & GDPR
 
-The plugin implements Moodle's privacy API:
+The plugin implements Moodle's privacy API. When issuing a badge, we send the learner's email address, first name, and last name to Navigatr. No other personal data is transmitted.
 
-- **Data Export**: Users can export their badge issuance audit records
-- **Data Deletion**: Users can request deletion of their audit records
-- **External Data Transfer**: Documents transfer of PII (email, firstname, lastname) to Navigatr
+Learners can export or request deletion of their badge issuance audit records through Moodle's standard privacy tools.
+
+## Course Backup & Restore
+
+Badge mappings are included in course backups and restored automatically when a course is imported or duplicated.
+
+Audit records (individual badge issuance history) are included only when the backup includes user data.
+
+Restoring a course does not re-issue badges — badges already issued on the Navigatr platform remain as they are.
 
 ## Troubleshooting
 
-### Common Issues
+### Connection test fails
 
-1. **Authentication Failed**
-   - Verify Navigatr credentials are correct
-   - Check environment setting matches your Navigatr account
-   - Ensure Navigatr API is accessible from your Moodle server
-   - Check the detailed error message for specific guidance
+- Check the PAT is copied correctly — no trailing spaces or newlines
+- Verify the environment setting matches your Navigatr account (production vs staging)
+- Check your Moodle server can reach the Navigatr API (`api.navigatr.app`)
 
-1. **No Providers Available**
-   - Run "Test Connection" in admin settings
-   - Verify your Navigatr account has access to providers
-   - Ensure your Navigatr user is a provider admin
+### No providers in the dropdown
 
-1. **Badge Issuance Fails**
-   - Check audit records in database for error details
-   - Verify user has required fields (email, firstname, lastname)
-   - Check Navigatr API status
-   - Review error messages for specific troubleshooting steps
+- Run **Test Connection** to confirm the PAT is valid
+- Check your Navigatr user has provider admin access on at least one provider
+- If the connection test passes but the dropdown is empty, contact your Navigatr administrator
 
-1. **Help and Support**
-   - Use the help documentation links provided in the plugin interface
-   - Visit the Navigatr Help Centre for detailed guides
-   - Check form field help buttons for contextual guidance
+### Badge not issued after course completion
 
-1. **Observer Not Registered (Badge Issuance Not Triggered)**
-   - Run Moodle upgrade to force observer registration:
+- Check **Site Administration → Reports → Logs** for events from `local_navigatr`
+- Check the `local_navigatr_audit` table for the status and HTTP response code
+- Confirm the learner has an email address, first name, and last name on their Moodle profile
+- If the task failed with a 5xx error, Moodle will retry automatically
 
-     ```bash
-     sudo -u www-data /usr/bin/php admin/cli/upgrade.php --non-interactive
-     ```
+### Observer not triggering
 
-   - Or reinstall the plugin to ensure proper observer registration
+If badges stop being issued after a Moodle upgrade, re-register observers by running:
 
-1. **API Outages and Retry Mechanism**
-   - **Automatic Retries**: Failed badge issuance attempts are automatically retried by Moodle's task system
-   - **Retry Schedule**: Tasks retry at increasing intervals (1min, 5min, 15min, 1hr, 6hr, 24hr)
-   - **No Data Loss**: All course completions during API outages are queued and will be processed when API is restored
-   - **Audit Trail**: Check `local_navigatr_audit` table to see retry attempts and final outcomes
-   - **Manual Retry**: If needed, failed tasks can be manually retried via Moodle's task manager
+```bash
+sudo -u www-data /usr/bin/php admin/cli/upgrade.php --non-interactive
+```
 
-### Debugging
+### HTTP status codes
 
-The plugin uses Moodle's built-in debug system for logging. To see detailed API interactions:
+| Code | Meaning |
+|------|---------|
+| 200 / 201 | Badge issued successfully |
+| 400 | Missing user fields (email, firstname, lastname) |
+| 401 | PAT invalid or revoked — generate a new one |
+| 404 | Badge or provider not found — check the course mapping |
+| 5xx | Navigatr API error — task will retry automatically |
 
-1. **Enable Moodle Debugging**: Go to **Site Administration → Development → Debugging**
-1. **Set Debug Level**: Choose "DEVELOPER" for detailed logging or "NORMAL" for error logging
-1. **View Logs**: Check **Site Administration → Reports → Logs** for debug information
+## API reference
 
-The plugin logs important events using Moodle's event system, which are visible in the standard Moodle logs.
+The plugin uses these Navigatr API endpoints:
 
-### HTTP Status Codes
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| `GET` | `/v1/user_detail/0/providers` | List providers available to the authenticated user |
+| `GET` | `/v1/badge?provider_id={id}&page={n}&size={m}` | List badges for a provider |
+| `PUT` | `/v1/badge/{badge_id}/issue` | Issue a badge to a recipient |
 
-- `200/201` - Badge issued successfully
-- `400` - Bad request (missing user fields)
-- `401` - Authentication failed (token expired)
-- `404` - Badge or provider not found
-- `5xx` - Server error (retry automatically)
+| Environment | Base URL |
+|------------|---------|
+| Production | `https://api.navigatr.app/v1` |
+| Staging | `https://stagapi.navigatr.app/v1` |
+
+## Database tables
+
+### `local_navigatr_map`
+
+One row per course. Stores which badge to issue when a learner completes that course.
+
+| Column | Description |
+|--------|------------|
+| `courseid` | Moodle course ID (unique) |
+| `provider_id` | Navigatr provider ID |
+| `badge_id` | Navigatr badge ID |
+| `badge_name` | Badge name (cached from API) |
+| `badge_image_url` | Badge image URL (cached from API) |
+
+### `local_navigatr_audit`
+
+One row per badge issuance attempt. Used for deduplication, debugging, and audit.
+
+| Column | Description |
+|--------|------------|
+| `userid` | Moodle user ID |
+| `courseid` | Moodle course ID |
+| `provider_id` | Navigatr provider ID |
+| `badge_id` | Navigatr badge ID |
+| `status` | `success` or `error` |
+| `http_code` | HTTP response code from Navigatr API |
+| `response_json` | Raw API response |
+| `dedupe_key` | Unique key (`userid:courseid:badgeid`) — prevents duplicate issuance |
 
 ## Testing
 
-### Manual Testing
+### Manual
 
-1. **Configuration Test**
-   - Configure Navigatr credentials
-   - Click "Test Connection" button to verify authentication
-   - Click "Save Changes" to save settings
-   - Verify providers are loaded
+1. Configure a PAT and click **Test Connection**
+2. Map a course to a badge
+3. Enrol a test user and mark the course complete
+4. Check the audit table for a successful issuance record
 
-1. **Course Mapping Test**
-   - Create a test course
-   - Navigate to Course settings → Navigatr Badge
-   - Select a provider using the "Continue to Select Badge" button
-   - Choose a badge and click "Save Mapping"
-   - Verify mapping is saved and buttons appear correctly
-
-1. **Badge Issuance Test**
-   - Enrol a test user in the course
-   - Mark the course as complete
-   - Check audit records for successful issuance
-
-### Automated Testing
-
-The plugin includes testing support:
-
-**Local Testing (Quick Validation):**
+### Automated
 
 ```bash
-# Run local tests
-./scripts/test.sh
+# Syntax check (no Moodle needed)
+find . -name "*.php" | xargs php -l
 
-# This validates:
-# - PHP syntax
-# - Plugin structure
-# - Security issues
-# - Code quality
-```
-
-**Full Testing Suite:**
-
-```bash
-# Using moodle-plugin-ci
+# Full CI checks (requires moodle-plugin-ci)
 moodle-plugin-ci phplint
-moodle-plugin-ci codechecker
+moodle-plugin-ci phpcs
 moodle-plugin-ci phpunit
 ```
 
-## Security Notes
+## Versioning and contributing
 
-- **Credential Storage**: Passwords are encrypted using AES-256-CBC encryption with site-specific keys before storage
-- **Token Management**: Access tokens are never logged and are automatically refreshed when expired
-- **HTTPS Communication**: All API communications use HTTPS with SSL verification enabled
-- **Data Privacy**: User PII (email, firstname, lastname) is only sent to Navigatr for badge issuance
-- **Password Visibility**: The password field uses `passwordunmask` for better UX - passwords are visible when editing but stored encrypted
-- **Access Control**: Badge issuance is restricted to users with appropriate course completion permissions
-- **Audit Trail**: All badge issuance attempts are logged for security and debugging purposes
+Development happens on the `develop` branch. Releases are tagged and branched from there.
 
-## Versioning
+To report a bug or request a feature, open an issue on GitHub. Pull requests are welcome — please follow Moodle coding standards and include tests for new behaviour.
 
-This plugin follows semantic versioning principles. Each version release creates a new branch in the repository:
+## Help and support
 
-- **Main branch**: Contains the latest stable release
-- **Version branches**: Each version (e.g., `v1.0.0`, `v1.1.0`) has its own branch
-- **Development**: New features and fixes are developed in the `develop` branch
-- **Release process**: New versions are tagged and branched from the main branch
+For platform questions — badge creation, account management, provider setup — visit the [Navigatr Help Centre](https://help.navigatr.app/).
 
-## Contributing
-
-We welcome contributions to improve this plugin! Here's how you can help:
-
-### Reporting Issues
-
-If you encounter any problems with this plugin:
-
-1. **Create a GitHub Issue**: Please create a detailed issue on our GitHub repository
-1. **Include Information**:
-   - Moodle version
-   - Plugin version
-   - Error messages from logs
-   - Steps to reproduce the issue
-1. **Check Existing Issues**: Search existing issues before creating a new one
-
-### Contributing Code
-
-If you'd like to contribute code improvements:
-
-1. **Fork the Repository**: Create your own fork of the repository
-1. **Create a Pull Request**: Submit your changes via a pull request
-1. **Code Review**: All pull requests will be reviewed by the Navigatr team
-1. **Merge Process**: Approved contributions will be merged by the Navigatr team
-
-### Development Guidelines
-
-- Follow Moodle coding standards
-- Include appropriate tests for new features
-- Update documentation for any changes
-- Ensure backwards compatibility where possible
-
-## Need help with using Navigatr?
-
-For general Navigatr platform questions, badge creation, account management, and other Navigatr-related topics, please visit the [Navigatr Help Centre](https://help.navigatr.app/).
-
-The Help Centre contains comprehensive guides on:
-
-- Creating and managing badges
-- Setting up your Navigatr account
-- Badge design and customisation
-- Sharing badges on LinkedIn and other platforms
-- Account settings and profile management
-
-## Support
-
-For issues related to:
-
-- **Plugin functionality**: Check Moodle logs and audit records
-- **Navigatr API**: Contact Navigatr support
-- **Moodle integration**: Check plugin capabilities and permissions
+For plugin issues, check the Moodle logs and audit table first. If the issue is with the Navigatr API, contact Navigatr support.
 
 ## Changelog
 
