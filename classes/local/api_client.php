@@ -256,8 +256,7 @@ class api_client {
      * @return object Response object
      */
     public static function test_connection($pat, $environment = 'production') {
-        // Use the public user_detail endpoint (ID 0 = current user) to verify the PAT
-        // without relying on the advanced API.
+        // Use the public user_detail endpoint (ID 0 = current user) to verify the PAT without relying on the advanced API.
         $verifyurl = self::get_base_url($environment) . '/user_detail/0';
 
         $client = new self();
