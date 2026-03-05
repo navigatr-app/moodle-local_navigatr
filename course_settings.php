@@ -141,11 +141,14 @@ echo \core\notification::info($helptext);
 
 // Check if providers are available.
 $providers = [];
+$providerloaderror = null;
 try {
     $client = new \local_navigatr\local\api_client();
     $userresponse = $client->get("/user_detail/0");
     if ($userresponse->ok && isset($userresponse->body['providers'])) {
         $providers = $userresponse->body['providers'];
+    } else if (!$userresponse->ok) {
+        $providerloaderror = $userresponse->code;
     }
 } catch (Exception $e) {
     // API call failed, providers will be empty.
@@ -154,9 +157,13 @@ try {
 
 // Display provider configuration notice if no providers available.
 if (empty($providers)) {
-    echo \core\notification::info(
-        get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php'))
-    );
+    if ($providerloaderror === 401) {
+        echo \core\notification::error(get_string('error_auth_failed', 'local_navigatr'));
+    } else {
+        echo \core\notification::info(
+            get_string('provider_config_notice', 'local_navigatr', new \moodle_url('/local/navigatr/settings_page.php'))
+        );
+    }
 }
 
 // Display existing mapping if it exists using template.

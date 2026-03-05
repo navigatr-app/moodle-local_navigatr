@@ -96,7 +96,7 @@ class provider_selection_form extends \moodleform {
         try {
             // Check cache first for user details.
             $cacheduser = \local_navigatr\local\cache::get_user_detail();
-            if ($cacheduser !== null && isset($cacheduser['providers'])) {
+            if ($cacheduser !== false && isset($cacheduser['providers'])) {
                 return $cacheduser['providers'];
             }
 
