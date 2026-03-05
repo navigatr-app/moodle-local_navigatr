@@ -5,6 +5,40 @@ All notable changes to the Navigatr plugin will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-03-05
+
+### Authentication
+
+- Replaced username/password token authentication with Personal Access Token (PAT)
+- PAT is now stored encrypted with AES-256-CBC and sent as `X-Access-Token` header
+- PAT connection test now uses the public `GET /user_detail/0` endpoint, removing the dependency on the advanced API
+- PAT is automatically trimmed on save and test to prevent failures from accidental whitespace when copying tokens
+
+### Fixed
+
+- Fixed race condition in `test_connection()` where config keys were mutated mid-request
+- Fixed `issue_badge_task` to guard against a deleted course-badge mapping after the task was queued
+- Fixed double audit record write that was corrupting the stored HTTP code on 5xx retries
+- Fixed silent provider fetch failure caused by comparing cache miss (`false`) against `null`
+- Fixed providers endpoint from `/user_detail/0` to the dedicated `/user_detail/0/providers` endpoint
+- Fixed misleading "no providers" warning shown when the API returns HTTP 200 with an unexpected non-list response body — now correctly shows the API configuration notice
+- Removed environment name from the connection-failed error message
+
+### Removed
+
+- Removed the `course_restored` observer and its associated backup/restore logic
+- Removed dead event classes `course_mapping_restored` and `course_mapping_skipped`
+
+### CI/CD
+
+- Replaced placeholder CI workflow with `moodle-plugin-ci` running against PHP 8.1/8.2/8.3 and Moodle 4.1/4.4/4.5
+- Rewrote test suite with real behavioural tests for `issue_badge_task` and `password_manager`
+- Fixed all PHPCS violations to pass `--max-warnings 0`
+
+### Documentation
+
+- Rewrote README with PAT authentication setup, provider explanation, and environment reference table
+
 ## [1.1.1] - 2024-10-01
 
 ### Code Quality Improvements in 1.1.1
