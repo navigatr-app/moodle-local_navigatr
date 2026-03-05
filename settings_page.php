@@ -56,7 +56,7 @@ if ($data && confirm_sesskey()) {
             \core\notification::success(get_string('connection_success_simple', 'local_navigatr'));
         } else {
             // Build detailed error message including environment so the user can diagnose mismatches.
-            $errormsg = get_string('connection_failed', 'local_navigatr') . ' (' . $environment . ')';
+            $errormsg = get_string('connection_failed', 'local_navigatr');
             if (!empty($result->error)) {
                 $errormsg .= ': ' . s($result->error);
             } else if (!empty($result->body) && is_array($result->body) && isset($result->body['error'])) {
