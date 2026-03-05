@@ -58,16 +58,28 @@ class cache {
 
 
     /**
-     * Get providers from cache (extracted from cached user detail).
+     * Get providers from cache.
      *
      * @return array|null Providers array or null if not cached
      */
     public static function get_providers() {
         $userdetail = self::get_user_detail();
-        if ($userdetail !== false && isset($userdetail['providers'])) {
-            return $userdetail['providers'];
+        if ($userdetail !== false && is_array($userdetail)) {
+            $providers = $userdetail['providers'] ?? null;
+            if (is_array($providers)) {
+                return $providers;
+            }
         }
         return null;
+    }
+
+    /**
+     * Set providers in cache.
+     *
+     * @param array $providers Providers array
+     */
+    public static function set_providers($providers) {
+        self::set_user_detail(['providers' => $providers]);
     }
 
     /**
