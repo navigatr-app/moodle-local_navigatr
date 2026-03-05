@@ -65,5 +65,4 @@ class observer {
         ]);
         $eventdata->trigger();
     }
-
 }

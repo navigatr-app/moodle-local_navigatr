@@ -34,8 +34,8 @@ use core_privacy\local\request\approved_userlist;
  * Privacy provider class.
  */
 class provider implements
-    \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\metadata\provider,
+    \core_privacy\local\request\core_userlist_provider,
     \core_privacy\local\request\plugin\provider
 {
     /**
