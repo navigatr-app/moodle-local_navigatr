@@ -150,10 +150,12 @@ try {
     } else {
         $client = new \local_navigatr\local\api_client();
         $providerresponse = $client->get("/user_detail/0/providers");
-        $providerapiok = $providerresponse->ok;
         if ($providerresponse->ok && is_array($providerresponse->body) && array_is_list($providerresponse->body)) {
             $providers = $providerresponse->body;
             \local_navigatr\local\cache::set_providers($providers);
+        } else {
+            // Mark as failed if response is not OK or body format is unexpected.
+            $providerapiok = false;
         }
     }
 } catch (Exception $e) {
