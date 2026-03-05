@@ -26,15 +26,15 @@ In Navigatr, a **provider** is the organisation that owns and issues badges — 
 
 1. **Get a Navigatr account.** If you don't have one, [register for a free trial](https://navigatr.app/register/plan/launch).
 
-2. **Download the plugin.** Get the latest release from the repository's releases page, or clone the repository directly.
+1. **Download the plugin.** Get the latest release from the repository's releases page, or clone the repository directly.
 
-3. **Copy files to Moodle.** Place the plugin folder at `local/navigatr/` inside your Moodle installation. These items are optional and can be omitted:
+1. **Copy files to Moodle.** Place the plugin folder at `local/navigatr/` inside your Moodle installation. These items are optional and can be omitted:
    - `/.github` (CI/CD configuration)
    - `/.gitignore` (Git configuration)
 
-4. **Run the Moodle upgrade.** Visit the admin notifications page (`/admin/index.php`) to complete installation.
+1. **Run the Moodle upgrade.** Visit the admin notifications page (`/admin/index.php`) to complete installation.
 
-5. **Configure credentials.** Go to **Site Administration → Plugins → Local plugins → Navigatr** and add your Personal Access Token (see below).
+1. **Configure credentials.** Go to **Site Administration → Plugins → Local plugins → Navigatr** and add your Personal Access Token (see below).
 
 ## Configuration
 
@@ -45,15 +45,15 @@ The plugin authenticates with Navigatr using a **Personal Access Token (PAT)**. 
 To create one:
 
 1. Log in to your Navigatr account
-2. Go to **Account Settings → Personal Access Tokens**
-3. Create a new token and copy it
+1. Go to **Account Settings → Personal Access Tokens**
+1. Create a new token and copy it
 
 Then in Moodle:
 
 1. Go to **Site Administration → Plugins → Local plugins → Navigatr**
-2. Paste the token into the **Personal Access Token** field
-3. Click **Test Connection** to verify it works
-4. Click **Save Changes**
+1. Paste the token into the **Personal Access Token** field
+1. Click **Test Connection** to verify it works
+1. Click **Save Changes**
 
 Tokens are encrypted with AES-256-CBC before storage. They are never logged or exposed in plain text.
 
@@ -70,19 +70,19 @@ Choose **Production** for your live Moodle site. Choose **Staging** if you are t
 For each course where you want to issue badges on completion:
 
 1. Go to the course.
-2. Navigate to **Course settings → Navigatr Badge**.
+1. Navigate to **Course settings → Navigatr Badge**.
 
 ![Course Settings Menu](images/course-settings-menu.png)
 
-3. Select a provider from the dropdown and click **Continue to Select Badge**.
+1. Select a provider from the dropdown and click **Continue to Select Badge**.
 
 ![Provider Selection](images/provider-selection.png)
 
-4. Choose a badge and click **Save Mapping**.
+1. Choose a badge and click **Save Mapping**.
 
 ![Badge Selection](images/badge-selection.png)
 
-5. The mapping is now active. From this page you can:
+1. The mapping is now active. From this page you can:
    - **View Badge** — open the badge in Navigatr
    - **Change Badge** — select a different badge
    - **Remove Badge** — remove the mapping
@@ -100,7 +100,7 @@ Duplicate issuance is prevented: a badge is only issued once per learner per cou
 ## Capabilities
 
 | Capability | Who it's for |
-|-----------|-------------|
+| ---------- | ------------ |
 | `local/navigatr:managecredentials` | Site admins — configure the PAT and plugin settings |
 | `local/navigatr:configurecourse` | Teachers and course managers — map courses to badges |
 
@@ -150,7 +150,7 @@ sudo -u www-data /usr/bin/php admin/cli/upgrade.php --non-interactive
 ### HTTP status codes
 
 | Code | Meaning |
-|------|---------|
+| ---- | ------- |
 | 200 / 201 | Badge issued successfully |
 | 400 | Missing user fields (email, firstname, lastname) |
 | 401 | PAT invalid or revoked — generate a new one |
@@ -162,13 +162,13 @@ sudo -u www-data /usr/bin/php admin/cli/upgrade.php --non-interactive
 The plugin uses these Navigatr API endpoints:
 
 | Method | Endpoint | Purpose |
-|--------|----------|---------|
+| ------ | -------- | ------- |
 | `GET` | `/v1/user_detail/0/providers` | List providers available to the authenticated user |
 | `GET` | `/v1/badge?provider_id={id}&page={n}&size={m}` | List badges for a provider |
 | `PUT` | `/v1/badge/{badge_id}/issue` | Issue a badge to a recipient |
 
 | Environment | Base URL |
-|------------|---------|
+| ----------- | -------- |
 | Production | `https://api.navigatr.app/v1` |
 | Staging | `https://stagapi.navigatr.app/v1` |
 
@@ -179,7 +179,7 @@ The plugin uses these Navigatr API endpoints:
 One row per course. Stores which badge to issue when a learner completes that course.
 
 | Column | Description |
-|--------|------------|
+| ------ | ----------- |
 | `courseid` | Moodle course ID (unique) |
 | `provider_id` | Navigatr provider ID |
 | `badge_id` | Navigatr badge ID |
@@ -191,7 +191,7 @@ One row per course. Stores which badge to issue when a learner completes that co
 One row per badge issuance attempt. Used for deduplication, debugging, and audit.
 
 | Column | Description |
-|--------|------------|
+| ------ | ----------- |
 | `userid` | Moodle user ID |
 | `courseid` | Moodle course ID |
 | `provider_id` | Navigatr provider ID |
@@ -206,9 +206,9 @@ One row per badge issuance attempt. Used for deduplication, debugging, and audit
 ### Manual
 
 1. Configure a PAT and click **Test Connection**
-2. Map a course to a badge
-3. Enrol a test user and mark the course complete
-4. Check the audit table for a successful issuance record
+1. Map a course to a badge
+1. Enrol a test user and mark the course complete
+1. Check the audit table for a successful issuance record
 
 ### Automated
 
