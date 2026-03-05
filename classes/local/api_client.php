@@ -42,10 +42,13 @@ class api_client {
     /**
      * Get base URL based on environment configuration
      *
+     * @param string|null $env Environment override ('production' or 'staging'); reads config when null.
      * @return string Base URL for Navigatr API
      */
-    public static function get_base_url() {
-        $env = get_config('local_navigatr', 'env') ?: 'production';
+    public static function get_base_url($env = null) {
+        if ($env === null) {
+            $env = get_config('local_navigatr', 'env') ?: 'production';
+        }
 
         $baseurls = [
             'production' => 'https://api.navigatr.app/v1',
@@ -253,9 +256,9 @@ class api_client {
      * @return object Response object
      */
     public static function test_connection($pat, $environment = 'production') {
-        // Build the verify URL directly from the requested environment so we never
-        // need to mutate the global config (which is not safe under concurrent requests).
-        $verifyurl = self::get_advanced_base_url($environment) . '/personal_access_token/verify';
+        // Use the public user_detail endpoint (ID 0 = current user) to verify the PAT
+        // without relying on the advanced API.
+        $verifyurl = self::get_base_url($environment) . '/user_detail/0';
 
         $client = new self();
         $response = $client->verify_pat($pat, $verifyurl);
