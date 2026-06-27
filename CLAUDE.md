@@ -9,6 +9,16 @@
 
 ---
 
+## Contribution model - same-repo branch (no fork)
+
+This repo uses the **same-repo branch model**, not a fork. `origin` is the org repo (`navigatr-app/moodle-local_navigatr`), and the default branch `develop` is protected (PR plus at least one non-author review).
+
+- Work on a branch off `develop` and push it to `origin`. Omid works on a long-lived `omid` branch; agents (Connie) use short-lived feature branches.
+- Open the PR against `develop`. Same-repo branch PRs run the full check suite (CodeQL, the Cursor Security Agent, and CI); fork PRs get a read-only token and no secrets so they skip those, which is why this repo uses branches.
+- Never push `develop` directly, and do not merge your own PR (a non-author approves).
+
+---
+
 ## Key Architecture
 
 ### Badge Issuance Flow
