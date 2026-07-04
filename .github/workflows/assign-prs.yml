@@ -20,5 +20,10 @@ jobs:
       - name: Assign omufeed
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_URL: ${{ github.event.pull_request.html_url }}
-        run: gh pr edit "$PR_URL" --add-assignee omufeed
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        # REST add-assignees only ADDS to the assignee set, so it works with the App
+        # installation token even when an agent (e.g. Claude) is already assigned.
+        # gh pr edit --add-assignee uses GraphQL replaceActorsForAssignable, which App
+        # tokens cannot call once an agent actor is in the assignee set.
+        run: gh api --method POST "repos/$REPO/issues/$PR_NUMBER/assignees" -f "assignees[]=omufeed"
