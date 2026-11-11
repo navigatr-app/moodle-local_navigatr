@@ -29,6 +29,35 @@ namespace local_navigatr\output;
  */
 class course_settings_output {
     /**
+     * Return the URL only if it is an absolute http or https URL.
+     *
+     * Values from the Navigatr API are rendered into an href, so any other
+     * scheme (javascript:, data:, relative or protocol-relative URLs) is dropped.
+     *
+     * @param mixed $url The URL to check
+     * @return string The cleaned URL, or an empty string if it is not allowed
+     */
+    public static function clean_external_url($url): string {
+        if (!is_string($url) || trim($url) === '') {
+            return '';
+        }
+
+        $url = clean_param(trim($url), PARAM_URL);
+        if ($url === '') {
+            return '';
+        }
+
+        // Only an explicit http or https scheme with a host is allowed.
+        $scheme = \core_text::strtolower((string) parse_url($url, PHP_URL_SCHEME));
+        $host = parse_url($url, PHP_URL_HOST);
+        if (!in_array($scheme, ['http', 'https'], true) || empty($host)) {
+            return '';
+        }
+
+        return $url;
+    }
+
+    /**
      * Render the current mapping display.
      *
      * @param object $existingmapping The existing mapping data
@@ -67,7 +96,7 @@ class course_settings_output {
             'badge_name' => $existingbadge['name'],
             'badge_description' => isset($existingbadge['description']) ? $existingbadge['description'] : '',
             'badge_image_url' => isset($existingbadge['image_url']) ? $existingbadge['image_url'] : '',
-            'badge_url' => isset($existingbadge['url']) ? $existingbadge['url'] : '',
+            'badge_url' => self::clean_external_url($existingbadge['url'] ?? ''),
             'change_url' => $changeurl->out(),
             'remove_url' => $removeurl->out(),
         ];
