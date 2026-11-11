@@ -120,7 +120,7 @@ The plugin implements Moodle's privacy API. When issuing a badge, the following 
 
 - the learner's email address, first name and last name;
 - the course name, in the badge evidence text;
-- when available, the learner's final course grade as a percentage or, if there is none, their course completion progress.
+- when available, the learner's final course grade as a percentage or, if there is none, their course completion progress, or 100 if the course is completed and there is neither.
 
 The plugin also keeps an audit record of each issuance attempt in Moodle, including the API status code and response.
 
