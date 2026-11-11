@@ -41,18 +41,18 @@ $PAGE->set_title(get_string('select_provider', 'local_navigatr'));
 $PAGE->set_heading($course->fullname . ' - ' . get_string('select_provider', 'local_navigatr'));
 
 // Handle remove mapping action.
-if (optional_param('action', '', PARAM_ALPHA) === 'removemapping') {
-    require_sesskey();
+if ($data = data_submitted()) {
+    if (($data->action ?? '') === 'removemapping') {
+        require_sesskey();
 
-    $mapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
-    if ($mapping) {
-        $DB->delete_records('local_navigatr_map', ['courseid' => $courseid]);
-        redirect(
-            new moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]),
-            get_string('mapping_removed', 'local_navigatr'),
-            null,
-            \core\output\notification::NOTIFY_SUCCESS
-        );
+        if (\local_navigatr\local\mapping_manager::remove($courseid)) {
+            redirect(
+                new moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]),
+                get_string('mapping_removed', 'local_navigatr'),
+                null,
+                \core\output\notification::NOTIFY_SUCCESS
+            );
+        }
     }
 }
 

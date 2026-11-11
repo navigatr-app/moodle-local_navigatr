@@ -87,37 +87,28 @@ $form = new \local_navigatr\form\badge_selection_form(null, [
 if ($form->is_cancelled()) {
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
 } else if ($data = $form->get_data()) {
-    // Save the mapping.
-    global $DB;
-
-    $mapping = new \stdClass();
-    $mapping->courseid = $courseid;
-    $mapping->provider_id = $data->provider_id;
-    $mapping->badge_id = $data->badge_id;
-    $mapping->timecreated = time();
-    $mapping->timemodified = time();
-
     // Fetch badge metadata from API.
+    $badgename = null;
+    $badgeimageurl = null;
     try {
         $client = new \local_navigatr\local\api_client();
         $badgeresponse = $client->get("/badge/{$data->badge_id}");
         if ($badgeresponse->ok && isset($badgeresponse->body)) {
-            $mapping->badge_name = $badgeresponse->body['name'] ?? null;
-            $mapping->badge_image_url = $badgeresponse->body['image_url'] ?? null;
+            $badgename = $badgeresponse->body['name'] ?? null;
+            $badgeimageurl = $badgeresponse->body['image_url'] ?? null;
         }
     } catch (Exception $e) {
-        // If API call fails, leave fields as null - will be populated later.
+        // If API call fails, leave fields unset - will be populated later.
         debugging("Failed to fetch badge metadata: " . $e->getMessage(), DEBUG_NORMAL);
     }
 
-    // Check if mapping already exists.
-    $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
-    if ($existing) {
-        $mapping->id = $existing->id;
-        $DB->update_record('local_navigatr_map', $mapping);
-    } else {
-        $DB->insert_record('local_navigatr_map', $mapping);
-    }
+    \local_navigatr\local\mapping_manager::save(
+        $courseid,
+        (int) $data->provider_id,
+        (int) $data->badge_id,
+        $badgename,
+        $badgeimageurl
+    );
 
     redirect(new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid]));
 }
