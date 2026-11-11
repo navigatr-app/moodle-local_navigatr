@@ -78,8 +78,8 @@ if ($form->is_cancelled()) {
     redirect(new moodle_url('/admin/category.php', ['category' => 'localplugins']));
 }
 
-if ($data = $form->get_data()) {
-    // Form was submitted and validated.
+if (($data = $form->get_data()) && !isset($data->testconnection)) {
+    // Save was pressed and the form validated; Test Connection does not save.
     \local_navigatr\local\settings_manager::save($data->env, $data->personal_access_token, (int) $data->timeout);
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));
 } else {

@@ -68,6 +68,11 @@ class mapping_manager {
 
         $existing = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
         if ($existing) {
+            // A different badge must not keep the previous badge's cached name and image.
+            if ((int) $existing->badge_id !== $badgeid) {
+                $mapping->badge_name = $badgename;
+                $mapping->badge_image_url = $badgeimageurl;
+            }
             $mapping->id = $existing->id;
             $DB->update_record('local_navigatr_map', $mapping);
             $eventclass = course_mapping_updated::class;

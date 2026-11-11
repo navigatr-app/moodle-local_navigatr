@@ -60,7 +60,8 @@ final class mapping_manager_test extends advanced_testcase {
         $this->assertEquals(10, $events[0]->other['badge_id']);
         $this->assertEquals(1, $DB->count_records('local_navigatr_map', ['courseid' => $course->id]));
         $record = $DB->get_record('local_navigatr_map', ['courseid' => $course->id]);
-        $this->assertSame('Badge', $record->badge_name);
+        $this->assertNull($record->badge_name);
+        $this->assertNull($record->badge_image_url);
         $sink->close();
     }
 
