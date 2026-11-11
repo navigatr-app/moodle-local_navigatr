@@ -58,57 +58,6 @@ if ($data = data_submitted()) {
 
 // Check for existing mapping.
 $existingmapping = $DB->get_record('local_navigatr_map', ['courseid' => $courseid]);
-$existingprovider = null;
-$existingbadge = null;
-
-if ($existingmapping) {
-    try {
-        // Fetch provider details.
-        $client = new \local_navigatr\local\api_client();
-        $providerresponse = $client->get("/provider/{$existingmapping->provider_id}");
-        if ($providerresponse->ok) {
-            $existingprovider = $providerresponse->body;
-        }
-
-        // Fetch badge details.
-        $badgeresponse = $client->get("/badge/{$existingmapping->badge_id}");
-        if ($badgeresponse->ok) {
-            $existingbadge = $badgeresponse->body;
-
-            // Update cached badge metadata if it has changed.
-            $needsupdate = false;
-            if ($existingmapping->badge_name !== ($existingbadge['name'] ?? null)) {
-                $existingmapping->badge_name = $existingbadge['name'] ?? null;
-                $needsupdate = true;
-            }
-            if ($existingmapping->badge_image_url !== ($existingbadge['image_url'] ?? null)) {
-                $existingmapping->badge_image_url = $existingbadge['image_url'] ?? null;
-                $needsupdate = true;
-            }
-
-            if ($needsupdate) {
-                $existingmapping->timemodified = time();
-                $DB->update_record('local_navigatr_map', $existingmapping);
-            }
-        } else {
-            // API call failed, use cached data.
-            $existingbadge = [
-                'name' => $existingmapping->badge_name ?? 'Unknown Badge',
-                'image_url' => $existingmapping->badge_image_url ?? null,
-                'description' => null,
-                'url' => null,
-            ];
-        }
-    } catch (Exception $e) {
-        // If API calls fail, use cached data.
-        $existingbadge = [
-            'name' => $existingmapping->badge_name ?? 'Unknown Badge',
-            'image_url' => $existingmapping->badge_image_url ?? null,
-            'description' => null,
-            'url' => null,
-        ];
-    }
-}
 
 // Create form.
 $form = new \local_navigatr\form\provider_selection_form(null, ['courseid' => $courseid]);
@@ -172,6 +121,15 @@ if (!$providerapiok) {
 } else if (empty($providers)) {
     // Connected but no providers — account permissions issue.
     echo \core\notification::warning(get_string('error_no_providers', 'local_navigatr'));
+}
+
+// Resolve provider and badge for the stored mapping from the providers list and cache, with a stored-data fallback.
+$existingprovider = null;
+$existingbadge = null;
+if ($existingmapping) {
+    $display = \local_navigatr\local\mapping_display::resolve($existingmapping, $providers);
+    $existingprovider = $display['provider'];
+    $existingbadge = $display['badge'];
 }
 
 // Display existing mapping if it exists using template.
