@@ -84,12 +84,11 @@ class course_settings_output {
             'provider_id' => $existingmapping->provider_id,
         ]);
 
-        // Removal is a POST with a confirmation dialog; single_button adds the sesskey.
+        // Removal is a POST with a confirmation dialog; single_button adds the sesskey and is secondary by default.
         $removebutton = new \single_button(
             new \moodle_url('/local/navigatr/course_settings.php', ['id' => $courseid, 'action' => 'removemapping']),
             get_string('remove_mapping', 'local_navigatr'),
-            'post',
-            \single_button::BUTTON_SECONDARY
+            'post'
         );
         $removebutton->add_confirm_action(get_string('remove_mapping_confirm', 'local_navigatr'));
 
