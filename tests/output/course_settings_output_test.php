@@ -112,4 +112,19 @@ final class course_settings_output_test extends advanced_testcase {
         $html = $this->render(['name' => 'Badge']);
         $this->assertStringNotContainsString(get_string('view_badge', 'local_navigatr'), $html);
     }
+
+    /**
+     * Test that removal is a POST form with a sesskey and no GET removal link.
+     *
+     * @covers \local_navigatr\output\course_settings_output::render_current_mapping
+     */
+    public function test_remove_is_a_post_form(): void {
+        $this->resetAfterTest();
+        $html = $this->render(['name' => 'Badge']);
+
+        $this->assertStringContainsString('method="post"', $html);
+        $this->assertStringContainsString('name="action" value="removemapping"', $html);
+        $this->assertStringContainsString('name="sesskey"', $html);
+        $this->assertDoesNotMatchRegularExpression('/href="[^"]*action=removemapping/', $html);
+    }
 }

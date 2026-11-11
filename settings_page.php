@@ -40,7 +40,7 @@ $data = data_submitted();
 if ($data && confirm_sesskey()) {
     if (isset($data->removeconnection)) {
         // Handle remove connection.
-        \local_navigatr\local\password_manager::clear_pat();
+        \local_navigatr\local\settings_manager::remove_connection();
         \core\notification::success(get_string('connection_removed', 'local_navigatr'));
     } else if (isset($data->testconnection)) {
         // Handle test connection.
@@ -78,11 +78,9 @@ if ($form->is_cancelled()) {
     redirect(new moodle_url('/admin/category.php', ['category' => 'localplugins']));
 }
 
-if ($data = $form->get_data()) {
-    // Form was submitted and validated.
-    set_config('env', $data->env, 'local_navigatr');
-    \local_navigatr\local\password_manager::store_pat(trim($data->personal_access_token));
-    set_config('timeout', $data->timeout, 'local_navigatr');
+if (($data = $form->get_data()) && !isset($data->testconnection)) {
+    // Save was pressed and the form validated; Test Connection does not save.
+    \local_navigatr\local\settings_manager::save($data->env, $data->personal_access_token, (int) $data->timeout);
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));
 } else {
     // Set form data with current configuration values.

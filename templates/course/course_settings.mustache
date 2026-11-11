@@ -30,7 +30,7 @@
     @var string badge_image_url (Optional) The URL to the badge image
     @var string badge_url (Optional) The URL to view the badge on Navigatr
     @var string change_url The URL to change the badge mapping
-    @var string remove_url The URL to remove the badge mapping
+    @var string remove_button The rendered POST button (with confirmation) to remove the badge mapping
 }}
 {{#existing_mapping}}
 <div class="alert alert-info current-mapping">
@@ -60,7 +60,7 @@
     
     <div class="mapping-actions">
         <a href="{{change_url}}" class="btn btn-secondary">{{#str}}change_mapping, local_navigatr{{/str}}</a>
-        <a href="{{remove_url}}" class="btn btn-outline-danger" onclick="return confirm('{{#str}}remove_mapping_confirm, local_navigatr{{/str}}')">{{#str}}remove_mapping, local_navigatr{{/str}}</a>
+        {{{remove_button}}}
     </div>
 </div>
 {{/existing_mapping}}
