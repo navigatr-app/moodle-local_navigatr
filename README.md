@@ -97,6 +97,16 @@ If the API is unavailable, the task retries automatically at increasing interval
 
 Duplicate issuance is prevented: a badge is only issued once per learner per course per badge.
 
+## What learners receive
+
+The learner gets an email from Navigatr telling them they have been issued a badge, with a link to claim it. Claiming needs a free Navigatr account: the link opens a short sign-up form with the learner's details already filled in. Badges are issued on Navigatr, not as Moodle badges, so they do not appear in the learner's Moodle profile.
+
+Once claimed, the learner can share the badge on LinkedIn, and anyone can verify it from its public page.
+
+### PDF certificates
+
+Every badge comes with a printable PDF certificate that the learner can download once they have claimed it. Certificates are switched on by default. If you do not want learners to download a certificate for a badge, switch off **Printable certificates** in that badge's settings on Navigatr. The provider settings have the same switch, which sets the default for badges you create afterwards.
+
 ## Capabilities
 
 | Capability | Who it's for |
