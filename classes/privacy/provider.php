@@ -51,6 +51,9 @@ class provider implements
             'provider_id' => 'privacy:metadata:local_navigatr_audit:provider_id',
             'badge_id' => 'privacy:metadata:local_navigatr_audit:badge_id',
             'status' => 'privacy:metadata:local_navigatr_audit:status',
+            'http_code' => 'privacy:metadata:local_navigatr_audit:http_code',
+            'response_json' => 'privacy:metadata:local_navigatr_audit:response_json',
+            'dedupe_key' => 'privacy:metadata:local_navigatr_audit:dedupe_key',
             'timecreated' => 'privacy:metadata:local_navigatr_audit:timecreated',
         ], 'privacy:metadata:local_navigatr_audit');
 
@@ -58,6 +61,8 @@ class provider implements
             'recipient_email' => 'privacy:metadata:navigatr:recipient_email',
             'recipient_firstname' => 'privacy:metadata:navigatr:recipient_firstname',
             'recipient_lastname' => 'privacy:metadata:navigatr:recipient_lastname',
+            'evidence_text' => 'privacy:metadata:navigatr:evidence_text',
+            'score' => 'privacy:metadata:navigatr:score',
         ], 'privacy:metadata:navigatr:purpose');
 
         return $collection;
