@@ -92,6 +92,19 @@ final class cache_test extends advanced_testcase {
     }
 
     /**
+     * Test that an empty providers list is treated as a cache miss.
+     */
+    public function test_empty_providers_not_served_from_cache(): void {
+        $this->resetAfterTest();
+
+        cache::set_providers([]);
+        $this->assertNull(cache::get_providers());
+
+        cache::set_providers([['id' => 7]]);
+        $this->assertSame([['id' => 7]], cache::get_providers());
+    }
+
+    /**
      * Test cache TTL handling
      */
     public function test_cache_ttl(): void {

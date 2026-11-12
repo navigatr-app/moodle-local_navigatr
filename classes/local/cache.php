@@ -100,13 +100,15 @@ class cache {
     /**
      * Get providers from cache.
      *
+     * An empty list counts as not cached, so an account that gains provider access is seen at once.
+     *
      * @return array|null Providers array or null if not cached
      */
     public static function get_providers() {
         $userdetail = self::get_user_detail();
         if ($userdetail !== false && is_array($userdetail)) {
             $providers = $userdetail['providers'] ?? null;
-            if (is_array($providers)) {
+            if (is_array($providers) && $providers !== []) {
                 return $providers;
             }
         }
