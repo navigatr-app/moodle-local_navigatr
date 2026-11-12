@@ -58,6 +58,47 @@ class cache {
 
 
     /**
+     * Get one badge's display details from cache.
+     *
+     * @param int $badgeid Badge ID
+     * @return array|null Badge details or null if not cached
+     */
+    public static function get_badge($badgeid) {
+        $cache = \cache::make('local_navigatr', 'badges');
+        $value = $cache->get(self::badge_key($badgeid));
+        return is_array($value) ? $value : null;
+    }
+
+    /**
+     * Cache one badge's display details.
+     *
+     * Only the fields the course settings page shows are stored.
+     *
+     * @param int $badgeid Badge ID
+     * @param array $badge Badge response body
+     */
+    public static function set_badge($badgeid, $badge) {
+        $cache = \cache::make('local_navigatr', 'badges');
+        $cache->set(self::badge_key($badgeid), [
+            'name' => $badge['name'] ?? null,
+            'image_url' => $badge['image_url'] ?? null,
+            'description' => $badge['description'] ?? null,
+            'url' => $badge['url'] ?? null,
+        ]);
+    }
+
+    /**
+     * Build the cache key for a badge, scoped to the environment.
+     *
+     * @param int $badgeid Badge ID
+     * @return string Key of letters, digits and underscores only
+     */
+    protected static function badge_key($badgeid) {
+        $env = get_config('local_navigatr', 'env') ?: 'production';
+        return 'detail_' . preg_replace('/[^a-z0-9]/', '', strtolower($env)) . '_' . (int) $badgeid;
+    }
+
+    /**
      * Get providers from cache.
      *
      * @return array|null Providers array or null if not cached
