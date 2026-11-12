@@ -130,8 +130,8 @@ $string['privacy:metadata:navigatr:purpose'] = 'Issue a digital badge upon cours
 $string['privacy:metadata:navigatr:recipient_email'] = 'Recipient email address';
 $string['privacy:metadata:navigatr:recipient_firstname'] = 'Recipient first name';
 $string['privacy:metadata:navigatr:recipient_lastname'] = 'Recipient last name';
-$string['privacy:metadata:navigatr:score'] = 'The recipient\'s final course grade as a percentage or, if there is none, ' .
-    'their course completion progress, or 100 if the course is completed and there is neither, when available';
+$string['privacy:metadata:navigatr:score'] = 'The recipient\'s course grade as a percentage, or their completion ' .
+    'progress (100 if completed), when available';
 $string['provider'] = 'Provider';
 $string['provider_admin_notice'] = 'Please ensure that the configured Navigatr user is a provider admin on Navigatr ' .
     'to access and manage badge mappings.';
