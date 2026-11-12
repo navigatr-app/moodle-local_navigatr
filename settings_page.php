@@ -41,6 +41,7 @@ if ($data && confirm_sesskey()) {
     if (isset($data->removeconnection)) {
         // Handle remove connection.
         \local_navigatr\local\settings_manager::remove_connection();
+        \local_navigatr\local\cache::clear_cache();
         \core\notification::success(get_string('connection_removed', 'local_navigatr'));
     } else if (isset($data->testconnection)) {
         // Handle test connection.
@@ -81,6 +82,7 @@ if ($form->is_cancelled()) {
 if (($data = $form->get_data()) && !isset($data->testconnection)) {
     // Save was pressed and the form validated; Test Connection does not save.
     \local_navigatr\local\settings_manager::save($data->env, $data->personal_access_token, (int) $data->timeout);
+    \local_navigatr\local\cache::clear_cache();
     \core\notification::success(get_string('settingssaved', 'local_navigatr'));
 } else {
     // Set form data with current configuration values.

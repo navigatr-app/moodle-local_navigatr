@@ -38,7 +38,7 @@ class cache {
      */
     public static function get_badges($providerid, $page = 1, $size = 50) {
         $cache = \cache::make('local_navigatr', 'badges');
-        $key = "{$providerid}:{$page}:{$size}";
+        $key = "{$providerid}_{$page}_{$size}";
         return $cache->get($key);
     }
 
@@ -52,10 +52,9 @@ class cache {
      */
     public static function set_badges($providerid, $page, $size, $badges) {
         $cache = \cache::make('local_navigatr', 'badges');
-        $key = "{$providerid}:{$page}:{$size}";
+        $key = "{$providerid}_{$page}_{$size}";
         $cache->set($key, $badges);
     }
-
 
     /**
      * Get one badge's display details from cache.
@@ -101,13 +100,15 @@ class cache {
     /**
      * Get providers from cache.
      *
+     * An empty list counts as not cached, so an account that gains provider access is seen at once.
+     *
      * @return array|null Providers array or null if not cached
      */
     public static function get_providers() {
         $userdetail = self::get_user_detail();
         if ($userdetail !== false && is_array($userdetail)) {
             $providers = $userdetail['providers'] ?? null;
-            if (is_array($providers)) {
+            if (is_array($providers) && $providers !== []) {
                 return $providers;
             }
         }

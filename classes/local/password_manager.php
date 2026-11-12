@@ -121,43 +121,6 @@ class password_manager {
     }
 
     /**
-     * Store password securely.
-     *
-     * @param string $password Plain text password
-     */
-    public static function store_password($password) {
-        if (empty($password)) {
-            unset_config('password', 'local_navigatr');
-            return;
-        }
-
-        $encrypted = self::encrypt_password($password);
-        set_config('password', $encrypted, 'local_navigatr');
-    }
-
-    /**
-     * Retrieve and decrypt password.
-     *
-     * @return string Plain text password
-     */
-    public static function get_password() {
-        $encrypted = get_config('local_navigatr', 'password');
-
-        if (empty($encrypted)) {
-            return '';
-        }
-
-        return self::decrypt_password($encrypted);
-    }
-
-    /**
-     * Clear stored password.
-     */
-    public static function clear_password() {
-        unset_config('password', 'local_navigatr');
-    }
-
-    /**
      * Store personal access token securely.
      *
      * @param string $pat Plain text personal access token

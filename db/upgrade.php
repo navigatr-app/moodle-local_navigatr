@@ -29,6 +29,8 @@
  * @return bool True on success
  */
 function xmldb_local_navigatr_upgrade($oldversion) {
+    global $DB;
+
     if ($oldversion < 2026030401) {
         // Migrating from username/password authentication to Personal Access Tokens.
         // Clear all stale authentication config keys from the old auth system.
@@ -42,6 +44,24 @@ function xmldb_local_navigatr_upgrade($oldversion) {
         unset_config('nav_user_id', 'local_navigatr');
 
         upgrade_plugin_savepoint(true, 2026030401, 'local', 'navigatr');
+    }
+
+    if ($oldversion < 2026111200) {
+        // Index the audit table on the columns the privacy provider queries by.
+        $dbman = $DB->get_manager();
+        $table = new xmldb_table('local_navigatr_audit');
+
+        $index = new xmldb_index('courseid-userid', XMLDB_INDEX_NOTUNIQUE, ['courseid', 'userid']);
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        $index = new xmldb_index('userid', XMLDB_INDEX_NOTUNIQUE, ['userid']);
+        if (!$dbman->index_exists($table, $index)) {
+            $dbman->add_index($table, $index);
+        }
+
+        upgrade_plugin_savepoint(true, 2026111200, 'local', 'navigatr');
     }
 
     return true;

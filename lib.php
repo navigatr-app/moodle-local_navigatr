@@ -42,24 +42,3 @@ function local_navigatr_extend_navigation_course($navigation, $course, $context)
         );
     }
 }
-
-/**
- * Add Navigatr Badges settings to course administration menu.
- *
- * @param navigation_node $navigation The navigation node to extend
- * @param stdClass $course The course to add settings for
- * @param context $context The context of the course
- */
-function local_navigatr_extend_navigation_course_settings($navigation, $course, $context) {
-    if (has_capability('local/navigatr:configurecourse', $context)) {
-        $url = new moodle_url('/local/navigatr/course_settings.php', ['id' => $course->id]);
-        $navigation->add(
-            get_string('menu_name', 'local_navigatr'),
-            $url,
-            navigation_node::TYPE_SETTING,
-            get_string('menu_description', 'local_navigatr'),
-            'navigatr',
-            new pix_icon('i/badge', '')
-        );
-    }
-}
