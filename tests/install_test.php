@@ -32,6 +32,8 @@ use advanced_testcase;
 final class install_test extends advanced_testcase {
     /**
      * The audit table is indexed for the privacy provider's queries.
+     *
+     * @coversNothing
      */
     public function test_audit_table_indexes_exist(): void {
         global $DB;
