@@ -77,12 +77,18 @@ final class cache_test extends advanced_testcase {
     public function test_cache_clearing(): void {
         $this->resetAfterTest();
 
-        // Test that cache clearing method exists.
-        $this->assertTrue(method_exists(cache::class, 'clear_cache'));
+        cache::set_badges('7', 1, 50, [['id' => 1]]);
+        cache::set_badge(1, ['name' => 'Badge']);
+        cache::set_providers([['id' => 7]]);
+        $this->assertNotFalse(cache::get_badges('7', 1, 50));
+        $this->assertNotNull(cache::get_badge(1));
+        $this->assertNotNull(cache::get_providers());
 
-        $reflection = new \ReflectionMethod(cache::class, 'clear_cache');
-        $this->assertTrue($reflection->isStatic());
-        $this->assertTrue($reflection->isPublic());
+        cache::clear_cache();
+
+        $this->assertFalse(cache::get_badges('7', 1, 50));
+        $this->assertNull(cache::get_badge(1));
+        $this->assertNull(cache::get_providers());
     }
 
     /**

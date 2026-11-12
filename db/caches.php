@@ -25,28 +25,20 @@
 defined('MOODLE_INTERNAL') || die();
 
 $definitions = [
-    'providers' => [
-        'mode' => cache_store::MODE_REQUEST,
-        'simplekeys' => true,
-        'simpledata' => true,
-        'staticacceleration' => true,
-        'staticaccelerationsize' => 10,
-        'ttl' => 600, // 10 minutes
-    ],
     'badges' => [
-        'mode' => cache_store::MODE_REQUEST,
+        'mode' => cache_store::MODE_APPLICATION,
         'simplekeys' => true,
         'simpledata' => true,
         'staticacceleration' => true,
         'staticaccelerationsize' => 10,
-        'ttl' => 600, // 10 minutes
+        'ttl' => 300, // 5 minutes.
     ],
     'user_detail' => [
-        'mode' => cache_store::MODE_REQUEST,
+        'mode' => cache_store::MODE_APPLICATION,
         'simplekeys' => true,
         'simpledata' => true,
         'staticacceleration' => true,
         'staticaccelerationsize' => 1,
-        'ttl' => 600, // 10 minutes
+        'ttl' => 300, // 5 minutes.
     ],
 ];

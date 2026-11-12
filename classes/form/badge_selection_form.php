@@ -36,8 +36,6 @@ class badge_selection_form extends \moodleform {
      * Form definition.
      */
     protected function definition() {
-        global $DB;
-
         $mform = $this->_form;
         $courseid = $this->_customdata['courseid'];
         $providerid = $this->_customdata['provider_id'];

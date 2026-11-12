@@ -38,7 +38,7 @@ class cache {
      */
     public static function get_badges($providerid, $page = 1, $size = 50) {
         $cache = \cache::make('local_navigatr', 'badges');
-        $key = "{$providerid}:{$page}:{$size}";
+        $key = "{$providerid}_{$page}_{$size}";
         return $cache->get($key);
     }
 
@@ -52,10 +52,9 @@ class cache {
      */
     public static function set_badges($providerid, $page, $size, $badges) {
         $cache = \cache::make('local_navigatr', 'badges');
-        $key = "{$providerid}:{$page}:{$size}";
+        $key = "{$providerid}_{$page}_{$size}";
         $cache->set($key, $badges);
     }
-
 
     /**
      * Get one badge's display details from cache.
