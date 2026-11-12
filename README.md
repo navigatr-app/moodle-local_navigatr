@@ -116,7 +116,13 @@ Every badge comes with a printable PDF certificate that the learner can download
 
 ## Privacy & GDPR
 
-The plugin implements Moodle's privacy API. When issuing a badge, we send the learner's email address, first name, and last name to Navigatr. No other personal data is transmitted.
+The plugin implements Moodle's privacy API. When issuing a badge, the following is sent to Navigatr:
+
+- the learner's email address, first name and last name;
+- the course name, in the badge evidence text;
+- when available, the learner's course grade as a percentage, or their completion progress (100 if completed).
+
+The plugin also keeps an audit record of each issuance attempt in Moodle, including the API status code and response.
 
 Learners can export or request deletion of their badge issuance audit records through Moodle's standard privacy tools.
 

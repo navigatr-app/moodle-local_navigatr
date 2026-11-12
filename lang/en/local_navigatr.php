@@ -107,7 +107,14 @@ $string['pluginname'] = 'Navigatr';
 $string['privacy:metadata:local_navigatr_audit'] = 'Badge issuance audit records';
 $string['privacy:metadata:local_navigatr_audit:badge_id'] = 'Badge ID';
 $string['privacy:metadata:local_navigatr_audit:courseid'] = 'Course ID';
+$string['privacy:metadata:local_navigatr_audit:dedupe_key'] = 'A key made from the user ID, course ID and badge ID, ' .
+    'used to stop the same badge being issued twice';
+$string['privacy:metadata:local_navigatr_audit:http_code'] = 'The HTTP status code returned by the Navigatr API ' .
+    'for the issuance request';
 $string['privacy:metadata:local_navigatr_audit:provider_id'] = 'Provider ID';
+$string['privacy:metadata:local_navigatr_audit:response_json'] =
+    'The response returned by the Navigatr API for the issuance request, ' .
+    'which may include the recipient details';
 $string['privacy:metadata:local_navigatr_audit:status'] = 'Issuance status';
 $string['privacy:metadata:local_navigatr_audit:timecreated'] = 'Creation time';
 $string['privacy:metadata:local_navigatr_audit:userid'] = 'User ID';
@@ -117,10 +124,14 @@ $string['privacy:metadata:local_navigatr_map:courseid'] = 'Course ID';
 $string['privacy:metadata:local_navigatr_map:provider_id'] = 'Provider ID';
 $string['privacy:metadata:local_navigatr_map:timemodified'] = 'Last modified time';
 $string['privacy:metadata:navigatr'] = 'Navigatr API';
+$string['privacy:metadata:navigatr:evidence_text'] = 'A statement that the recipient completed the course, ' .
+    'including the course full name';
 $string['privacy:metadata:navigatr:purpose'] = 'Issue a digital badge upon course completion';
 $string['privacy:metadata:navigatr:recipient_email'] = 'Recipient email address';
 $string['privacy:metadata:navigatr:recipient_firstname'] = 'Recipient first name';
 $string['privacy:metadata:navigatr:recipient_lastname'] = 'Recipient last name';
+$string['privacy:metadata:navigatr:score'] = 'The recipient\'s course grade as a percentage, or their completion ' .
+    'progress (100 if completed), when available';
 $string['provider'] = 'Provider';
 $string['provider_admin_notice'] = 'Please ensure that the configured Navigatr user is a provider admin on Navigatr ' .
     'to access and manage badge mappings.';
